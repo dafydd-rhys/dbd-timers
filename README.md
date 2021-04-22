@@ -9,11 +9,16 @@ Simply start the appropriate timer after the action has occured.
 
 ## Binds
 
-Binds can be changed in customization\\binds.txt:
+Binds can be changed in customization\\binds.txt.
+
 Bind 1: represents the Decisive-Strike Timer and Borrowed-Time Timer
+
 Bind 2: represents the Chase Timer
+
 Bind 3: represents the On-Shoulder Timer
+
 Bind 4: fully resets all timers.
+
 if you click the bind again it will reset the current timer.
 
 Red Timer represents: 
@@ -42,6 +47,6 @@ Icon Sizes:
 64x64
 
 When editing binds and properties make sure they're edited in the same format.
-NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.
-NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
-ONLY ONE INSTANCE OF THIS PROGRAM CAN BE RUN AT ONCE.
+**NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.**
+**NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
+ONLY ONE INSTANCE OF THIS PROGRAM CAN BE RUN AT ONCE.**
