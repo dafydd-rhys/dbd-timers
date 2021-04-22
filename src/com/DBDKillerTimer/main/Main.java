@@ -2,6 +2,9 @@ package com.DBDKillerTimer.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -62,7 +65,14 @@ public final class Main extends Canvas {
     private Main() throws FileNotFoundException, NativeHookException {
         GlobalScreen.registerNativeHook();
 
-        JDialog dialog = new JDialog();
+        JDialog dialog = new JDialog((java.awt.Dialog)null);
+        WindowListener listener;
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.exit(0);
+            }
+        });
         dialog.setUndecorated(true);
         dialog.setLayout(new FlowLayout(FlowLayout.LEFT));
         getProperties();
