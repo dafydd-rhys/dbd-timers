@@ -18,6 +18,7 @@ Binds can be changed in customization\\binds.txt.
 
 if you click the bind again it will reset the current timer.
 
+## Timers
 Red Timer represents: 
 * The survivor shouldn't be picked up
 * The survivor shouldn't be hit
@@ -31,6 +32,7 @@ Green Timer represent:
 
 White Timer represents neutral, you can keep chasing the survivor.
 
+## Customization
 You can change your resolution and iconSize in customization\\properties.txt however,
 1920x1080 is recommended for optimal usage.
 
@@ -45,6 +47,7 @@ Icon Sizes:
 
 When editing binds and properties make sure they're edited in the same format.
 
+## Issues
 * **NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.**
 * **NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
 ONLY ONE INSTANCE OF THIS PROGRAM CAN BE RUN AT ONCE.**
