@@ -32,7 +32,7 @@ Green Timer represent:
 White Timer represents neutral, you can keep chasing the survivor.
 
 You can change your resolution and iconSize in customization\\properties.txt however,
-1920x1080 and 128x128 is recommended for optimal usage.
+1920x1080 is recommended for optimal usage.
 
 Resolution:
 * Minimum: 800x600
@@ -45,6 +45,6 @@ Icon Sizes:
 
 When editing binds and properties make sure they're edited in the same format.
 
-**NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.**
-**NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
+* **NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.**
+* **NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
 ONLY ONE INSTANCE OF THIS PROGRAM CAN BE RUN AT ONCE.**
