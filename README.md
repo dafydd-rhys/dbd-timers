@@ -47,6 +47,8 @@ Icon Sizes:
 64x64
 
 When editing binds and properties make sure they're edited in the same format.
+
 **NOTE: PROGRAM WONT LAUNCH IF INVALID DATA HAS BEEN ENTERED.**
+
 **NOTE2: IF PROGRAM DOESN'T LAUNCH MAKE SURE IT ISN'T RUNNING IN TASK MANAGER UNDER "OpenJDK Platform Binary",
 ONLY ONE INSTANCE OF THIS PROGRAM CAN BE RUN AT ONCE.**
