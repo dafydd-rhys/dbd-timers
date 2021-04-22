@@ -66,7 +66,6 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
 
         JDialog dialog = new JDialog((java.awt.Dialog)null);
-        WindowListener listener;
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
