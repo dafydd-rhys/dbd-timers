@@ -7,6 +7,8 @@ Simply start the appropriate timer after the action has occured.
 * Chase Timer: How long you have been chasing a survivor.
 * On-Shoulder Timer: How long they have been on your shoulder.
 
+## Binds
+
 Binds can be changed in customization\\binds.txt:
 Bind 1: represents the Decisive-Strike Timer and Borrowed-Time Timer
 Bind 2: represents the Chase Timer
