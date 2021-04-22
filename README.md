@@ -1,4 +1,5 @@
 # DBDKillerTimer
+## Introduction
 This program simply allows you to know timings so you can slob harder on killer.
 Simply start the appropriate timer after the action has occured.
 
