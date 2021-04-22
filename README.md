@@ -3,8 +3,11 @@ This program simply allows you to know timings so you can slob harder on killer.
 Simply start the appropriate timer after the action has occured.
 
 Decisive-Strike Timer: How long until decisive strike runs out.
+
 Borrowed-Time Timer: How long until borrowed time runs out.
+
 Chase Timer: How long you have been chasing a survivor.
+
 On-Shoulder Timer: How long they have been on your shoulder.
 
 Binds can be changed in customization\\binds.txt:
