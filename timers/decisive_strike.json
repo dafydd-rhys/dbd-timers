@@ -1,0 +1,6 @@
+{
+  "name": "Decisive Strike",
+  "timer_type": "Timer.CountUp",
+  "icon": "images/decisive_strike.jpeg",
+  "mode": "survivor"
+}

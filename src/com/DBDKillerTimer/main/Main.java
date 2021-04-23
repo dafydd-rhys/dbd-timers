@@ -7,8 +7,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
-import javax.swing.JDialog;
+import javax.swing.*;
+
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
@@ -65,6 +67,7 @@ public final class Main extends Canvas {
     private Main() throws FileNotFoundException, NativeHookException {
         GlobalScreen.registerNativeHook();
 
+        //Generate dialog for UI
         JDialog dialog = new JDialog((java.awt.Dialog)null);
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -75,9 +78,24 @@ public final class Main extends Canvas {
         dialog.setUndecorated(true);
         dialog.setLayout(new FlowLayout(FlowLayout.LEFT));
         getProperties();
-
         new Dialog(width, height, iconSize, this, dialog);
         getStopwatchTextPosition();
+
+        ArrayList<Timer> timers = new ArrayList<Timer>();
+
+        Timer decisiveTimer = new Timer(
+                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+
+        Timer decisiveTimer = new Timer(
+                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+
+        Timer decisiveTimer = new Timer(
+                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+
+        Timer decisiveTimer = new Timer(
+                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+
+
         Stopwatch decisiveClock = new Stopwatch(dialog, decisiveClockXPosition,
                 yPositionOfText, Stopwatch.CLOCK.DecisiveClock, iconSize);
         Stopwatch borrowedClock = new Stopwatch(dialog, borrowedClockXPosition,
