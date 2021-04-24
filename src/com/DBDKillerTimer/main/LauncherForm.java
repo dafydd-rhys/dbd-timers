@@ -45,25 +45,28 @@ public class LauncherForm {
 
     private Settings settings;
 
-
-    public static void main(String[] args) throws Exception {
+    public LauncherForm() {
         JFrame frame = new JFrame("Settings Manager");
         frame.setPreferredSize(new Dimension(390, 450));
         frame.setMaximumSize(new Dimension(390, 450));
         frame.setMinimumSize(new Dimension(390, 450));
-        frame.setContentPane(new LauncherForm().mainTabPain);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(mainTabPain);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
 
-    public LauncherForm() throws Exception {
         final File folder = new File("timers\\");
         File[] listOfFiles = folder.listFiles();
         this.settings = loadSettings();
-        populateLists(listOfFiles);
+
+        try {
+            populateLists(listOfFiles);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         populateComboBoxes();
 
         //appends config

@@ -128,9 +128,27 @@ public final class Main extends Canvas {
     private JPopupMenu generateRightClickMenu(JDialog dialog) {
         JPopupMenu popupMenu = new JPopupMenu();
 
-        popupMenu.add(new JMenuItem("Settings"));
-        popupMenu.add(new JMenuItem("Toggle Mode"));
-        popupMenu.add(new JMenuItem("Exit"));
+        //Settings
+        JMenuItem settingsMenuItem = new JMenuItem("Settings");
+        settingsMenuItem.addActionListener(e -> {
+            new LauncherForm();
+        });
+
+        //Toggle Mode
+        JMenuItem toggleModeMenuItem = new JMenuItem("Toggle Mode");
+        toggleModeMenuItem.addActionListener(e -> {
+
+        });
+
+        //Exit
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        popupMenu.add(settingsMenuItem);
+        popupMenu.add(toggleModeMenuItem);
+        popupMenu.add(exitMenuItem);
 
         Container contentPane = dialog.getContentPane();
         contentPane.addMouseListener(new MouseAdapter() {
