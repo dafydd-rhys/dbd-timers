@@ -42,8 +42,9 @@ public class LauncherForm {
     private JScrollPane killerPane;
     private JPanel survivorPanel;
     private JPanel killerPanel;
+    private JLabel txtPath;
 
-    private Settings settings;
+    private final Settings settings;
 
     public LauncherForm() {
         JFrame frame = new JFrame("Settings Manager");
@@ -62,6 +63,7 @@ public class LauncherForm {
         this.settings = loadSettings();
 
         try {
+            assert listOfFiles != null;
             populateLists(listOfFiles);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -78,6 +80,7 @@ public class LauncherForm {
             if(f.length > 0){
                 path = fd.getFiles()[0].getAbsolutePath();
             }
+            txtPath.setText(path);
         });
 
         //appends/creates new timer
@@ -109,6 +112,7 @@ public class LauncherForm {
                 FileWriter fw = new FileWriter("customization\\config.json");
                 Gson g = new Gson();
                 //this.settings = new Settings();
+                assert this.settings != null;
                 this.settings.font = Font.decode(
                         Objects.requireNonNull(fontBox.getSelectedItem()).toString()
                                 + " " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString()
@@ -164,7 +168,17 @@ public class LauncherForm {
 
         panel.add(new JLabel(icon));
         panel.add(new JLabel(name));
-        panel.add(new Checkbox("Enabled", enabled));
+        Checkbox box = new Checkbox("Enabled", enabled);
+        panel.add(box);
+
+        box.addItemListener(e -> {
+            boolean wanted = box.getState();
+            if (wanted) {
+                //edit json to true
+            } else {
+                //edit json to false
+            }
+        });
     }
 
     private void populateComboBoxes() {

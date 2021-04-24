@@ -130,9 +130,7 @@ public final class Main extends Canvas {
 
         //Settings
         JMenuItem settingsMenuItem = new JMenuItem("Settings");
-        settingsMenuItem.addActionListener(e -> {
-            new LauncherForm();
-        });
+        settingsMenuItem.addActionListener(e -> new LauncherForm());
 
         //Toggle Mode
         JMenuItem toggleModeMenuItem = new JMenuItem("Toggle Mode");
@@ -142,9 +140,7 @@ public final class Main extends Canvas {
 
         //Exit
         JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(e -> {
-            System.exit(0);
-        });
+        exitMenuItem.addActionListener(e -> System.exit(0));
 
         popupMenu.add(settingsMenuItem);
         popupMenu.add(toggleModeMenuItem);
