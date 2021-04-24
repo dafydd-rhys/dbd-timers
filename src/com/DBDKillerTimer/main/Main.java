@@ -39,6 +39,7 @@ public final class Main extends Canvas {
     /** captures users resolution. */
     private static int width = 0;
     private static int height = 0;
+    int pX,pY;
 
     /** the size and location of the icon its text representation. */
     private static int iconSize = 0;
@@ -90,9 +91,9 @@ public final class Main extends Canvas {
         getProperties();
 
         dialog.setAlwaysOnTop(true);
-        dialog.setPreferredSize(new Dimension(width, height));
-        dialog.setMaximumSize(new Dimension(width, height));
-        dialog.setMinimumSize(new Dimension(width, height));
+        //dialog.setPreferredSize(new Dimension(width, height));
+        //dialog.setMaximumSize(new Dimension(width, height));
+        //dialog.setMinimumSize(new Dimension(width, height));
 
         dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
         dialog.setResizable(false);
@@ -147,6 +148,8 @@ public final class Main extends Canvas {
             }
         }
 
+        dialog.pack();
+
         //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
@@ -189,6 +192,7 @@ public final class Main extends Canvas {
             }
         }
 
+        dialog.pack();
         dialog.revalidate();
         dialog.repaint();
 
@@ -224,11 +228,24 @@ public final class Main extends Canvas {
 
         Container contentPane = dialog.getContentPane();
         contentPane.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent me) {
+                    // Get x,y and store them
+                    pX=me.getX();
+                    pY=me.getY();
+                }
             public void mouseReleased(MouseEvent me) {
                 if(me.isPopupTrigger())
                     popupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
-        }) ;
+        });
+        contentPane.addMouseMotionListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseDragged(MouseEvent me)
+            {
+                dialog.setLocation(dialog.getLocation().x+me.getX()-pX,dialog.getLocation().y+me.getY()-pY);
+            }
+        });
 
         return popupMenu;
     }
