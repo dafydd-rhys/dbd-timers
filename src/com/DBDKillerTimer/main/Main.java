@@ -1,7 +1,5 @@
 package com.DBDKillerTimer.main;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -9,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 import org.jnativehook.GlobalScreen;
@@ -39,12 +39,6 @@ public final class Main extends Canvas {
     private static int iconSize = 0;
     private int yPositionOfText = 0;
 
-    /** position of clocks. */
-    private int decisiveClockXPosition;
-    private int borrowedClockXPosition;
-    private int chaseClockXPosition;
-    private int shoulderClockXPosition;
-
     /**
      * This method creates a new instance of the main method, which
      * creates an instance of this program.
@@ -65,49 +59,81 @@ public final class Main extends Canvas {
      * @throws NativeHookException there's an issue reading global key presses
      */
     private Main() throws FileNotFoundException, NativeHookException {
+
+        //region NativeHook
+
+        // Get the logger for "com.github.kwhat.jnativehook" and set the level to off.
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
         GlobalScreen.registerNativeHook();
+        // Don't forget to disable the parent handlers.
+        logger.setUseParentHandlers(false);
+
+        //endregion
 
         //Generate dialog for UI
         JDialog dialog = new JDialog((java.awt.Dialog)null);
+
+        //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 System.exit(0);
             }
         });
+
         dialog.setUndecorated(true);
-        dialog.setLayout(new FlowLayout(FlowLayout.LEFT));
+        FlowLayout layout = new FlowLayout(FlowLayout.LEFT, 10, 0);
+        dialog.setLayout(layout);
         getProperties();
-        new Dialog(width, height, iconSize, this, dialog);
-        getStopwatchTextPosition();
 
-        ArrayList<Timer> timers = new ArrayList<Timer>();
+        dialog.setAlwaysOnTop(true);
+        dialog.setPreferredSize(new Dimension(width, height));
+        dialog.setMaximumSize(new Dimension(width, height));
+        dialog.setMinimumSize(new Dimension(width, height));
 
-        Timer decisiveTimer = new Timer(
-                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+        dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
+        dialog.setResizable(false);
+        dialog.add(this);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
 
-        Timer decisiveTimer = new Timer(
-                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+        ArrayList<Stopwatch> timers = new ArrayList<Stopwatch>();
 
-        Timer decisiveTimer = new Timer(
-                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+        //killer
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\decisive_strike.png"), 60, '3', 'r'));
 
-        Timer decisiveTimer = new Timer(
-                new ImageIcon("images\\decisive_" + iconSize + ".png"));
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\borrowed_time.png"), 15, '3', 'r'));
 
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\chase.png"), 0, '4', 'r'));
 
-        Stopwatch decisiveClock = new Stopwatch(dialog, decisiveClockXPosition,
-                yPositionOfText, Stopwatch.CLOCK.DecisiveClock, iconSize);
-        Stopwatch borrowedClock = new Stopwatch(dialog, borrowedClockXPosition,
-                yPositionOfText, Stopwatch.CLOCK.BorrowedClock, iconSize);
-        Stopwatch chaseClock = new Stopwatch(dialog, chaseClockXPosition,
-                yPositionOfText, Stopwatch.CLOCK.ChaseClock, iconSize);
-        Stopwatch shoulderClock = new Stopwatch(dialog, shoulderClockXPosition,
-                yPositionOfText, Stopwatch.CLOCK.OnShoulderClock, iconSize);
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\on_shoulder.png"), 16, 'e', 'r'));
+
+        //survivor
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\unbreakable.png"), 20, 'e', 'r'));
+
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\generator.png"), 80, '4', 'r'));
+
+        timers.add(new Stopwatch(iconSize,
+                new ImageIcon("images\\chase.png"), 0, '3', 'r'));
+
+        int counter = 0;
+        for (Stopwatch timer : timers) {
+            dialog.add(timer.getUIElement());
+            counter++;
+        }
+
         dialog.setBackground(new Color(0, 0, 0, 0));
 
-        GlobalScreen.addNativeKeyListener(new KeyInput(decisiveClock,
-                borrowedClock, chaseClock, shoulderClock));
+        //attach key listeners to timer binds
+        GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
 
     /**
@@ -137,27 +163,6 @@ public final class Main extends Canvas {
                 || height > maximumHeight || height < minimumHeight) {
             System.exit(0);
         }
-    }
-
-    /**
-     * This method gets all the text locations using a formula that places
-     * them in correct positions even after considering different resolution
-     * and icon sizes.
-     */
-    private void getStopwatchTextPosition() {
-        final int textSpacing = -5;
-        final int formulaVariable = -6;
-        final int smallestIconSize = 64;
-        final int xSpacingValue = iconSize - textSpacing;
-        final double decisiveStartingXPosition = (int) (((iconSize / (double)
-                smallestIconSize) * 10) + 8);
-
-        yPositionOfText = (int) (iconSize - (iconSize
-                / (double) smallestIconSize) * formulaVariable);
-        decisiveClockXPosition = (int) decisiveStartingXPosition;
-        borrowedClockXPosition = decisiveClockXPosition + xSpacingValue;
-        chaseClockXPosition = borrowedClockXPosition + xSpacingValue;
-        shoulderClockXPosition = chaseClockXPosition + xSpacingValue;
     }
 
 }

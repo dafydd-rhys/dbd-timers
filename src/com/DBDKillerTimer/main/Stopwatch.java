@@ -1,8 +1,6 @@
 package com.DBDKillerTimer.main;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.Timer;
 
 /**
@@ -10,102 +8,100 @@ import javax.swing.Timer;
  * @version 1.0
  * This class simply creates the stopwatches and changes them based on
  * their type, status etc
- * @author Dafydd-Rhys Maund
+ * @author Dafydd-Rhys Maund & Morgan Gardner
  */
 public class Stopwatch {
 
     /** referring to state of clock. */
     private boolean notRunning = true;
 
-    /** referring to this clock. */
-    private final CLOCK clock;
-    private boolean shoulderClock = false;
-
-    /** test representation for the time. */
-    private final JLabel timeLabel = new JLabel();
-    private int textFontSize = 0;
+    /** representation for the time label. */
+    private JLabel timeLabel;
+    private JLabel timerIcon;
     private String seconds;
     private String minutes;
 
-    /** starting times of clocks. */
-    private final int decisiveStartingTime = 1;
-    private final int borrowedStartingTime = 15;
-    private final int chaseStartingTime = 0;
-    private final int shoulderStartingTime = 16;
+    private int startingTime;
 
     /** time variables. */
     private int elapsedTime = 0;
     private final int milliseconds = 1000;
-    private final int millisecondsPerMin = 60000;
     private int second = 0;
     private int minute = 0;
 
-    /** stores the type of clock. */
-    public enum CLOCK {
-        DecisiveClock(),
-        BorrowedClock(),
-        ChaseClock(),
-        OnShoulderClock(),
+    private enum TimerType {
+        CountUp, CountDown
     }
 
+    private char startBind;
+    private char restartBind;
+
+    private TimerType timerType;
+    private JPanel hostPanel;
+
     /**
-     * This method simply creates the stopwatches and their format then add them
-     * to the dialog.
-     * @param dialog represents the dialog the stopwatches are being added to
-     * @param x represents the width of the dialog
-     * @param y represents the height of the dialog
-     * @param stopwatchType represents the type of stopwatch we're referring too
-     * @param iconSize represents the desired icon size
+     *
+     * @param iconSize
+     * @param icon
+     * @param startingTime
      */
-    Stopwatch(final JDialog dialog, final int x, final int y,
-              final CLOCK stopwatchType, final int iconSize) {
-        this.clock = stopwatchType;
-        if (clock == CLOCK.OnShoulderClock) {
-            shoulderClock = true;
-        }
+    public Stopwatch(int iconSize, ImageIcon icon, int startingTime, char startBind, char restartBind) {
+        this.startingTime = startingTime;
+        this.startBind = startBind;
+        this.restartBind = restartBind;
+
+        if(startingTime == 0)
+            this.timerType = TimerType.CountUp;
+        else
+            this.timerType = TimerType.CountDown;
+
+        //generate icon (resize)
+        Image image = icon.getImage(); // transform it
+        Image newImg = image.getScaledInstance(iconSize, iconSize,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        icon = new ImageIcon(newImg);  // transform it back
+
+        timerIcon = new JLabel(icon);
+        timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        hostPanel = new JPanel();
+        hostPanel.setPreferredSize(new Dimension(iconSize, iconSize + 30));
+        hostPanel.setOpaque(false);
+        BoxLayout hostLayout = new BoxLayout(hostPanel, BoxLayout.Y_AXIS);
+        hostPanel.setLayout(hostLayout);
+
+        //generate timer label
         setString();
-
-        dialog.setLayout(null);
+        timeLabel = new JLabel(minutes + ":" + seconds);
+        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         timeLabel.setForeground(Color.WHITE);
-        timeLabel.setText(minutes + ":" + seconds);
-        setTextFontSize(iconSize);
 
-        final int textWidth = 100;
+        final int textWidth = iconSize;
         final int textHeight = 30;
-        timeLabel.setBounds(x, y, textWidth, textHeight);
-        timeLabel.setFont(new Font("Arial", Font.PLAIN, textFontSize));
-        dialog.add(timeLabel);
+        timeLabel.setBounds(0, 0, textWidth, textHeight);
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, iconSize / 4));
+        hostPanel.add(timerIcon);
+        hostPanel.add(timeLabel);
+    }
+
+    public char getStartBind() {
+        return this.startBind;
+    }
+
+    public char getRestartBind() {
+        return this.restartBind;
+    }
+
+    public JPanel getUIElement() {
+        return hostPanel;
     }
 
     /**
-     * This method simply calculates the font size based on the
-     * icon size.
-     * @param iconSize the icon size the user wants
-     */
-    private void setTextFontSize(final int iconSize) {
-        final int iconSize1 = 128;
-        final int iconSize2 = 96;
-        final int iconSize3 = 64;
-        final int quarter = 4;
-
-        if (iconSize == iconSize1) {
-            textFontSize = iconSize / quarter;
-        } else if (iconSize == iconSize2) {
-            textFontSize = iconSize / quarter;
-        } else if (iconSize == iconSize3) {
-            textFontSize = iconSize / quarter;
-        }
-    }
-
-    /**
-     * This method simply makes a new timer and identifies the starting time
-     * and whether the timer will increase on decrease based on the type.
-     * Also, this method sets the format and changes the color of the text
-     * based on the type.
+     * Timer
      */
     private final Timer timer = new Timer(1000, e -> {
+
         getTime(notRunning);
-        if (getType()) {
+        if (timerType == TimerType.CountDown) {
             if (!(elapsedTime == 0)) {
                 elapsedTime = elapsedTime - milliseconds;
             }
@@ -113,19 +109,16 @@ public class Stopwatch {
             elapsedTime = elapsedTime + milliseconds;
         }
 
-        int secondsPerMin = millisecondsPerMin / milliseconds;
-        minute = (elapsedTime / millisecondsPerMin) % secondsPerMin;
-        second = (elapsedTime / milliseconds) % secondsPerMin;
+        minute = (elapsedTime / 60000) % 60;
+        second = (elapsedTime / 1000) % 60;
         seconds = String.format("%02d", second);
         minutes = String.format("%02d", minute);
 
-        if (second == 0 && minute < 1) {
-            if (!shoulderClock) {
-                timeLabel.setForeground(Color.GREEN);
-            } else {
-                timeLabel.setForeground(Color.red);
-            }
-        } else if (second >= secondsPerMin / 2 || minute > 0) {
+        //clock is stopped
+        if (second == 0 && minute == 0) {
+            //clock is stopped
+            timeLabel.setForeground(Color.GREEN);   //timeLabel.setForeground(timer.stopColour);
+        } else if (second >= 60 / 2 || minute > 0) {
             timeLabel.setForeground(Color.red);
         }
         timeLabel.setText(minutes + ":" + seconds);
@@ -141,33 +134,11 @@ public class Stopwatch {
     }
 
     /**
-     * this method simply identifies whether this clock is supposed to
-     * decrease in timer rather than increase.
-     * @return true if the the clock is supposed to count down
-     */
-    private boolean getType() {
-        return clock == CLOCK.DecisiveClock || clock == CLOCK.BorrowedClock
-                || clock == CLOCK.OnShoulderClock;
-    }
-
-    /**
      * gets the starting times for each clock.
      */
     private void getStartTime() {
-        if (clock == CLOCK.DecisiveClock) {
-            minute = decisiveStartingTime;
-            second = 0;
-        } else if (clock == CLOCK.BorrowedClock) {
-            minute = 0;
-            second = borrowedStartingTime;
-        } else if (clock == CLOCK.OnShoulderClock) {
-            minute = 0;
-            second = shoulderStartingTime;
-        } else {
-            timeLabel.setForeground(Color.white);
-            minute = chaseStartingTime;
-            second = chaseStartingTime;
-        }
+        minute = 0;
+        second = startingTime;
     }
 
     /**
@@ -176,36 +147,18 @@ public class Stopwatch {
      */
     private void getTime(final boolean run) {
         if (run) {
-            if (clock == CLOCK.DecisiveClock) {
-                timeLabel.setForeground(Color.red);
-                elapsedTime = decisiveStartingTime * millisecondsPerMin;
-            } else if (clock == CLOCK.BorrowedClock) {
-                timeLabel.setForeground(Color.red);
-                elapsedTime = borrowedStartingTime * milliseconds;
-            } else if (clock == CLOCK.OnShoulderClock) {
-                timeLabel.setForeground(Color.GREEN);
-                elapsedTime = shoulderStartingTime * milliseconds;
-            } else {
-                elapsedTime = chaseStartingTime;
-            }
+            timeLabel.setForeground(Color.red); //timeLabel.setForeground(timer.startColour);
+            elapsedTime = startingTime * milliseconds;
         }
         notRunning = false;
     }
 
     /**
-     * This method simply fully resets the timers, color and time.
+     * This method simply fully resets the colour and time of the timer.
      */
     private void getOriginalTime() {
         timeLabel.setForeground(Color.white);
-        if (clock == CLOCK.DecisiveClock) {
-            elapsedTime = decisiveStartingTime * millisecondsPerMin;
-        } else if (clock == CLOCK.BorrowedClock) {
-            elapsedTime = borrowedStartingTime * milliseconds;
-        } else if (clock == CLOCK.OnShoulderClock) {
-            elapsedTime = shoulderStartingTime * milliseconds;
-        } else {
-            elapsedTime = chaseStartingTime;
-        }
+        elapsedTime = startingTime * milliseconds;
     }
 
     /**
@@ -216,14 +169,15 @@ public class Stopwatch {
     }
 
     /**
-     * this method resets the timer.
+     * this method restarts the timer (resetting the time).
      */
-    public final void reset() {
+    public final void restart() {
         timer.stop();
         setString();
         notRunning = true;
         getTime(true);
         timeLabel.setText(minutes + ":" + seconds);
+        timer.start();
     }
 
     /**
