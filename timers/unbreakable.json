@@ -1,0 +1,9 @@
+{
+  "name": "Unbreakable",
+  "start_time": 20,
+  "start_color": "Color.RED",
+  "timer_type": "Timer.CountDown",
+  "icon": "images/unbreakable.png",
+  "mode": "survivor",
+  "enabled": true
+}

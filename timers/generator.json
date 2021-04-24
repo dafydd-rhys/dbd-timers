@@ -1,0 +1,9 @@
+{
+  "name": "Generator",
+  "start_time": 80,
+  "start_color": "Color.RED",
+  "timer_type": "Timer.CountDown",
+  "icon": "images/generator.png",
+  "mode": "survivor",
+  "enabled": true
+}

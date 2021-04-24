@@ -1,9 +1,9 @@
 {
-  "name": "Decisive Strike",
-  "start_time": 60,
+  "name": "Borrowed Time",
+  "start_time": 15,
   "start_color": "Color.RED",
   "timer_type": "Timer.CountDown",
-  "icon": "images/decisive_strike.png",
+  "icon": "images/borrowed_time.png",
   "mode": "killer",
   "enabled": true
 }
