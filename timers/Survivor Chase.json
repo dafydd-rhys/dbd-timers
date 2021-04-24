@@ -1,12 +1,12 @@
 {
-  "name": "Unbreakable",
-  "startTime":20,
+  "name": "Chase",
+  "startTime":0,
      "startColor":{
       "value":-13487566,
       "falpha":0.0
    },
-  "timerType":"CountDown",
-  "icon": "images/unbreakable.png",
+  "timerType":"CountUp",
+  "icon": "images/chase.png",
   "timerMode":"Survivor",
   "enabled":true
 }

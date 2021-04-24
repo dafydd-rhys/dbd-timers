@@ -1,13 +1,12 @@
 {
-  "name": "Generator",
-  "startTime":80,
+  "name": "On Shoulder",
+  "startTime":16,
      "startColor":{
       "value":-13487566,
       "falpha":0.0
    },
   "timerType":"CountDown",
-  "bind": "3",
-  "icon": "images/generator.png",
-  "timerMode":"Survivor",
+  "icon": "images/on_shoulder.png",
+  "timerMode":"Killer",
   "enabled":true
 }

@@ -1,0 +1,12 @@
+{
+  "name": "Decisive Strike",
+  "startTime":60,
+   "startColor":{
+      "value":-13487566,
+      "falpha":0.0
+   },
+  "timerType":"CountDown",
+  "icon": "images/decisive_strike.png",
+  "timerMode":"Killer",
+  "enabled":true
+}

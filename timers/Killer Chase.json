@@ -1,0 +1,12 @@
+{
+  "name": "Chase",
+  "startTime":0,
+     "startColor":{
+      "value":-13487566,
+      "falpha":0.0
+   },
+  "timerType":"CountUp",
+  "icon": "images/chase.png",
+  "timerMode":"Killer",
+  "enabled":true
+}
