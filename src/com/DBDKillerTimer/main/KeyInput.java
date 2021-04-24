@@ -29,12 +29,12 @@ public class KeyInput extends NativeKeyAdapter {
      * @param e KeyEvent from key press.
      */
     public final void nativeKeyPressed(final NativeKeyEvent e) {
-        char key = Character.toLowerCase(NativeKeyEvent.getKeyText(e.getKeyCode()).charAt(0));
+        String key = NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase();
         for (Stopwatch clock : clocks) {
-            if (key == clock.getStartBind()) {
+            if (key.equals(clock.getStartBind().toLowerCase())) {
                 clock.restart();
             }
-            if (key == clock.getRestartBind()) {
+            if (key.equals(clock.getRestartBind().toLowerCase())) {
                 clock.fullReset();
             }
         }

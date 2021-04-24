@@ -32,8 +32,8 @@ public class Stopwatch {
         CountUp, CountDown
     }
 
-    private final char startBind;
-    private final char restartBind;
+    private final String startBind;
+    private final String restartBind;
 
     private TimerType timerType;
     private final JPanel hostPanel;
@@ -47,7 +47,7 @@ public class Stopwatch {
      * @param restartBind the bind to restart timer
      */
     public Stopwatch(final int iconSize, ImageIcon icon, final int startingTime,
-                     final char startBind, final char restartBind) {
+                     final String startBind, final String restartBind) {
         this.startingTime = startingTime;
         this.startBind = startBind;
         this.restartBind = restartBind;
@@ -84,11 +84,11 @@ public class Stopwatch {
         hostPanel.add(timeLabel);
     }
 
-    public final char getStartBind() {
+    public final String getStartBind() {
         return this.startBind;
     }
 
-    public final char getRestartBind() {
+    public final String getRestartBind() {
         return this.restartBind;
     }
 
