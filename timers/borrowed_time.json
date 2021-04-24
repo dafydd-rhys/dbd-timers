@@ -1,9 +1,0 @@
-{
-  "name": "Borrowed Time",
-  "start_time": 15,
-  "start_color": "Color.RED",
-  "timer_type": "Timer.CountDown",
-  "icon": "images/borrowed_time.png",
-  "mode": "killer",
-  "enabled": true
-}

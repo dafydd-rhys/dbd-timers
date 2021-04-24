@@ -1,0 +1,12 @@
+{
+   "name":"Borrowed Time",
+   "startTime":20,
+   "startColor":{
+      "value":-13487566,
+      "falpha":0.0
+   },
+   "timerType":"CountDown",
+   "icon":"images\\borrowed_time.png",
+   "timerMode":"Killer",
+   "enabled":true
+}

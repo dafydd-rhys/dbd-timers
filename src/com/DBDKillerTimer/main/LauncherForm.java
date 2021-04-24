@@ -16,7 +16,7 @@ import org.json.simple.parser.JSONParser;
 
 public class LauncherForm {
 
-    private String path = "";
+    private String iconPath = "";
 
     private JPanel mainPanel;
     private JTabbedPane mainTabPain;
@@ -27,10 +27,10 @@ public class LauncherForm {
     private JTextField timerName;
     private JTextField timerStartTime;
     private JTextField timerStartColor;
-    private JTextField timerType;
+    private JComboBox<TimerClass.TimerType> timerTypeBox;
+    private JComboBox<TimerClass.TimerMode> timerModeBox;
     private JTextField timerBind;
-    private JTextField timerMode;
-    private JTextField timerEnabled;
+    private JCheckBox timerEnabled;
     private JButton saveTimer;
 
     private JComboBox<String> fontBox;
@@ -78,30 +78,32 @@ public class LauncherForm {
             
             File[] f = fd.getFiles();
             if(f.length > 0){
-                path = fd.getFiles()[0].getAbsolutePath();
+                iconPath = fd.getFiles()[0].getAbsolutePath();
             }
             txtPath.setText(path);
         });
 
         //appends/creates new timer
         saveTimer.addActionListener(e -> {
-            if (!path.equals("")) {
+            if (!iconPath.equals("")) {
                 try {
-                    File myObj = new File("timers\\" + timerName.getText() + ".json");
-                    FileWriter fw = new FileWriter(myObj);
-                    fw.write("{\n" +
-                            "\"name\": \"" + timerName.getText() + "\",\n" +
-                            "\"start_time\": \"" + timerStartTime.getText() + "\",\n" +
-                            "\"start_color\": \"" + timerStartColor.getText() + "\",\n" +
-                            "\"timer_type\": \"" + timerType.getText() + "\",\n" +
-                            "\"bind\": \"" + timerBind.getText() + "\",\n" +
-                            "\"icon\": \"" + path + "\",\n" +
-                            "\"mode\": \"" + timerMode.getText() + "\",\n" +
-                            "\"enabled\": " + timerEnabled.getText() + "\n" +
-                            "}");
+                    FileWriter fw = new FileWriter("timers\\" + timerName.getText() + ".json");
+                    Gson g = new Gson();
+
+                    TimerClass newTimer = new TimerClass();
+                    newTimer.name = timerName.getText();
+                    newTimer.startTime = Integer.parseInt(timerStartTime.getText());
+                    newTimer.startColor = new Color(50, 50, 50);    //implement colorchooser
+                    newTimer.timerType = (TimerClass.TimerType)timerTypeBox.getSelectedItem();
+                    newTimer.icon = iconPath;
+                    newTimer.timerMode = (TimerClass.TimerMode)timerModeBox.getSelectedItem();
+                    newTimer.enabled = timerEnabled.isSelected();
+
+                    fw.write(g.toJson(newTimer));
                     fw.close();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -143,19 +145,14 @@ public class LauncherForm {
         survivorPanel.setLayout(new GridLayout(0, 3, 5, 5));
 
         for (File file : folder) {
-            JSONParser parser = new JSONParser();
-            JSONObject data = (JSONObject) parser.parse(new FileReader(file));
+            String jsonString = Files.readString(Path.of(file.getPath()));
+            Gson g = new Gson();
+            TimerClass timer = g.fromJson(jsonString, TimerClass.class);
 
-            String name = (String) data.get("name");
-            String location = (String) data.get("icon");
-            ImageIcon icon = new ImageIcon(location);
-            String mode = (String) data.get("mode");
-            boolean enabled = (boolean) data.get("enabled");
-
-            if (mode.equals("killer")) {
-                createGraphic(killerPanel, icon, name, enabled);
-            } else if (mode.equals("survivor")){
-                createGraphic(survivorPanel, icon, name, enabled);
+            if (timer.timerMode == TimerClass.TimerMode.Killer) {
+                createGraphic(killerPanel, new ImageIcon(timer.icon), timer.name, timer.enabled);
+            } else {
+                createGraphic(survivorPanel, new ImageIcon(timer.icon), timer.name, timer.enabled);
             }
         }
     }
@@ -185,6 +182,8 @@ public class LauncherForm {
         populateFontBox();
         populateFontSizeBox();
         populateFontTypeBox();
+        populateTimerTypeBox();
+        populateTimerModeBox();
     }
 
     private void populateFontBox() {
@@ -212,6 +211,16 @@ public class LauncherForm {
         fontTypeBox.addItem("Italic");
         fontTypeBox.addItem("BoldItalic");
         fontTypeBox.setSelectedIndex(this.settings.font.getStyle());
+    }
+
+    private void populateTimerTypeBox() {
+        timerTypeBox.addItem(TimerClass.TimerType.CountUp);
+        timerTypeBox.addItem(TimerClass.TimerType.CountDown);
+    }
+
+    private void populateTimerModeBox() {
+        timerModeBox.addItem(TimerClass.TimerMode.Killer);
+        timerModeBox.addItem(TimerClass.TimerMode.Survivor);
     }
 
 }
