@@ -6,12 +6,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
+import com.google.gson.Gson;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
@@ -38,6 +42,10 @@ public final class Main extends Canvas {
 
     /** the size and location of the icon its text representation. */
     private static int iconSize = 0;
+
+    private TimerClass.TimerMode timerMode = TimerClass.TimerMode.Survivor;
+    private JDialog dialog;
+    private ArrayList<Stopwatch> timers;
 
     /**
      * This method creates a new instance of the main method, which
@@ -67,7 +75,7 @@ public final class Main extends Canvas {
         logger.setUseParentHandlers(false);
 
         //Generate dialog for UI
-        JDialog dialog = new JDialog((java.awt.Dialog)null);
+        dialog = new JDialog((java.awt.Dialog)null);
         //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -97,30 +105,93 @@ public final class Main extends Canvas {
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
         dialog.add(popupMenu);
 
-        ArrayList<Stopwatch> timers = new ArrayList<>();
+        loadTimers();
 
-        //killer clocks
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\decisive_strike.png"),
-                60, '3', 'r'));
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\borrowed_time.png"),
-                15, '3', 'r'));
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\chase.png"),
-                0, '4', 'r'));
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\on_shoulder.png"),
-                16, 'e', 'r'));
-
-        //survivor clocks
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\unbreakable.png"),
-                20, 'e', 'r'));
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\generator.png"),
-                80, '4', 'r'));
-        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\chase.png"),
-                0, '3', 'r'));
-
-        for (Stopwatch timer : timers) {
-            dialog.add(timer.getUIElement());
-        }
         dialog.setBackground(new Color(0, 0, 0, 0));
+    }
+
+    public void setTimerMode(TimerClass.TimerMode mode) {
+        this.timerMode = mode;
+    }
+
+    /**
+     * Load timers from JSON files
+     */
+    public void loadTimers() {
+        final File folder = new File("timers\\");
+        File[] listOfTimers = folder.listFiles();
+
+        timers = new ArrayList<>();
+
+        for (File file : listOfTimers) {
+            try
+            {
+                //read timer info from json file
+                String jsonString = Files.readString(Path.of(file.getPath()));
+                Gson g = new Gson();
+                TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
+
+                //only add timer if mode matches current software timer mode
+                if (timerClass.timerMode == this.timerMode)
+                {
+                    Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
+                            timerClass.startTime, timerClass.startBind, 'r');
+
+                    timers.add(timer);
+
+                    //add timer to UI
+                    dialog.add(timer.getUIElement());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        //attach key listeners to timer binds
+        GlobalScreen.addNativeKeyListener(new KeyInput(timers));
+    }
+
+    /**
+     * Reload timers from JSON files
+     */
+    public void reloadTimers() {
+        final File folder = new File("timers\\");
+        File[] listOfTimers = folder.listFiles();
+
+        //remove old timers
+        for (Stopwatch timer : this.timers) {
+            dialog.remove(timer.getUIElement());
+        }
+
+        timers = new ArrayList<>();
+
+        for (File file : listOfTimers) {
+            try
+            {
+                //read timer info from json file
+                String jsonString = Files.readString(Path.of(file.getPath()));
+                Gson g = new Gson();
+                TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
+
+                //only add timer if mode matches current software timer mode
+                if (timerClass.timerMode == this.timerMode)
+                {
+                    Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
+                            timerClass.startTime, timerClass.startBind, 'r');
+
+                    timers.add(timer);
+
+                    //add timer to UI
+                    dialog.add(timer.getUIElement());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        dialog.revalidate();
+        dialog.repaint();
+
         //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
@@ -135,7 +206,12 @@ public final class Main extends Canvas {
         //Toggle Mode
         JMenuItem toggleModeMenuItem = new JMenuItem("Toggle Mode");
         toggleModeMenuItem.addActionListener(e -> {
-
+            if (this.timerMode == TimerClass.TimerMode.Killer) {
+                this.timerMode = TimerClass.TimerMode.Survivor;
+            } else {
+                this.timerMode = TimerClass.TimerMode.Killer;
+            }
+            reloadTimers();
         });
 
         //Exit
