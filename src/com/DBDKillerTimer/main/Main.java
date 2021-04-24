@@ -2,7 +2,6 @@ package com.DBDKillerTimer.main;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public final class Main extends Canvas {
 
     /** the size and location of the icon its text representation. */
     private static int iconSize = 0;
-    private int yPositionOfText = 0;
 
     /**
      * This method creates a new instance of the main method, which
@@ -59,21 +57,15 @@ public final class Main extends Canvas {
      * @throws NativeHookException there's an issue reading global key presses
      */
     private Main() throws FileNotFoundException, NativeHookException {
-
-        //region NativeHook
-
-        // Get the logger for "com.github.kwhat.jnativehook" and set the level to off.
+        // Get the logger for "https://github.com/kwhat/jnativehook" and set the level to off.
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
         GlobalScreen.registerNativeHook();
+
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
-
-        //endregion
-
         //Generate dialog for UI
         JDialog dialog = new JDialog((java.awt.Dialog)null);
-
         //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -99,39 +91,30 @@ public final class Main extends Canvas {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
-        ArrayList<Stopwatch> timers = new ArrayList<Stopwatch>();
+        ArrayList<Stopwatch> timers = new ArrayList<>();
 
-        //killer
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\decisive_strike.png"), 60, '3', 'r'));
+        //killer clocks
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\decisive_strike.png"),
+                60, '3', 'r'));
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\borrowed_time.png"),
+                15, '3', 'r'));
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\chase.png"),
+                0, '4', 'r'));
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\on_shoulder.png"),
+                16, 'e', 'r'));
 
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\borrowed_time.png"), 15, '3', 'r'));
+        //survivor clocks
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\unbreakable.png"),
+                20, 'e', 'r'));
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\generator.png"),
+                80, '4', 'r'));
+        timers.add(new Stopwatch(iconSize, new ImageIcon("images\\chase.png"),
+                0, '3', 'r'));
 
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\chase.png"), 0, '4', 'r'));
-
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\on_shoulder.png"), 16, 'e', 'r'));
-
-        //survivor
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\unbreakable.png"), 20, 'e', 'r'));
-
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\generator.png"), 80, '4', 'r'));
-
-        timers.add(new Stopwatch(iconSize,
-                new ImageIcon("images\\chase.png"), 0, '3', 'r'));
-
-        int counter = 0;
         for (Stopwatch timer : timers) {
             dialog.add(timer.getUIElement());
-            counter++;
         }
-
         dialog.setBackground(new Color(0, 0, 0, 0));
-
         //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }

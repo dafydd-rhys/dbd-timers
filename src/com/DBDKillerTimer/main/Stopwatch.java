@@ -21,7 +21,7 @@ public class Stopwatch {
     private String seconds;
     private String minutes;
 
-    private int startingTime;
+    private final int startingTime;
 
     /** time variables. */
     private int elapsedTime = 0;
@@ -33,11 +33,11 @@ public class Stopwatch {
         CountUp, CountDown
     }
 
-    private char startBind;
-    private char restartBind;
+    private final char startBind;
+    private final char restartBind;
 
     private TimerType timerType;
-    private JPanel hostPanel;
+    private final JPanel hostPanel;
 
     /**
      *
@@ -75,9 +75,7 @@ public class Stopwatch {
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         timeLabel.setForeground(Color.WHITE);
 
-        final int textWidth = iconSize;
-        final int textHeight = 30;
-        timeLabel.setBounds(0, 0, textWidth, textHeight);
+        timeLabel.setBounds(0, 0, iconSize, 30);
         timeLabel.setFont(new Font("Arial", Font.PLAIN, iconSize / 4));
         hostPanel.add(timerIcon);
         hostPanel.add(timeLabel);

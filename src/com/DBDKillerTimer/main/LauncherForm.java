@@ -64,14 +64,14 @@ public class LauncherForm {
             String mode = (String) data.get("mode");
             boolean enabled = (boolean) data.get("enabled");
 
-            createGraphic(icon, name, enabled);
+            createGraphic(icon, name, mode, enabled);
         }
     }
 
     private void populateSurvivorList(final File[] folder) {
     }
 
-    private void createGraphic(ImageIcon icon, String name, boolean enabled) {
+    private void createGraphic(ImageIcon icon, String name, String mode, boolean enabled) {
        
     }
 
