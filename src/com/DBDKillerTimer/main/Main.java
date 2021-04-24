@@ -73,10 +73,12 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
-        ImageIcon logo = new ImageIcon("images\\generator.png");
 
         //Generate dialog for UI and sets the applications logo in taskbar
         dialog = new JDialog((java.awt.Dialog)null);
+        dialog.setTitle("DBD Timer");
+
+        ImageIcon logo = new ImageIcon("images\\icon.png");
         dialog.setIconImage(logo.getImage());
 
         //Catch window close event and shutdown process
