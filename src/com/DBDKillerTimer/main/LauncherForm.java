@@ -1,18 +1,13 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
-
 import com.google.gson.Gson;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 public class LauncherForm {
 
@@ -61,14 +56,12 @@ public class LauncherForm {
         final File folder = new File("timers\\");
         File[] listOfFiles = folder.listFiles();
         this.settings = loadSettings();
-
         try {
             assert listOfFiles != null;
             populateLists(listOfFiles);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         populateComboBoxes();
 
         //appends config
@@ -80,7 +73,7 @@ public class LauncherForm {
             if(f.length > 0){
                 iconPath = fd.getFiles()[0].getAbsolutePath();
             }
-            txtPath.setText(path);
+            txtPath.setText(fd.getFiles()[0].getName());
         });
 
         //appends/creates new timer
@@ -93,7 +86,7 @@ public class LauncherForm {
                     TimerClass newTimer = new TimerClass();
                     newTimer.name = timerName.getText();
                     newTimer.startTime = Integer.parseInt(timerStartTime.getText());
-                    newTimer.startColor = new Color(50, 50, 50);    //implement colorchooser
+                    newTimer.startColor = new Color(50, 50, 50);    //implement color chooser
                     newTimer.timerType = (TimerClass.TimerType)timerTypeBox.getSelectedItem();
                     newTimer.icon = iconPath;
                     newTimer.timerMode = (TimerClass.TimerMode)timerModeBox.getSelectedItem();
@@ -101,7 +94,6 @@ public class LauncherForm {
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
-
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -122,7 +114,6 @@ public class LauncherForm {
 
                 fw.write(g.toJson(this.settings));
                 fw.close();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

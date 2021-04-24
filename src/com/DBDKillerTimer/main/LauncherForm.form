@@ -271,6 +271,16 @@
                   <visible value="true"/>
                 </properties>
               </component>
+              <component id="fa46d" class="javax.swing.JLabel" binding="txtPath">
+                <constraints>
+                  <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <font name="Source Code Pro" size="8" style="1"/>
+                  <text value=""/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="95a9" layout-manager="FormLayout">
