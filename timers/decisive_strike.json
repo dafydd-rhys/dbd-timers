@@ -1,9 +1,0 @@
-{
-  "name": "Decisive Strike",
-  "start_time": 60,
-  "start_color": "Color.RED",
-  "timer_type": "Timer.CountDown",
-  "icon": "images/decisive_strike.png",
-  "mode": "killer",
-  "enabled": true
-}

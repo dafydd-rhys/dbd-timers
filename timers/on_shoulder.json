@@ -1,9 +1,0 @@
-{
-  "name": "On Shoulder",
-  "start_time": 16,
-  "start_color": "Color.GREEN",
-  "timer_type": "Timer.CountDown",
-  "icon": "images/on_shoulder.png",
-  "mode": "killer",
-  "enabled": true
-}

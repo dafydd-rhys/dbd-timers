@@ -1,9 +1,0 @@
-{
-  "name": "Chase",
-  "start_time": 0,
-  "start_color": "Color.GREEN",
-  "timer_type": "Timer.CountUp",
-  "icon": "images/chase.png",
-  "mode": "killer",
-  "enabled": true
-}
