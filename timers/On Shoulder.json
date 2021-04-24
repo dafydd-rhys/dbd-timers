@@ -8,5 +8,6 @@
   "timerType":"CountDown",
   "icon": "images/on_shoulder.png",
   "timerMode":"Killer",
-  "enabled":true
+  "enabled":true,
+  "startBind":"e"
 }

@@ -102,6 +102,7 @@ public class LauncherForm {
                     newTimer.icon = iconPath;
                     newTimer.timerMode = (TimerClass.TimerMode)timerModeBox.getSelectedItem();
                     newTimer.enabled = timerEnabled.isSelected();
+                    newTimer.startBind = timerBind.getText().charAt(0);
 
                     fw.write(g.toJson(newTimer));
                     fw.close();

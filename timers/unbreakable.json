@@ -8,5 +8,6 @@
   "timerType":"CountDown",
   "icon": "images/unbreakable.png",
   "timerMode":"Survivor",
-  "enabled":true
+  "enabled":true,
+  "startBind":"e"
 }

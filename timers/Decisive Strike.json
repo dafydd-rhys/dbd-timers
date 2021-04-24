@@ -8,5 +8,6 @@
   "timerType":"CountDown",
   "icon": "images/decisive_strike.png",
   "timerMode":"Killer",
-  "enabled":true
+  "enabled":true,
+  "startBind":"3"
 }

@@ -1,13 +1,13 @@
 {
   "name": "Generator",
   "startTime":80,
-     "startColor":{
+   "startColor":{
       "value":-13487566,
       "falpha":0.0
    },
   "timerType":"CountDown",
-  "bind": "3",
   "icon": "images/generator.png",
   "timerMode":"Survivor",
-  "enabled":true
+  "enabled":true,
+  "startBind":"3"
 }

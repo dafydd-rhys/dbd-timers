@@ -8,5 +8,6 @@
   "timerType":"CountUp",
   "icon": "images/chase.png",
   "timerMode":"Killer",
-  "enabled":true
+  "enabled":true,
+  "startBind":"4"
 }

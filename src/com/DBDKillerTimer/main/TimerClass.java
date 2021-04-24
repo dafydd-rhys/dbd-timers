@@ -18,4 +18,5 @@ public class TimerClass {
     public String icon;
     public TimerMode timerMode;
     public boolean enabled;
+    public char startBind;
 }
