@@ -1,5 +1,7 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -61,9 +63,9 @@ public final class Main extends Canvas {
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
         GlobalScreen.registerNativeHook();
-
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
+
         //Generate dialog for UI
         JDialog dialog = new JDialog((java.awt.Dialog)null);
         //Catch window close event and shutdown process
@@ -91,6 +93,10 @@ public final class Main extends Canvas {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
+        //Generate right click menu
+        JPopupMenu popupMenu = generateRightClickMenu(dialog);
+        dialog.add(popupMenu);
+
         ArrayList<Stopwatch> timers = new ArrayList<>();
 
         //killer clocks
@@ -117,6 +123,24 @@ public final class Main extends Canvas {
         dialog.setBackground(new Color(0, 0, 0, 0));
         //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
+    }
+
+    private JPopupMenu generateRightClickMenu(JDialog dialog) {
+        JPopupMenu popupMenu = new JPopupMenu();
+
+        popupMenu.add(new JMenuItem("Settings"));
+        popupMenu.add(new JMenuItem("Toggle Mode"));
+        popupMenu.add(new JMenuItem("Exit"));
+
+        Container contentPane = dialog.getContentPane();
+        contentPane.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent me) {
+                if(me.isPopupTrigger())
+                    popupMenu.show(me.getComponent(), me.getX(), me.getY());
+            }
+        }) ;
+
+        return popupMenu;
     }
 
     /**

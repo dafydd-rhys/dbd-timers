@@ -1,10 +1,1 @@
-{
-"name": "gen.png",
-"start_time": 50",
-"start_color": "Color.RED",
-"timer_type": "Timer.CountUp",
-"bind": "S",
-"icon": "S",
-"mode": "killer",
-"enabled": true
-}
+{"font":{"name":"Lucida Sans Regular","style":0,"size":24,"pointSize":24.0,"fontSerializedDataVersion":1}}

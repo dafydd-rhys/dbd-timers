@@ -107,7 +107,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="icon_name:"/>
+                  <text value="Name"/>
                 </properties>
               </component>
               <component id="3316a" class="javax.swing.JLabel">
@@ -116,7 +116,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="start_time:"/>
+                  <text value="Start Time"/>
                 </properties>
               </component>
               <component id="3e3ee" class="javax.swing.JLabel">
@@ -125,7 +125,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="start_color:"/>
+                  <text value="Start Colour"/>
                 </properties>
               </component>
               <component id="77c67" class="javax.swing.JLabel">
@@ -134,7 +134,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="timer_type:"/>
+                  <text value="Timer Type"/>
                 </properties>
               </component>
               <component id="a4d6" class="javax.swing.JLabel">
@@ -143,7 +143,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="mode [killer/survivor]:"/>
+                  <text value="Mode (Killer/Survivor)"/>
                 </properties>
               </component>
               <component id="9d5b" class="javax.swing.JLabel">
@@ -152,7 +152,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="enabled [true/false]:"/>
+                  <text value="Enabled"/>
                 </properties>
               </component>
               <component id="2b103" class="javax.swing.JButton" binding="browseButton" default-binding="true">
@@ -254,7 +254,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="timer_binding:"/>
+                  <text value="Start Bind"/>
                 </properties>
               </component>
               <component id="f83ef" class="javax.swing.JTextField" binding="timerBind">
@@ -274,7 +274,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="icon_path:"/>
+                  <text value="Icon Path"/>
                 </properties>
               </component>
             </children>
@@ -309,7 +309,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="font_size: "/>
+                  <text value="Font Size"/>
                 </properties>
               </component>
               <component id="fe4c4" class="javax.swing.JLabel">
@@ -318,7 +318,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="font_colour: "/>
+                  <text value="Font Style"/>
                 </properties>
               </component>
               <component id="8901a" class="javax.swing.JLabel">
@@ -327,7 +327,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="font:                              "/>
+                  <text value="Font"/>
                 </properties>
               </component>
               <vspacer id="ada6a">

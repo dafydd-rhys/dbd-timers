@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
+
+import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -31,13 +35,15 @@ public class LauncherForm {
 
     private JComboBox<String> fontBox;
     private JComboBox<Integer> fontSizeBox;
-    private JComboBox<Integer> fontTypeBox;
+    private JComboBox<String> fontTypeBox;
     private JButton saveCustomSettings;
 
     private JScrollPane survivorPane;
     private JScrollPane killerPane;
     private JPanel survivorPanel;
     private JPanel killerPanel;
+
+    private Settings settings;
 
 
     public static void main(String[] args) throws Exception {
@@ -56,7 +62,7 @@ public class LauncherForm {
     public LauncherForm() throws Exception {
         final File folder = new File("timers\\");
         File[] listOfFiles = folder.listFiles();
-        assert listOfFiles != null;
+        this.settings = loadSettings();
         populateLists(listOfFiles);
         populateComboBoxes();
 
@@ -98,16 +104,31 @@ public class LauncherForm {
         saveCustomSettings.addActionListener(e -> {
             try {
                 FileWriter fw = new FileWriter("customization\\config.json");
-                fw.write("{\n" +
-                        "\"font\": \"" + Objects.requireNonNull(fontBox.getSelectedItem()).toString() + "\",\n" +
-                        "\"font_size\": " + Objects.requireNonNull(fontSizeBox.getSelectedItem()).toString() + ",\n" +
-                        "\"font_type\": " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString() + "\n" +
-                        "}");
+                Gson g = new Gson();
+                //this.settings = new Settings();
+                this.settings.font = Font.decode(
+                        Objects.requireNonNull(fontBox.getSelectedItem()).toString()
+                                + " " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString()
+                                + " " + Objects.requireNonNull(fontSizeBox.getSelectedItem()).toString());
+
+                fw.write(g.toJson(this.settings));
                 fw.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
+    }
+
+    private Settings loadSettings() {
+        try {
+            String jsonString = Files.readString(Path.of("customization\\config.json"));
+            Gson g = new Gson();
+            return g.fromJson(jsonString, Settings.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     private void populateLists(final File[] folder) throws Exception {
@@ -158,19 +179,22 @@ public class LauncherForm {
                 fontBox.addItem(font.getFontName(Locale.UK));
             }
         }
+        fontBox.setSelectedItem(this.settings.font.getFontName(Locale.UK));
     }
 
     private void populateFontSizeBox() {
         fontSizeBox.addItem(16);
         fontSizeBox.addItem(24);
         fontSizeBox.addItem(32);
+        fontSizeBox.setSelectedItem(this.settings.font.getSize());
     }
 
     private void populateFontTypeBox() {
-        //0 = plain, 1 = bold, 2 = italic
-        fontTypeBox.addItem(0);
-        fontTypeBox.addItem(1);
-        fontTypeBox.addItem(2);
+        fontTypeBox.addItem("Plain");
+        fontTypeBox.addItem("Bold");
+        fontTypeBox.addItem("Italic");
+        fontTypeBox.addItem("BoldItalic");
+        fontTypeBox.setSelectedIndex(this.settings.font.getStyle());
     }
 
 }
