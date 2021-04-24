@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 
 public class LauncherForm {
 
-    private final String path = "";
+    private String path = "";
 
     private JPanel mainPanel;
     private JTabbedPane mainTabPain;
@@ -62,12 +62,18 @@ public class LauncherForm {
 
         //appends config
         browseButton.addActionListener(e -> {
-            //browse button code
+            FileDialog fd = new FileDialog(new JFrame());
+            fd.setVisible(true);
+            
+            File[] f = fd.getFiles();
+            if(f.length > 0){
+                path = fd.getFiles()[0].getAbsolutePath();
+            }
         });
 
         //appends/creates new timer
         saveTimer.addActionListener(e -> {
-            if (path != "") {
+            if (!path.equals("")) {
                 try {
                     File myObj = new File("timers\\" + timerName.getText() + ".json");
                     FileWriter fw = new FileWriter(myObj);
