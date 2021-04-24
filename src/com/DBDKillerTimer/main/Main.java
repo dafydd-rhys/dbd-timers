@@ -136,7 +136,7 @@ public final class Main extends Canvas {
                 if (timerClass.timerMode == this.timerMode)
                 {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, 'r');
+                            timerClass.startTime, timerClass.startBind, "R");
 
                     timers.add(timer);
 
@@ -180,7 +180,7 @@ public final class Main extends Canvas {
                 if (timerClass.timerMode == this.timerMode)
                 {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, 'r');
+                            timerClass.startTime, timerClass.startBind, "R");
 
                     timers.add(timer);
 
