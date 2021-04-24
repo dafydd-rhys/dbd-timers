@@ -3,6 +3,7 @@
   "start_time": 80,
   "start_color": "Color.RED",
   "timer_type": "Timer.CountDown",
+  "bind": "3",
   "icon": "images/generator.png",
   "mode": "survivor",
   "enabled": true

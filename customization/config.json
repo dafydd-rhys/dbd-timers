@@ -1,0 +1,10 @@
+{
+"name": "gen.png",
+"start_time": 50",
+"start_color": "Color.RED",
+"timer_type": "Timer.CountUp",
+"bind": "S",
+"icon": "S",
+"mode": "killer",
+"enabled": true
+}

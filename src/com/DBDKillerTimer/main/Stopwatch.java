@@ -17,7 +17,6 @@ public class Stopwatch {
 
     /** representation for the time label. */
     private JLabel timeLabel;
-    private JLabel timerIcon;
     private String seconds;
     private String minutes;
 
@@ -41,26 +40,30 @@ public class Stopwatch {
 
     /**
      *
-     * @param iconSize
-     * @param icon
-     * @param startingTime
+     * @param iconSize the size of the icon
+     * @param icon the icon image
+     * @param startingTime the starting time of the clock
+     * @param startBind the bind to start timer
+     * @param restartBind the bind to restart timer
      */
-    public Stopwatch(int iconSize, ImageIcon icon, int startingTime, char startBind, char restartBind) {
+    public Stopwatch(final int iconSize, ImageIcon icon, final int startingTime,
+                     final char startBind, final char restartBind) {
         this.startingTime = startingTime;
         this.startBind = startBind;
         this.restartBind = restartBind;
 
-        if(startingTime == 0)
+        if(startingTime == 0) {
             this.timerType = TimerType.CountUp;
-        else
+        } else {
             this.timerType = TimerType.CountDown;
+        }
 
-        //generate icon (resize)
-        Image image = icon.getImage(); // transform it
-        Image newImg = image.getScaledInstance(iconSize, iconSize,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        icon = new ImageIcon(newImg);  // transform it back
+        // transforms icon to different size smoothly
+        Image image = icon.getImage();
+        Image newImg = image.getScaledInstance(iconSize, iconSize,  java.awt.Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newImg);
 
-        timerIcon = new JLabel(icon);
+        JLabel timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hostPanel = new JPanel();
@@ -81,15 +84,15 @@ public class Stopwatch {
         hostPanel.add(timeLabel);
     }
 
-    public char getStartBind() {
+    public final char getStartBind() {
         return this.startBind;
     }
 
-    public char getRestartBind() {
+    public final char getRestartBind() {
         return this.restartBind;
     }
 
-    public JPanel getUIElement() {
+    public final JPanel getUIElement() {
         return hostPanel;
     }
 
@@ -157,13 +160,6 @@ public class Stopwatch {
     private void getOriginalTime() {
         timeLabel.setForeground(Color.white);
         elapsedTime = startingTime * milliseconds;
-    }
-
-    /**
-     * this method starts the timer.
-     */
-    public final void start() {
-        timer.start();
     }
 
     /**
