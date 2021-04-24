@@ -6,15 +6,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-
 import com.google.gson.Gson;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -45,7 +44,7 @@ public final class Main extends Canvas {
     private static int iconSize = 0;
 
     private TimerClass.TimerMode timerMode = TimerClass.TimerMode.Survivor;
-    private JDialog dialog;
+    private final JDialog dialog;
     private ArrayList<Stopwatch> timers;
 
     /**
@@ -74,9 +73,12 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
+        ImageIcon logo = new ImageIcon("res\\generator.png");
 
-        //Generate dialog for UI
+        //Generate dialog for UI and sets the applications logo in taskbar
         dialog = new JDialog((java.awt.Dialog)null);
+        dialog.setIconImage(logo.getImage());
+
         //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -124,6 +126,7 @@ public final class Main extends Canvas {
 
         timers = new ArrayList<>();
 
+        assert listOfTimers != null;
         for (File file : listOfTimers) {
             try
             {
@@ -138,9 +141,8 @@ public final class Main extends Canvas {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
                             timerClass.startTime, timerClass.startBind, 'r');
 
-                    timers.add(timer);
-
                     //add timer to UI
+                    timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }
             } catch (Exception ex) {
@@ -168,6 +170,7 @@ public final class Main extends Canvas {
 
         timers = new ArrayList<>();
 
+        assert listOfTimers != null;
         for (File file : listOfTimers) {
             try
             {
@@ -230,8 +233,8 @@ public final class Main extends Canvas {
         contentPane.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent me) {
                     // Get x,y and store them
-                    pX=me.getX();
-                    pY=me.getY();
+                    pX = me.getX();
+                    pY = me.getY();
                 }
             public void mouseReleased(MouseEvent me) {
                 if(me.isPopupTrigger())
@@ -243,7 +246,8 @@ public final class Main extends Canvas {
             @Override
             public void mouseDragged(MouseEvent me)
             {
-                dialog.setLocation(dialog.getLocation().x+me.getX()-pX,dialog.getLocation().y+me.getY()-pY);
+                dialog.setLocation(dialog.getLocation().x + me.getX() - pX,
+                        dialog.getLocation().y + me.getY() - pY);
             }
         });
 
