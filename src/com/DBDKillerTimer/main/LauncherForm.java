@@ -21,12 +21,12 @@ public class LauncherForm {
     private JButton browseButton;
     private JTextField timerName;
     private JTextField timerStartTime;
-    private JTextField timerStartColor;
     private JComboBox<TimerClass.TimerType> timerTypeBox;
     private JComboBox<TimerClass.TimerMode> timerModeBox;
     private JTextField timerBind;
     private JCheckBox timerEnabled;
     private JButton saveTimer;
+    private Color timerStartColor;
 
     private JComboBox<String> fontBox;
     private JComboBox<Integer> fontSizeBox;
@@ -38,6 +38,8 @@ public class LauncherForm {
     private JPanel survivorPanel;
     private JPanel killerPanel;
     private JLabel txtPath;
+    private JButton chooseColour;
+    private JLabel txtColor;
 
     private final Settings settings;
 
@@ -72,8 +74,15 @@ public class LauncherForm {
             File[] f = fd.getFiles();
             if(f.length > 0){
                 iconPath = fd.getFiles()[0].getAbsolutePath();
+                txtPath.setText(fd.getFiles()[0].getName());
             }
-            txtPath.setText(fd.getFiles()[0].getName());
+        });
+
+        //lets you choose colour
+        chooseColour.addActionListener(e -> {
+            timerStartColor = JColorChooser.showDialog(null, "Pick a Color", Color.BLACK);
+            txtColor.setText("RGB: " + timerStartColor.getRed() + ", " + timerStartColor.getGreen()
+                    + ", " + timerStartColor.getBlue());
         });
 
         //appends/creates new timer
@@ -86,7 +95,7 @@ public class LauncherForm {
                     TimerClass newTimer = new TimerClass();
                     newTimer.name = timerName.getText();
                     newTimer.startTime = Integer.parseInt(timerStartTime.getText());
-                    newTimer.startColor = new Color(50, 50, 50);    //implement color chooser
+                    newTimer.startColor = timerStartColor;
                     newTimer.timerType = (TimerClass.TimerType)timerTypeBox.getSelectedItem();
                     newTimer.icon = iconPath;
                     newTimer.timerMode = (TimerClass.TimerMode)timerModeBox.getSelectedItem();
