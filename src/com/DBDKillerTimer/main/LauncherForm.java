@@ -81,8 +81,10 @@ public class LauncherForm {
         //lets you choose colour
         chooseColour.addActionListener(e -> {
             timerStartColor = JColorChooser.showDialog(null, "Pick a Color", Color.BLACK);
-            txtColor.setText("RGB: " + timerStartColor.getRed() + ", " + timerStartColor.getGreen()
-                    + ", " + timerStartColor.getBlue());
+            if (timerStartColor != null) {
+                txtColor.setText("RGB: " + timerStartColor.getRed() + ", " + timerStartColor.getGreen()
+                        + ", " + timerStartColor.getBlue());
+            }
         });
 
         //appends/creates new timer
