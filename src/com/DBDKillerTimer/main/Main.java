@@ -73,12 +73,11 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
+        ImageIcon logo = new ImageIcon("images\\icon.png");
 
         //Generate dialog for UI and sets the applications logo in taskbar
         dialog = new JDialog((java.awt.Dialog)null);
         dialog.setTitle("DBD Timer");
-
-        ImageIcon logo = new ImageIcon("images\\icon.png");
         dialog.setIconImage(logo.getImage());
 
         //Catch window close event and shutdown process
@@ -141,7 +140,7 @@ public final class Main extends Canvas {
                 if (timerClass.timerMode == this.timerMode)
                 {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, "R");
+                            timerClass.startTime, timerClass.startBind, "R", "H");
 
                     //add timer to UI
                     timers.add(timer);
@@ -185,8 +184,7 @@ public final class Main extends Canvas {
                 if (timerClass.timerMode == this.timerMode)
                 {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, "R");
-
+                            timerClass.startTime, timerClass.startBind, "R", "H");
                     timers.add(timer);
 
                     //add timer to UI

@@ -34,7 +34,9 @@ public class Stopwatch {
 
     private final String startBind;
     private final String restartBind;
+    private final String hideBind;
 
+    private JLabel timerIcon;
     private TimerType timerType;
     private final JPanel hostPanel;
 
@@ -47,10 +49,11 @@ public class Stopwatch {
      * @param restartBind the bind to restart timer
      */
     public Stopwatch(final int iconSize, ImageIcon icon, final int startingTime,
-                     final String startBind, final String restartBind) {
+                     final String startBind, final String restartBind, final String hideBind) {
         this.startingTime = startingTime;
         this.startBind = startBind;
         this.restartBind = restartBind;
+        this.hideBind = hideBind;
 
         if(startingTime == 0) {
             this.timerType = TimerType.CountUp;
@@ -63,7 +66,7 @@ public class Stopwatch {
         Image newImg = image.getScaledInstance(iconSize, iconSize,  java.awt.Image.SCALE_SMOOTH);
         icon = new ImageIcon(newImg);
 
-        JLabel timerIcon = new JLabel(icon);
+        timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hostPanel = new JPanel();
@@ -90,6 +93,10 @@ public class Stopwatch {
 
     public final String getRestartBind() {
         return this.restartBind;
+    }
+
+    public String getHideBind() {
+        return hideBind;
     }
 
     public final JPanel getUIElement() {
@@ -182,5 +189,19 @@ public class Stopwatch {
         setString();
         getOriginalTime();
         timeLabel.setText(minutes + ":" + seconds);
+    }
+
+    public final void hide() {
+        if (timeLabel.isVisible() && timerIcon.isVisible()) {
+            timerIcon.setVisible(false);
+            timeLabel.setVisible(false);
+            timerIcon.hide();
+            timeLabel.hide();
+        } else {
+            timerIcon.setVisible(true);
+            timeLabel.setVisible(true);
+            timerIcon.show();
+            timeLabel.show();
+        }
     }
 }

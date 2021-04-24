@@ -37,6 +37,9 @@ public class KeyInput extends NativeKeyAdapter {
             if (key.equals(clock.getRestartBind().toLowerCase())) {
                 clock.fullReset();
             }
+            if (key.equals(clock.getHideBind().toLowerCase())) {
+                clock.hide();
+            }
         }
     }
 }
