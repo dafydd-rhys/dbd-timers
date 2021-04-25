@@ -102,6 +102,8 @@ public final class Main extends Canvas {
         dialog.setVisible(true);
         assert SettingsManager.settings != null;
         dialog.setLocation(SettingsManager.settings.windowPosition[0], SettingsManager.settings.windowPosition[1]);
+        this.windowPosition[0] = SettingsManager.settings.windowPosition[0];
+        this.windowPosition[1] = SettingsManager.settings.windowPosition[1];
 
         GlobalScreen.addNativeKeyListener(new NativeKeyAdapter() {
             @Override
@@ -112,6 +114,46 @@ public final class Main extends Canvas {
                 }
             }
         });
+
+        if (SystemTray.isSupported()) {
+            PopupMenu popupMenu = new PopupMenu();
+            //settings
+            MenuItem settingsMenuItem = new MenuItem("Settings");
+            settingsMenuItem.addActionListener(e -> new SettingsManager());
+            //toggle
+            MenuItem toggleModeMenuItem = new MenuItem("Toggle Mode");
+            toggleModeMenuItem.addActionListener(e -> {
+                if (this.timerMode == TimerProperties.TimerMode.Killer) {
+                    this.timerMode = TimerProperties.TimerMode.Survivor;
+                } else {
+                    this.timerMode = TimerProperties.TimerMode.Killer;
+                }
+                reloadTimers();
+            });
+            //exit
+            MenuItem exitMenuItem = new MenuItem("Exit");
+            exitMenuItem.addActionListener(e -> dialog.dispose());
+
+            popupMenu.add(settingsMenuItem);
+            popupMenu.add(toggleModeMenuItem);
+            popupMenu.add(exitMenuItem);
+
+            //create system tray icon
+            Image image = logo.getImage();
+            Image newImg = image.getScaledInstance(SystemTray.getSystemTray().getTrayIconSize().width, SystemTray.getSystemTray().getTrayIconSize().height,
+                    java.awt.Image.SCALE_SMOOTH);
+
+            TrayIcon trayIcon = new TrayIcon(newImg, "DBD Timer", popupMenu);
+            SystemTray tray = SystemTray.getSystemTray();
+            try
+            {
+                tray.add(trayIcon);
+            }
+            catch (AWTException e)
+            {
+                e.printStackTrace();
+            }
+        }
 
         //creates menu for if user right clicks on program
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
