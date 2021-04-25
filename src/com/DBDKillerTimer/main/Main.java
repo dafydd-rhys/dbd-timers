@@ -16,6 +16,8 @@ import javax.swing.*;
 import com.google.gson.Gson;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyAdapter;
+import org.jnativehook.keyboard.NativeKeyEvent;
 
 /**
  * Main.java.
@@ -103,11 +105,29 @@ public final class Main extends Canvas {
         assert this.settings != null;
         dialog.setLocation(this.settings.windowPosition[0], this.settings.windowPosition[1]);
 
+        GlobalScreen.addNativeKeyListener(new NativeKeyAdapter() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent e)
+            {
+                if(NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase().equals("h")) {
+                    dialog.setVisible(!dialog.isVisible());
+                }
+            }
+        });
+
         //creates menu for if user right clicks on program
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
         dialog.add(popupMenu);
         loadTimers();
         dialog.setBackground(new Color(0, 0, 0, 0));
+    }
+
+    /**
+     * Get the user settings
+     * @return Settings object
+     */
+    public Settings getSettings() {
+        return this.settings;
     }
 
     private Settings loadSettings() {
@@ -143,7 +163,7 @@ public final class Main extends Canvas {
 
                 if (properties.getTimerMode() == this.timerMode) {
                     IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(properties.getIcon()),
-                            properties.getStartTime(), properties.getStartBind(), "R", "H");
+                            properties.getStartTime(), properties.getStartBind(), "R");
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }
@@ -177,7 +197,7 @@ public final class Main extends Canvas {
 
                 if (timerProperties.getTimerMode() == this.timerMode) {
                     IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(timerProperties.getIcon()),
-                            timerProperties.getStartTime(), timerProperties.getStartBind(), "R", "H");
+                            timerProperties.getStartTime(), timerProperties.getStartBind(), "R");
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }

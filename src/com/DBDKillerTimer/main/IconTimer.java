@@ -44,8 +44,6 @@ public class IconTimer {
     private final String startBind;
     /** the binds that restarts the timers. */
     private final String restartBind;
-    /** the binds that hides the timers. */
-    private final String hideBind;
     /** the icon representing the timer. */
     private final JLabel timerIcon;
     /** the timer type, up or down. */
@@ -60,14 +58,12 @@ public class IconTimer {
      * @param startTime the starting time of the timer.
      * @param start the bind to start the timer.
      * @param restart the bind to restart timers.
-     * @param hide hides the UI.
      */
     public IconTimer(final int iconSize, ImageIcon icon, final int startTime,
-                     final String start, final String restart, final String hide) {
+                     final String start, final String restart) {
         this.startingTime = startTime;
         this.startBind = start;
         this.restartBind = restart;
-        this.hideBind = hide;
 
         if (startingTime == 0) {
             this.timerType = TimerType.CountUp;
@@ -110,13 +106,6 @@ public class IconTimer {
      */
     public final String getRestartBind() {
         return this.restartBind;
-    }
-
-    /** this method simply retrieves the hide timers bind.
-     @return returns the hide bind
-     */
-    public String getHideBind() {
-        return hideBind;
     }
 
     /** this method simply retrieves host panel of all the items.
@@ -211,11 +200,5 @@ public class IconTimer {
         setString();
         getOriginalTime();
         timeLabel.setText(minutes + ":" + seconds);
-    }
-
-    /** this method simply hides the UI. */
-    public final void hide() {
-        timerIcon.setVisible(!timerIcon.isVisible());
-        timeLabel.setVisible(!timeLabel.isVisible());
     }
 }
