@@ -21,13 +21,13 @@ public class IconTimer {
     /** representation of the full time. */
     private JLabel timeLabel;
     /** Timer properties object */
-    private TimerProperties properties = null;
+    private TimerProperties properties;
     /** the elapsed time of this timer. */
     private long elapsedTime;
     /** amount of millis in a second. */
     private final int milliseconds = 1000;
     /** Time formatter for the current time */
-    private SimpleDateFormat dateFormat;
+    private final SimpleDateFormat dateFormat;
 
     /** the enums to separate different timer types. */
     private enum TimerType {
@@ -38,8 +38,6 @@ public class IconTimer {
     }
     /** the binds that restarts the timers. */
     private final String restartBind;
-    /** the icon representing the timer. */
-    private final JLabel timerIcon;
     /** the timer type, up or down. */
     private TimerType timerType;
     /** the panel that hosts all the timers. */
@@ -55,7 +53,7 @@ public class IconTimer {
 
         dateFormat = new SimpleDateFormat("mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        this.elapsedTime = properties.getStartTime() * 1000;
+        this.elapsedTime = properties.getStartTime() * 1000L;
 
         if (properties.getStartTime() == 0) {
             this.timerType = TimerType.CountUp;
@@ -67,7 +65,8 @@ public class IconTimer {
         Image newImg = image.getScaledInstance(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize,
                 java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
-        timerIcon = new JLabel(icon);
+        
+        JLabel timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hostPanel = new JPanel();
@@ -149,7 +148,7 @@ public class IconTimer {
     private void getTime(final boolean run) {
         if (run) {
             timeLabel.setForeground(Color.red);
-            elapsedTime = properties.getStartTime() * milliseconds;
+            elapsedTime = (long) properties.getStartTime() * milliseconds;
         }
         notRunning = false;
     }
@@ -159,7 +158,7 @@ public class IconTimer {
      */
     private void getOriginalTime() {
         timeLabel.setForeground(Color.white);
-        elapsedTime = properties.getStartTime() * milliseconds;
+        elapsedTime = (long) properties.getStartTime() * milliseconds;
     }
 
     /**
