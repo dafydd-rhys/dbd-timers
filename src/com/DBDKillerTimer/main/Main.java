@@ -105,11 +105,21 @@ public final class Main extends Canvas {
         dialog.setVisible(true);
         dialog.setLocation(this.settings.windowPosition[0], this.settings.windowPosition[1]);
 
+        
+
         //creates menu for if user right clicks on program
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
         dialog.add(popupMenu);
         loadTimers();
         dialog.setBackground(new Color(0, 0, 0, 0));
+    }
+
+    /**
+     * Get the user settings
+     * @return Settings object
+     */
+    public Settings getSettings() {
+        return this.settings;
     }
 
     private Settings loadSettings() {
