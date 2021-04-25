@@ -32,22 +32,3 @@ Green Timer represent:
 * The survivor cannot wiggle off
 
 White Timer represents neutral, you can keep chasing the survivor.
-
-## Customization
-You can change your resolution and iconSize in customization\\properties.txt however,
-1920x1080 is recommended for optimal usage.
-
-Resolution:
-* Minimum: 800x600
-* Maximum: 1920x1080
-
-Icon Sizes:
-* 128x128
-* 96x96
-* 64x64
-
-## Issues
-Program not launching:
-* Make sure when editing binds and properties they're ammended in the same format.
-* Make sure when editing binds and properties they're ammended with valid inputs.
-* close "OpenJDK Platform Binary" in task manager, only one instance can be ran at the same time
