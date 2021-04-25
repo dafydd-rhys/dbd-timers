@@ -89,7 +89,7 @@ public class EditTimer {
         });
 
         addBlinkerTimer.addActionListener(e -> {
-            new AddBlinker();
+            new AddBlinker(timer);
         });
 
         //appends/creates new timer
@@ -108,7 +108,7 @@ public class EditTimer {
                     if (newTimer.getTimerType() == TimerProperties.TimerType.CountUp) {
                         newTimer.setStartTime(0);
                     } else {
-                        newTimer.setStartTime((int) startTime.getSelectedItem());
+                        newTimer.setStartTime((int) (Objects.requireNonNull(startTime.getSelectedItem())));
                     }
                     newTimer.setIcon(iconPath);
                     newTimer.setTimerMode((TimerProperties.TimerMode) timerModeBox.getSelectedItem());
@@ -130,7 +130,7 @@ public class EditTimer {
 
     private void populateColoursPanel() {
         coloursList.setLayout(new GridLayout(0, 3, 0, 5));
-        int counter = 0;
+        int counter = 1;
         for (TimerBlink blinkColour : timer.getTimerBlinks()) {
             addColour(counter, blinkColour.colour, blinkColour.time, blinkColour.blinkFrequency);
             counter++;
