@@ -1,5 +1,7 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -33,34 +35,8 @@ public class SettingsManager {
     private JPanel survivorPanel;
     /** the panel which shows all survivor timers. */
     private JPanel killerPanel;
-    /** the path of the icons image. */
-    private String iconPath = "";
-    /** the TextField where the timers name is entered. */
-    private JTextField timerName;
-    /** the combo box including all timer types. */
-    private JComboBox<TimerProperties.TimerType> timerTypeBox;
-    /** the combo box including all timers modes. */
-    private JComboBox<TimerProperties.TimerMode> timerModeBox;
-    /** the combo box including all possible starting times. */
-    private JComboBox<Integer> startTime;
-    /** the combo box including all the possible binds. */
-    private JComboBox<Character> startBind;
-    /** the starting color of the timer. */
-    private Color timerStartColor;
-    /** the button used to point to image. */
-    private JButton browseButton;
-    /** the button used to open a colour chooser. */
-    private JButton chooseColour;
-    /** the button to save the timer. */
-    private JButton saveTimer;
     /** the button to save the users custom settings. */
     private JButton saveCustomSettings;
-    /** the path of the icons image. */
-    private JCheckBox timerEnabled;
-    /** the label which shows the path of the selected image. */
-    private JLabel txtPath;
-    /** the label which shows the color selected by the user. */
-    private JLabel txtColor;
     /** the settings the user has/wants to overwrite. */
     private final Settings settings;
     /** the combo box holding all the possible fonts. */
@@ -71,6 +47,8 @@ public class SettingsManager {
     private JComboBox<Integer> fontSizeBox;
     private JSlider iconSlider;
     private JLabel sliderValue;
+    private JButton killerAddTimer;
+    private JButton survAddTimer;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -97,61 +75,6 @@ public class SettingsManager {
             ex.printStackTrace();
         }
         populateComboBoxes();
-
-        //allows you to browse for image
-        browseButton.addActionListener(e -> {
-            FileDialog fd = new FileDialog(new JFrame());
-            fd.setVisible(true);
-            File[] f = fd.getFiles();
-            if (f.length > 0) {
-                iconPath = fd.getFiles()[0].getAbsolutePath();
-                txtPath.setText(fd.getFiles()[0].getName());
-            }
-        });
-
-        //lets you choose colour
-        chooseColour.addActionListener(e -> {
-            timerStartColor = JColorChooser.showDialog(null, "Pick a Color",
-                    Color.BLACK);
-            if (timerStartColor != null) {
-                txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
-                        + timerStartColor.getGreen() + ", "
-                        + timerStartColor.getBlue());
-            }
-        });
-
-        //appends/creates new timer
-        saveTimer.addActionListener(e -> {
-            if (!iconPath.equals("") && timerStartColor != null) {
-                try {
-                    FileWriter fw = new FileWriter("timers\\"
-                            + timerName.getText() + ".json");
-                    Gson g = new Gson();
-
-                    TimerProperties newTimer = new TimerProperties();
-                    newTimer.setName(timerName.getText());
-                    newTimer.setStartColor(timerStartColor);
-                    newTimer.setTimerType((TimerProperties.TimerType) timerTypeBox.getSelectedItem());
-                    if (newTimer.getTimerType() == TimerProperties.TimerType.CountUp) {
-                        newTimer.setStartTime(0);
-                    } else {
-                        newTimer.setStartTime((int) startTime.getSelectedItem());
-                    }
-                    newTimer.setIcon(iconPath);
-                    newTimer.setTimerMode((TimerProperties.TimerMode) timerModeBox.getSelectedItem());
-                    newTimer.setEnabled(timerEnabled.isSelected());
-                    newTimer.setStartBind(Objects.requireNonNull(startBind.getSelectedItem()).toString());
-
-                    fw.write(g.toJson(newTimer));
-                    fw.close();
-                    JOptionPane.showMessageDialog(null, "Timer created.");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "cant create timer.");
-            }
-        });
 
         //appends config
         saveCustomSettings.addActionListener(e -> {
@@ -194,8 +117,8 @@ public class SettingsManager {
      * @throws Exception if the folder doesn't exist
      */
     private void populateLists(final File[] folder) throws Exception {
-        killerPanel.setLayout(new GridLayout(0, 3, 5, 5));
-        survivorPanel.setLayout(new GridLayout(0, 3, 5, 5));
+        killerPanel.setLayout(new GridLayout(0, 4, 0, 5));
+        survivorPanel.setLayout(new GridLayout(0, 4, 0, 5));
 
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
@@ -203,32 +126,39 @@ public class SettingsManager {
             TimerProperties timer = g.fromJson(jsonString, TimerProperties.class);
 
             if (timer.getTimerMode() == TimerProperties.TimerMode.Killer) {
-                createGraphic(killerPanel, new ImageIcon(timer.getIcon()),
-                        timer.getName(), timer.isEnabled());
+                createGraphic(killerPanel, timer);
             } else {
-                createGraphic(survivorPanel, new ImageIcon(timer.getIcon()),
-                        timer.getName(), timer.isEnabled());
+                createGraphic(survivorPanel, timer);
             }
         }
+        killerAddTimer.addActionListener(e -> new EditTimer(null, "Add Timer"));
+        survAddTimer.addActionListener(e -> new EditTimer(null, "Add Timer"));
     }
 
     /**
      * creates a graphic for each item in the list.
      * @param panel the panel in which the graphic is added to
-     * @param icon the image representing the icon
-     * @param name the name of the icon/timer
-     * @param enabled whether the timer is enabled
+     * @param timer the timer being added to the list
      */
-    private void createGraphic(final JPanel panel, ImageIcon icon,
-                               final String name, final boolean enabled) {
+    private void createGraphic(final JPanel panel, TimerProperties timer) {
+        ImageIcon icon = new ImageIcon(timer.getIcon());
         Image image = icon.getImage();
         Image newImg = image.getScaledInstance(64, 64,
                 java.awt.Image.SCALE_SMOOTH);
         icon = new ImageIcon(newImg);
+
+        ImageIcon settings = new ImageIcon("images\\settings_cog.png");
+        Image settingsCog = settings.getImage();
+        Image newSettingsCog = settingsCog.getScaledInstance(16, 16,
+                java.awt.Image.SCALE_SMOOTH);
+        settings = new ImageIcon(newSettingsCog);
+        JLabel openSettings = new JLabel(settings);
+        Checkbox box = new Checkbox("Enabled", timer.isEnabled());
+
         panel.add(new JLabel(icon));
-        panel.add(new JLabel(name));
-        Checkbox box = new Checkbox("Enabled", enabled);
+        panel.add(new JLabel(timer.getName()));
         panel.add(box);
+        panel.add(openSettings);
 
         box.addItemListener(e -> {
             boolean wanted = box.getState();
@@ -238,6 +168,13 @@ public class SettingsManager {
                 //edit json to false
             }
         });
+
+        openSettings.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new EditTimer(timer, "Edit Timer");
+            }
+        });
     }
 
     /** populates all of the combo boxes used on the form. */
@@ -245,10 +182,6 @@ public class SettingsManager {
         populateFontBox();
         populateFontSizeBox();
         populateFontTypeBox();
-        populateTimerTypeBox();
-        populateTimerModeBox();
-        populateStartBind();
-        populateStartTime();
         iconSlider.setValue(this.settings.iconSize);
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }
@@ -281,41 +214,6 @@ public class SettingsManager {
         fontTypeBox.addItem("Italic");
         fontTypeBox.addItem("BoldItalic");
         fontTypeBox.setSelectedIndex(this.settings.getFont().getStyle());
-    }
-
-    /** populates the combo box including timer types. */
-    private void populateTimerTypeBox() {
-        timerTypeBox.addItem(TimerProperties.TimerType.CountUp);
-        timerTypeBox.addItem(TimerProperties.TimerType.CountDown);
-        startTime.setEnabled(false);
-        timerTypeBox.addActionListener(e -> {
-            //disable start time if timer type is count up
-            startTime.setEnabled(Objects.requireNonNull(timerTypeBox.
-                    getSelectedItem()).toString().equals("CountDown"));
-        });
-    }
-
-    /** populates the combo box including timer modes. */
-    private void populateTimerModeBox() {
-        timerModeBox.addItem(TimerProperties.TimerMode.Killer);
-        timerModeBox.addItem(TimerProperties.TimerMode.Survivor);
-    }
-
-    /** populates the combo box including start timer binds. */
-    private void populateStartBind() {
-        for (char c = 'A'; c <= 'Z'; ++c) {
-            startBind.addItem(c);
-        }
-        for (char num = 48; num <= 57; ++num) {
-            startBind.addItem(num);
-        }
-    }
-
-    /** populates the combo box including timer start times. */
-    private void populateStartTime() {
-        for (int num = 1; num <= 180; ++num) {
-            startTime.addItem(num);
-        }
     }
 
 }
