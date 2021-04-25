@@ -180,17 +180,6 @@
                   <text value=""/>
                 </properties>
               </component>
-              <component id="e2645" class="javax.swing.JTextField" binding="timerStartTime">
-                <constraints>
-                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                  <forms defaultalign-horz="false"/>
-                </constraints>
-                <properties>
-                  <text value=""/>
-                </properties>
-              </component>
               <vspacer id="523e4">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -213,17 +202,6 @@
                 </constraints>
                 <properties>
                   <text value="Start Bind"/>
-                </properties>
-              </component>
-              <component id="f83ef" class="javax.swing.JTextField" binding="timerBind">
-                <constraints>
-                  <grid row="10" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                  <forms defaultalign-horz="false"/>
-                </constraints>
-                <properties>
-                  <text value=""/>
                 </properties>
               </component>
               <component id="d4031" class="javax.swing.JLabel">
@@ -288,6 +266,20 @@
                   <font name="Source Code Pro" size="11" style="1"/>
                   <text value=""/>
                 </properties>
+              </component>
+              <component id="a4a66" class="javax.swing.JComboBox" binding="startBind">
+                <constraints>
+                  <grid row="10" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="db685" class="javax.swing.JComboBox" binding="startTime">
+                <constraints>
+                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
               </component>
             </children>
           </grid>

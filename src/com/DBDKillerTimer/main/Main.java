@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,16 +30,22 @@ import org.jnativehook.NativeHookException;
  */
 public final class Main extends Canvas {
 
-    /** properties used when creating JDialog. */
+    /**
+     * properties used when creating JDialog.
+     */
     private final int amountOfProperties = 3;
     private final int[] properties = new int[amountOfProperties];
 
-    /** captures users resolution. */
+    /**
+     * captures users resolution.
+     */
     private static int width = 0;
     private static int height = 0;
-    int pX,pY;
+    int pX, pY;
 
-    /** the size and location of the icon its text representation. */
+    /**
+     * the size and location of the icon its text representation.
+     */
     private static int iconSize = 0;
 
     private TimerClass.TimerMode timerMode = TimerClass.TimerMode.Survivor;
@@ -50,9 +55,10 @@ public final class Main extends Canvas {
     /**
      * This method creates a new instance of the main method, which
      * creates an instance of this program.
+     *
      * @param args the arguments used in methods
      * @throws FileNotFoundException if the properties file doesn't exist
-     * @throws NativeHookException there's an issue reading global key presses
+     * @throws NativeHookException   there's an issue reading global key presses
      */
     public static void main(final String[] args) throws
             FileNotFoundException, NativeHookException {
@@ -63,8 +69,9 @@ public final class Main extends Canvas {
      * This method creates the UI and stopwatches used to go with it and
      * begins reading inputs from the user which are used to manipulate
      * the timers.
+     *
      * @throws FileNotFoundException if the properties file doesn't exist
-     * @throws NativeHookException there's an issue reading global key presses
+     * @throws NativeHookException   there's an issue reading global key presses
      */
     private Main() throws FileNotFoundException, NativeHookException {
         // Get the logger for "https://github.com/kwhat/jnativehook" and set the level to off.
@@ -76,7 +83,7 @@ public final class Main extends Canvas {
         ImageIcon logo = new ImageIcon("images\\icon.png");
 
         //Generate dialog for UI and sets the applications logo in taskbar
-        dialog = new JDialog((java.awt.Dialog)null);
+        dialog = new JDialog((java.awt.Dialog) null);
         dialog.setTitle("DBD Timer");
         dialog.setIconImage(logo.getImage());
 
@@ -94,10 +101,6 @@ public final class Main extends Canvas {
         getProperties();
 
         dialog.setAlwaysOnTop(true);
-        //dialog.setPreferredSize(new Dimension(width, height));
-        //dialog.setMaximumSize(new Dimension(width, height));
-        //dialog.setMinimumSize(new Dimension(width, height));
-
         dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
         dialog.setResizable(false);
         dialog.add(this);
@@ -129,16 +132,14 @@ public final class Main extends Canvas {
 
         assert listOfTimers != null;
         for (File file : listOfTimers) {
-            try
-            {
+            try {
                 //read timer info from json file
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
                 TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
 
                 //only add timer if mode matches current software timer mode
-                if (timerClass.timerMode == this.timerMode)
-                {
+                if (timerClass.timerMode == this.timerMode) {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
                             timerClass.startTime, timerClass.startBind, "R", "H");
 
@@ -173,16 +174,14 @@ public final class Main extends Canvas {
 
         assert listOfTimers != null;
         for (File file : listOfTimers) {
-            try
-            {
+            try {
                 //read timer info from json file
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
                 TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
 
                 //only add timer if mode matches current software timer mode
-                if (timerClass.timerMode == this.timerMode)
-                {
+                if (timerClass.timerMode == this.timerMode) {
                     Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
                             timerClass.startTime, timerClass.startBind, "R", "H");
                     timers.add(timer);
@@ -231,21 +230,20 @@ public final class Main extends Canvas {
 
         Container contentPane = dialog.getContentPane();
         contentPane.addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent me) {
-                    // Get x,y and store them
-                    pX = me.getX();
-                    pY = me.getY();
-                }
+            public void mousePressed(MouseEvent me) {
+                // Get x,y and store them
+                pX = me.getX();
+                pY = me.getY();
+            }
+
             public void mouseReleased(MouseEvent me) {
-                if(me.isPopupTrigger())
+                if (me.isPopupTrigger())
                     popupMenu.show(me.getComponent(), me.getX(), me.getY());
             }
         });
-        contentPane.addMouseMotionListener(new MouseAdapter()
-        {
+        contentPane.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseDragged(MouseEvent me)
-            {
+            public void mouseDragged(MouseEvent me) {
                 dialog.setLocation(dialog.getLocation().x + me.getX() - pX,
                         dialog.getLocation().y + me.getY() - pY);
             }
@@ -258,6 +256,7 @@ public final class Main extends Canvas {
      * This method gets the properties that are found within a .txt, then
      * implements these into the program. It optimizes the location of time
      * labels to the resolution to insure they are placed correctly.
+     *
      * @throws FileNotFoundException if the properties file doesn't exist
      */
     private void getProperties() throws FileNotFoundException {
@@ -282,5 +281,4 @@ public final class Main extends Canvas {
             System.exit(0);
         }
     }
-
 }

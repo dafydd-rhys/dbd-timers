@@ -20,10 +20,8 @@ public class LauncherForm {
 
     private JButton browseButton;
     private JTextField timerName;
-    private JTextField timerStartTime;
     private JComboBox<TimerClass.TimerType> timerTypeBox;
     private JComboBox<TimerClass.TimerMode> timerModeBox;
-    private JTextField timerBind;
     private JCheckBox timerEnabled;
     private JButton saveTimer;
     private Color timerStartColor;
@@ -40,6 +38,8 @@ public class LauncherForm {
     private JLabel txtPath;
     private JButton chooseColour;
     private JLabel txtColor;
+    private JComboBox<Character> startBind;
+    private JComboBox<Integer> startTime;
 
     private final Settings settings;
 
@@ -89,26 +89,28 @@ public class LauncherForm {
 
         //appends/creates new timer
         saveTimer.addActionListener(e -> {
-            if (!iconPath.equals("")) {
+            if (!iconPath.equals("") && timerStartColor != null) {
                 try {
                     FileWriter fw = new FileWriter("timers\\" + timerName.getText() + ".json");
                     Gson g = new Gson();
 
                     TimerClass newTimer = new TimerClass();
                     newTimer.name = timerName.getText();
-                    newTimer.startTime = Integer.parseInt(timerStartTime.getText());
+                    newTimer.startTime = ((int) Objects.requireNonNull(startTime.getSelectedItem()));
                     newTimer.startColor = timerStartColor;
                     newTimer.timerType = (TimerClass.TimerType)timerTypeBox.getSelectedItem();
                     newTimer.icon = iconPath;
                     newTimer.timerMode = (TimerClass.TimerMode)timerModeBox.getSelectedItem();
                     newTimer.enabled = timerEnabled.isSelected();
-                    newTimer.startBind = timerBind.getText();
+                    newTimer.startBind = Objects.requireNonNull(startBind.getSelectedItem()).toString();
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            } else {
+                JOptionPane.showMessageDialog (null, "error: cant create timer.");
             }
         });
 
@@ -187,6 +189,8 @@ public class LauncherForm {
         populateFontTypeBox();
         populateTimerTypeBox();
         populateTimerModeBox();
+        populateStartBind();
+        populateStartTime();
     }
 
     private void populateFontBox() {
@@ -224,6 +228,21 @@ public class LauncherForm {
     private void populateTimerModeBox() {
         timerModeBox.addItem(TimerClass.TimerMode.Killer);
         timerModeBox.addItem(TimerClass.TimerMode.Survivor);
+    }
+
+    private void populateStartBind() {
+        for(char c = 'A'; c <= 'Z'; ++c) {
+            startBind.addItem(c);
+        }
+        for(char num = 48; num <= 57; ++num) {
+            startBind.addItem(num);
+        }
+    }
+
+    private void populateStartTime() {
+        for(int num = 1; num <= 180; ++num) {
+            startTime.addItem(num);
+        }
     }
 
 }
