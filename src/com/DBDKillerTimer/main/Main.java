@@ -66,6 +66,18 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         logger.setUseParentHandlers(false);
 
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (ClassNotFoundException
+                | UnsupportedLookAndFeelException
+                | InstantiationException
+                | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+
         SettingsManager.settings = loadSettings();
 
         //Generate dialog for UI and sets the applications logo in taskbar
