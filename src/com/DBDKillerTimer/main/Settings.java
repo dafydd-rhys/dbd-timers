@@ -16,6 +16,8 @@ public class Settings {
      */
     private Font font;
     public int iconSize;
+    public String restartBind;
+    public String hideBind;
     public int[] windowPosition;
 
     /**

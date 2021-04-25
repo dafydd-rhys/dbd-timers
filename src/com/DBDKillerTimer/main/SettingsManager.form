@@ -110,6 +110,10 @@
             <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:4dlu:noGrow"/>
             <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
             <colspec value="fill:max(d;4px):noGrow"/>
             <colspec value="left:4dlu:noGrow"/>
             <colspec value="fill:d:noGrow"/>
@@ -201,7 +205,7 @@
               </component>
               <component id="8101" class="javax.swing.JButton" binding="saveCustomSettings">
                 <constraints>
-                  <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="16" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties>
@@ -216,8 +220,8 @@
                 </constraints>
                 <properties>
                   <maximum value="192"/>
-                  <minimum value="64"/>
-                  <value value="128"/>
+                  <minimum value="32"/>
+                  <value value="112"/>
                   <valueIsAdjusting value="true"/>
                 </properties>
               </component>
@@ -229,6 +233,38 @@
                 <properties>
                   <text value=""/>
                 </properties>
+              </component>
+              <component id="84f01" class="javax.swing.JLabel" binding="restartBind">
+                <constraints>
+                  <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Restart Bind"/>
+                </properties>
+              </component>
+              <component id="644c" class="javax.swing.JLabel" binding="hideBind">
+                <constraints>
+                  <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Hide Bind"/>
+                </properties>
+              </component>
+              <component id="dc6bc" class="javax.swing.JComboBox" binding="restartBindBox">
+                <constraints>
+                  <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="d7270" class="javax.swing.JComboBox" binding="hideBindBox">
+                <constraints>
+                  <grid row="14" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
               </component>
             </children>
           </grid>

@@ -9,6 +9,7 @@ import javax.swing.*;
 
 public class EditTimer {
 
+    private final TimerProperties timer;
     private JTabbedPane timerProperties;
     private JPanel mainPanel;
     private JPanel timerPanel;
@@ -38,7 +39,6 @@ public class EditTimer {
     /** the label which shows the color selected by the user. */
     private JLabel txtColor;
     private Color timerStartColor;
-    private TimerProperties timer;
 
     public EditTimer(TimerProperties timer, String title) {
         this.timer = timer;
@@ -104,12 +104,13 @@ public class EditTimer {
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
-                    JOptionPane.showMessageDialog(null, "Timer created.");
+                    JOptionPane.showMessageDialog(null, "timer update.");
+                    frame.dispose();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "cant create timer.");
+                JOptionPane.showMessageDialog(null, "cant update timer.");
             }
         });
     }

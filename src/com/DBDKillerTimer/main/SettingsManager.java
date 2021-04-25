@@ -49,6 +49,10 @@ public class SettingsManager {
     private JLabel sliderValue;
     private JButton killerAddTimer;
     private JButton survAddTimer;
+    private JLabel restartBind;
+    private JLabel hideBind;
+    private JComboBox<Character> restartBindBox;
+    private JComboBox<Character> hideBindBox;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -65,7 +69,7 @@ public class SettingsManager {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        this.settings = loadSettings();
+        settings = loadSettings();
         final File folder = new File("timers\\");
         File[] listOfFiles = folder.listFiles();
         try {
@@ -82,12 +86,14 @@ public class SettingsManager {
                 FileWriter fw = new FileWriter("customization\\config.json");
                 Gson g = new Gson();
                 //this.settings = new Settings();
-                assert this.settings != null;
-                this.settings.setFont(Font.decode(Objects.requireNonNull(fontBox.getSelectedItem()).toString()
+                assert settings != null;
+                settings.setFont(Font.decode(Objects.requireNonNull(fontBox.getSelectedItem()).toString()
                                 + " " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString()
                                 + " " + Objects.requireNonNull(fontSizeBox.getSelectedItem()).toString()));
-                this.settings.iconSize = iconSlider.getValue();
-                fw.write(g.toJson(this.settings));
+                settings.iconSize = iconSlider.getValue();
+                settings.restartBind = Objects.requireNonNull(restartBindBox.getSelectedItem()).toString();
+                settings.hideBind = Objects.requireNonNull(hideBindBox.getSelectedItem()).toString();
+                fw.write(g.toJson(settings));
                 fw.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -182,7 +188,9 @@ public class SettingsManager {
         populateFontBox();
         populateFontSizeBox();
         populateFontTypeBox();
-        iconSlider.setValue(this.settings.iconSize);
+        populateBindBox(restartBindBox);
+        populateBindBox(hideBindBox);
+        iconSlider.setValue(settings.iconSize);
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }
 
@@ -196,7 +204,7 @@ public class SettingsManager {
                 fontBox.addItem(font.getFontName(Locale.UK));
             }
         }
-        fontBox.setSelectedItem(this.settings.getFont().getFontName(Locale.UK));
+        fontBox.setSelectedItem(settings.getFont().getFontName(Locale.UK));
     }
 
     /** populates the combo box including font sizes. */
@@ -204,7 +212,7 @@ public class SettingsManager {
         fontSizeBox.addItem(16);
         fontSizeBox.addItem(24);
         fontSizeBox.addItem(32);
-        fontSizeBox.setSelectedItem(this.settings.getFont().getSize());
+        fontSizeBox.setSelectedItem(settings.getFont().getSize());
     }
 
     /** populates the combo box including font types. */
@@ -213,7 +221,16 @@ public class SettingsManager {
         fontTypeBox.addItem("Bold");
         fontTypeBox.addItem("Italic");
         fontTypeBox.addItem("BoldItalic");
-        fontTypeBox.setSelectedIndex(this.settings.getFont().getStyle());
+        fontTypeBox.setSelectedIndex(settings.getFont().getStyle());
+    }
+
+    private void populateBindBox(JComboBox<Character> box) {
+        for (char c = 'A'; c <= 'Z'; ++c) {
+            box.addItem(c);
+        }
+        for (char num = 48; num <= 57; ++num) {
+            box.addItem(num);
+        }
     }
 
 }
