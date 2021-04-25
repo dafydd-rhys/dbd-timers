@@ -1,6 +1,7 @@
 package com.DBDKillerTimer.main;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyAdapter;
@@ -81,7 +82,7 @@ public final class Main extends Canvas {
                 SettingsManager.settings.windowPosition = windowPosition;
                 try {
                     FileWriter fw = new FileWriter("customization\\config.json");
-                    Gson g = new Gson();
+                    Gson g = new GsonBuilder().setPrettyPrinting().create();
                     fw.write(g.toJson(SettingsManager.settings));
                     fw.close();
                 } catch (Exception ex) {
