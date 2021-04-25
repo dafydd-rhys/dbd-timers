@@ -123,8 +123,8 @@ public class SettingsManager {
      * @throws Exception if the folder doesn't exist
      */
     private void populateLists(final File[] folder) throws Exception {
-        killerPanel.setLayout(new GridLayout(0, 4, 0, 5));
-        survivorPanel.setLayout(new GridLayout(0, 4, 0, 5));
+        killerPanel.setLayout(new GridLayout(0, 3, 0, 5));
+        survivorPanel.setLayout(new GridLayout(0, 3, 0, 5));
 
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
@@ -159,21 +159,10 @@ public class SettingsManager {
                 java.awt.Image.SCALE_SMOOTH);
         settings = new ImageIcon(newSettingsCog);
         JLabel openSettings = new JLabel(settings);
-        Checkbox box = new Checkbox("Enabled", timer.isEnabled());
 
         panel.add(new JLabel(icon));
         panel.add(new JLabel(timer.getName()));
-        panel.add(box);
         panel.add(openSettings);
-
-        box.addItemListener(e -> {
-            boolean wanted = box.getState();
-            if (wanted) {
-                //edit json to true
-            } else {
-                //edit json to false
-            }
-        });
 
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
