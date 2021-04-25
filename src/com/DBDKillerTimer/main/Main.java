@@ -10,12 +10,9 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-
-import com.DBDKillerTimer.main.TimerProperties;
 import com.google.gson.Gson;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -79,11 +76,11 @@ public final class Main extends Canvas {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                assert settings != null;
                 settings.windowPosition = windowPosition;
                 try {
                     FileWriter fw = new FileWriter("customization\\config.json");
                     Gson g = new Gson();
-                    assert settings != null;
 
                     fw.write(g.toJson(settings));
                     fw.close();
@@ -103,6 +100,7 @@ public final class Main extends Canvas {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        assert this.settings != null;
         dialog.setLocation(this.settings.windowPosition[0], this.settings.windowPosition[1]);
 
         //creates menu for if user right clicks on program

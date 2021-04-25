@@ -71,6 +71,8 @@ public class SettingsManager {
     private JComboBox<String> fontTypeBox;
     /** the combo box holding all the possible font sizes. */
     private JComboBox<Integer> fontSizeBox;
+    private JSlider iconSlider;
+    private JLabel sliderValue;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -98,7 +100,7 @@ public class SettingsManager {
         }
         populateComboBoxes();
 
-        //appends config
+        //allows you to browse for image
         browseButton.addActionListener(e -> {
             FileDialog fd = new FileDialog(new JFrame());
             fd.setVisible(true);
@@ -140,7 +142,7 @@ public class SettingsManager {
                     newTimer.setIcon(iconPath);
                     newTimer.setTimerMode((TimerProperties.TimerMode) timerModeBox.getSelectedItem());
                     newTimer.setEnabled(timerEnabled.isSelected());
-                    newTimer.setStartBind(startBind.getSelectedItem().toString());
+                    newTimer.setStartBind(Objects.requireNonNull(startBind.getSelectedItem()).toString());
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
@@ -168,6 +170,7 @@ public class SettingsManager {
                 ex.printStackTrace();
             }
         });
+        iconSlider.addChangeListener(e -> sliderValue.setText(String.valueOf(iconSlider.getValue())));
     }
 
     /**
@@ -246,6 +249,7 @@ public class SettingsManager {
         populateTimerModeBox();
         populateStartBind();
         populateStartTime();
+        sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }
 
     /** populates the combo box including fonts. */
@@ -283,14 +287,10 @@ public class SettingsManager {
         timerTypeBox.addItem(TimerProperties.TimerType.CountUp);
         timerTypeBox.addItem(TimerProperties.TimerType.CountDown);
         startTime.setEnabled(false);
-        timerTypeBox.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                //disable start time if timer type is countup
-                startTime.setEnabled(timerTypeBox.getSelectedItem().toString() == "CountDown");
-            }
+        timerTypeBox.addActionListener(e -> {
+            //disable start time if timer type is count up
+            startTime.setEnabled(Objects.requireNonNull(timerTypeBox.
+                    getSelectedItem()).toString().equals("CountDown"));
         });
     }
 
