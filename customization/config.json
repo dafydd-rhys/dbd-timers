@@ -1,1 +1,16 @@
-{"font":{"name":"Bahnschrift","style":0,"size":24,"pointSize":24.0,"fontSerializedDataVersion":1},"iconSize":96,"restartBind":"R","hideBind":"H","windowPosition":[-10,10]}
+{
+  "font": {
+    "name": "Bahnschrift",
+    "style": 0,
+    "size": 24,
+    "pointSize": 24.0,
+    "fontSerializedDataVersion": 1
+  },
+  "iconSize": 96,
+  "restartBind": "R",
+  "hideBind": "H",
+  "windowPosition": [
+    -10,
+    9
+  ]
+}
