@@ -19,46 +19,34 @@ import org.jnativehook.NativeHookException;
 
 /**
  * Main.java.
- * @version 1.0
- * This class creates and displays 4 clocks that can be run by the user,
- * these clocks represent in game mechanics and timings which will allow
- * the user to get perfect timing on hits, hooks etc.
- * This class also reads properties such as resolution and icon sizes
- * which will allow the user to customize the appearance of there
- * instance and the program will adapt and optimize to these changes.
+ * @version 1.0.1
+ * This class simply implements and manipulates a JDialog, implementing
+ * its features which includes timers, icons and other features.
  * @author Dafydd-Rhys Maund
+ * @author Morgan Gardner.
  */
 public final class Main extends Canvas {
 
-    /**
-     * properties used when creating JDialog.
-     */
-    private final int amountOfProperties = 3;
-    private final int[] properties = new int[amountOfProperties];
-
-    /**
-     * captures users resolution.
-     */
-    private static int width = 0;
-    private static int height = 0;
-    int pX, pY;
-
-    /**
-     * the size and location of the icon its text representation.
-     */
-    private static int iconSize = 0;
-
-    private TimerClass.TimerMode timerMode = TimerClass.TimerMode.Survivor;
+    /** this is where the JDialog properties are stored.*/
+    private final int[] dialogProperties = new int[3];
+    /** gets current X location of mouse. */
+    private int pointerX;
+    /** gets current Y location of mouse. */
+    private int pointerY;
+    /** the window in which the icons and timers are outputted. */
     private final JDialog dialog;
-    private ArrayList<Stopwatch> timers;
+    /** the size of the icon being displayed. */
+    private static int iconSize = 0;
+    /** the mode in which the user is playing, be default is survivor. */
+    private TimerProperties.TimerMode timerMode = TimerProperties.TimerMode.Survivor;
+    /** where all the timers are stored. */
+    private ArrayList<IconTimer> timers;
 
     /**
-     * This method creates a new instance of the main method, which
-     * creates an instance of this program.
-     *
+     * This method creates a new instance of program.
      * @param args the arguments used in methods
      * @throws FileNotFoundException if the properties file doesn't exist
-     * @throws NativeHookException   there's an issue reading global key presses
+     * @throws NativeHookException there's an issue reading global key presses
      */
     public static void main(final String[] args) throws
             FileNotFoundException, NativeHookException {
@@ -66,23 +54,21 @@ public final class Main extends Canvas {
     }
 
     /**
-     * This method creates the UI and stopwatches used to go with it and
-     * begins reading inputs from the user which are used to manipulate
-     * the timers.
-     *
+     * This method creates the UI and implements all of its features,
+     * this includes key listener, icons, timers etc.
      * @throws FileNotFoundException if the properties file doesn't exist
-     * @throws NativeHookException   there's an issue reading global key presses
+     * @throws NativeHookException there's an issue reading global key presses
      */
     private Main() throws FileNotFoundException, NativeHookException {
-        // Get the logger for "https://github.com/kwhat/jnativehook" and set the level to off.
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        //the logger: "https://github.com/kwhat/jnativehook".
+        Logger logger = Logger.getLogger(GlobalScreen.class.
+                getPackage().getName());
         logger.setLevel(Level.OFF);
         GlobalScreen.registerNativeHook();
-        // Don't forget to disable the parent handlers.
         logger.setUseParentHandlers(false);
-        ImageIcon logo = new ImageIcon("images\\icon.png");
 
         //Generate dialog for UI and sets the applications logo in taskbar
+        ImageIcon logo = new ImageIcon("images\\icon.png");
         dialog = new JDialog((java.awt.Dialog) null);
         dialog.setTitle("DBD Timer");
         dialog.setIconImage(logo.getImage());
@@ -90,16 +76,14 @@ public final class Main extends Canvas {
         //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosed(final WindowEvent e) {
                 System.exit(0);
             }
         });
 
-        dialog.setUndecorated(true);
-        FlowLayout layout = new FlowLayout(FlowLayout.LEFT, 10, 0);
-        dialog.setLayout(layout);
         getProperties();
-
+        dialog.setUndecorated(true);
+        dialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         dialog.setAlwaysOnTop(true);
         dialog.setDefaultCloseOperation(dialog.DISPOSE_ON_CLOSE);
         dialog.setResizable(false);
@@ -108,42 +92,32 @@ public final class Main extends Canvas {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
-        //Generate right click menu
+        //creates menu for if user right clicks on program
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
         dialog.add(popupMenu);
-
         loadTimers();
-
         dialog.setBackground(new Color(0, 0, 0, 0));
     }
 
-    public void setTimerMode(TimerClass.TimerMode mode) {
-        this.timerMode = mode;
-    }
-
     /**
-     * Load timers from JSON files
+     * This method simple loads all timers from the .json file,
+     * if the timer is disabled it isn't added to the dialog.
      */
     public void loadTimers() {
+        timers = new ArrayList<>();
         final File folder = new File("timers\\");
         File[] listOfTimers = folder.listFiles();
-
-        timers = new ArrayList<>();
-
         assert listOfTimers != null;
+
         for (File file : listOfTimers) {
             try {
-                //read timer info from json file
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
-                TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
+                TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
 
-                //only add timer if mode matches current software timer mode
-                if (timerClass.timerMode == this.timerMode) {
-                    Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, "R", "H");
-
-                    //add timer to UI
+                if (properties.getTimerMode() == this.timerMode) {
+                    IconTimer timer = new IconTimer(iconSize, new ImageIcon(properties.getIcon()),
+                            properties.getStartTime(), properties.getStartBind(), "R", "H");
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }
@@ -151,104 +125,94 @@ public final class Main extends Canvas {
                 ex.printStackTrace();
             }
         }
-
         dialog.pack();
-
-        //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
 
     /**
-     * Reload timers from JSON files
+     * This method simple reloads all timers from the .json file,
+     * if the timer is disabled it isn't added to the dialog.
      */
     public void reloadTimers() {
         final File folder = new File("timers\\");
         File[] listOfTimers = folder.listFiles();
+        assert listOfTimers != null;
 
-        //remove old timers
-        for (Stopwatch timer : this.timers) {
+        for (IconTimer timer : this.timers) {
             dialog.remove(timer.getUIElement());
         }
-
         timers = new ArrayList<>();
 
-        assert listOfTimers != null;
         for (File file : listOfTimers) {
             try {
-                //read timer info from json file
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
-                TimerClass timerClass = g.fromJson(jsonString, TimerClass.class);
+                TimerProperties timerProperties = g.fromJson(jsonString, TimerProperties.class);
 
-                //only add timer if mode matches current software timer mode
-                if (timerClass.timerMode == this.timerMode) {
-                    Stopwatch timer = new Stopwatch(iconSize, new ImageIcon(timerClass.icon),
-                            timerClass.startTime, timerClass.startBind, "R", "H");
+                if (timerProperties.getTimerMode() == this.timerMode) {
+                    IconTimer timer = new IconTimer(iconSize, new ImageIcon(timerProperties.getIcon()),
+                            timerProperties.getStartTime(), timerProperties.getStartBind(), "R", "H");
                     timers.add(timer);
-
-                    //add timer to UI
                     dialog.add(timer.getUIElement());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-
         dialog.pack();
         dialog.revalidate();
         dialog.repaint();
-
-        //attach key listeners to timer binds
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
 
-    private JPopupMenu generateRightClickMenu(JDialog dialog) {
+    /**
+     * this method simply generates a right click menu, if the dialog is
+     * right-clicked it displays the menu.
+     * @param currDialog refers to this dialog
+     * @return displays the pop up menu
+     */
+    private JPopupMenu generateRightClickMenu(final JDialog currDialog) {
         JPopupMenu popupMenu = new JPopupMenu();
-
-        //Settings
         JMenuItem settingsMenuItem = new JMenuItem("Settings");
-        settingsMenuItem.addActionListener(e -> new LauncherForm());
+        settingsMenuItem.addActionListener(e -> new SettingsManager());
 
-        //Toggle Mode
+        //toggle
         JMenuItem toggleModeMenuItem = new JMenuItem("Toggle Mode");
         toggleModeMenuItem.addActionListener(e -> {
-            if (this.timerMode == TimerClass.TimerMode.Killer) {
-                this.timerMode = TimerClass.TimerMode.Survivor;
+            if (this.timerMode == TimerProperties.TimerMode.Killer) {
+                this.timerMode = TimerProperties.TimerMode.Survivor;
             } else {
-                this.timerMode = TimerClass.TimerMode.Killer;
+                this.timerMode = TimerProperties.TimerMode.Killer;
             }
             reloadTimers();
         });
 
-        //Exit
+        //exit
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> System.exit(0));
-
         popupMenu.add(settingsMenuItem);
         popupMenu.add(toggleModeMenuItem);
         popupMenu.add(exitMenuItem);
 
-        Container contentPane = dialog.getContentPane();
+        Container contentPane = currDialog.getContentPane();
         contentPane.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                // Get x,y and store them
-                pX = me.getX();
-                pY = me.getY();
+            public void mousePressed(final MouseEvent me) {
+                pointerX = me.getX();
+                pointerY = me.getY();
             }
-
-            public void mouseReleased(MouseEvent me) {
-                if (me.isPopupTrigger())
+            public void mouseReleased(final MouseEvent me) {
+                if (me.isPopupTrigger()) {
                     popupMenu.show(me.getComponent(), me.getX(), me.getY());
+                }
             }
         });
         contentPane.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseDragged(MouseEvent me) {
-                dialog.setLocation(dialog.getLocation().x + me.getX() - pX,
-                        dialog.getLocation().y + me.getY() - pY);
+            public void mouseDragged(final MouseEvent me) {
+                currDialog.setLocation(currDialog.getLocation().x + me.getX() - pointerX,
+                        currDialog.getLocation().y + me.getY() - pointerY);
             }
         });
-
         return popupMenu;
     }
 
@@ -256,7 +220,6 @@ public final class Main extends Canvas {
      * This method gets the properties that are found within a .txt, then
      * implements these into the program. It optimizes the location of time
      * labels to the resolution to insure they are placed correctly.
-     *
      * @throws FileNotFoundException if the properties file doesn't exist
      */
     private void getProperties() throws FileNotFoundException {
@@ -264,21 +227,25 @@ public final class Main extends Canvas {
         int count = 0;
         while (file.hasNextLine()) {
             file.next();
-            properties[count] = file.nextInt();
+            dialogProperties[count] = file.nextInt();
             count++;
         }
 
-        width = properties[0];
-        height = properties[1];
-        iconSize = properties[2];
-
-        final int maximumHeight = 1080;
-        final int minimumHeight = 600;
-        final int maximumWidth = 1920;
-        final int minimumWidth = 800;
-        if (width < minimumWidth || width > maximumWidth
-                || height > maximumHeight || height < minimumHeight) {
+        int width = dialogProperties[0];
+        int height = dialogProperties[1];
+        iconSize = dialogProperties[2];
+        if (width < 800 || width > 1920
+                || height > 1080 || height < 600) {
             System.exit(0);
         }
+    }
+
+    /**
+     * this method simply sets the mode in which the user
+     * is playing, this will be killer or survivor.
+     * @param mode the mode which the user is playing.
+     */
+    public void setTimerMode(final TimerProperties.TimerMode mode) {
+        this.timerMode = mode;
     }
 }
