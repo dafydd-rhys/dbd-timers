@@ -38,7 +38,7 @@ public class SettingsManager {
     /** the button to save the users custom settings. */
     private JButton saveCustomSettings;
     /** the settings the user has/wants to overwrite. */
-    private final Settings settings;
+    public static Settings settings;
     /** the combo box holding all the possible fonts. */
     private JComboBox<String> fontBox;
     /** the combo box holding all the possible font types. */

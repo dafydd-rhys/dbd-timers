@@ -33,8 +33,6 @@ public final class Main extends Canvas {
     int pointerX,pointerY;
     int[] windowPosition = new int[2];
 
-    private final Settings settings;
-
     private final JDialog dialog;
     /** the mode in which the user is playing, the default is survivor. */
     private TimerProperties.TimerMode timerMode = TimerProperties.TimerMode.Survivor;
@@ -66,7 +64,7 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         logger.setUseParentHandlers(false);
 
-        this.settings = loadSettings();
+        SettingsManager.settings = loadSettings();
 
         //Generate dialog for UI and sets the applications logo in taskbar
         ImageIcon logo = new ImageIcon("images\\icon.png");
@@ -78,13 +76,12 @@ public final class Main extends Canvas {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                assert settings != null;
-                settings.windowPosition = windowPosition;
+                assert SettingsManager.settings != null;
+                SettingsManager.settings.windowPosition = windowPosition;
                 try {
                     FileWriter fw = new FileWriter("customization\\config.json");
                     Gson g = new Gson();
-
-                    fw.write(g.toJson(settings));
+                    fw.write(g.toJson(SettingsManager.settings));
                     fw.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -102,8 +99,8 @@ public final class Main extends Canvas {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-        assert this.settings != null;
-        dialog.setLocation(this.settings.windowPosition[0], this.settings.windowPosition[1]);
+        assert SettingsManager.settings != null;
+        dialog.setLocation(SettingsManager.settings.windowPosition[0], SettingsManager.settings.windowPosition[1]);
 
         GlobalScreen.addNativeKeyListener(new NativeKeyAdapter() {
             @Override
@@ -120,14 +117,6 @@ public final class Main extends Canvas {
         dialog.add(popupMenu);
         loadTimers();
         dialog.setBackground(new Color(0, 0, 0, 0));
-    }
-
-    /**
-     * Get the user settings
-     * @return Settings object
-     */
-    public Settings getSettings() {
-        return this.settings;
     }
 
     private Settings loadSettings() {
@@ -162,8 +151,7 @@ public final class Main extends Canvas {
                 TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
 
                 if (properties.getTimerMode() == this.timerMode) {
-                    IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(properties.getIcon()),
-                            properties.getStartTime(), properties.getStartBind(), "R");
+                    IconTimer timer = new IconTimer(properties);
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }
@@ -196,8 +184,7 @@ public final class Main extends Canvas {
                 TimerProperties timerProperties = g.fromJson(jsonString, TimerProperties.class);
 
                 if (timerProperties.getTimerMode() == this.timerMode) {
-                    IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(timerProperties.getIcon()),
-                            timerProperties.getStartTime(), timerProperties.getStartBind(), "R");
+                    IconTimer timer = new IconTimer(timerProperties);
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }
