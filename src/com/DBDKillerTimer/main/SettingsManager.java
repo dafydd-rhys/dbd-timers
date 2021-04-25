@@ -164,6 +164,7 @@ public class SettingsManager {
                 this.settings.setFont(Font.decode(Objects.requireNonNull(fontBox.getSelectedItem()).toString()
                                 + " " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString()
                                 + " " + Objects.requireNonNull(fontSizeBox.getSelectedItem()).toString()));
+                this.settings.iconSize = iconSlider.getValue();
                 fw.write(g.toJson(this.settings));
                 fw.close();
             } catch (Exception ex) {
@@ -249,6 +250,7 @@ public class SettingsManager {
         populateTimerModeBox();
         populateStartBind();
         populateStartTime();
+        iconSlider.setValue(this.settings.iconSize);
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }
 
