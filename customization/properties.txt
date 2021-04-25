@@ -1,3 +1,0 @@
-Resolution[Width]: 1920
-Resolution[Height]: 1080
-Iconsize[128/96/64]: 96
