@@ -2,6 +2,8 @@ package com.DBDKillerTimer.main;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -57,13 +59,21 @@ public class SettingsManager {
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
      */
-    public SettingsManager() {
+    public SettingsManager(Main main) {
         JFrame frame = new JFrame("Settings Manager");
         frame.setPreferredSize(new Dimension(390, 450));
         frame.setMaximumSize(new Dimension(390, 450));
         frame.setMinimumSize(new Dimension(390, 450));
         frame.setContentPane(mainTabPain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosed(WindowEvent e)
+            {
+                main.reloadTimers();
+            }
+        });
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
