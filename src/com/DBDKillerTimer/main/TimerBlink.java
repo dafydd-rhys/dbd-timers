@@ -8,5 +8,5 @@ public class TimerBlink {
     /** Time to set colour at */
     public int time;
     /** Frequency of text flash (ms), can be 0 to disable flashing text */
-    public long blinkFrequency;
+    public int blinkFrequency;
 }

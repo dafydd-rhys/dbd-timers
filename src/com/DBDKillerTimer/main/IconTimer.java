@@ -1,6 +1,7 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 import javax.swing.*;
@@ -29,6 +30,9 @@ public class IconTimer {
     /** Time formatter for the current time */
     private SimpleDateFormat dateFormat;
 
+    private Timer blinkTimer;
+    private Color blinkColour;
+
     /** the enums to separate different timer types. */
     private enum TimerType {
         /** represents increasing timers. */
@@ -52,6 +56,14 @@ public class IconTimer {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         this.elapsedTime = properties.getStartTime() * 1000L;
 
+        blinkTimer = new Timer(1000, f -> {
+            if (timeLabel.getForeground() == properties.getStartColor()) {
+                timeLabel.setForeground(blinkColour);
+            } else {
+                timeLabel.setForeground(properties.getStartColor());
+            }
+        });
+
         if (properties.getStartTime() == 0) {
             this.timerType = TimerType.CountUp;
         } else {
@@ -72,7 +84,7 @@ public class IconTimer {
 
         timeLabel = new JLabel(getCurrentTime());
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        timeLabel.setForeground(Color.WHITE);
+        timeLabel.setForeground(properties.getStartColor());
         timeLabel.setBounds(0, 0, SettingsManager.settings.iconSize, 30);
         timeLabel.setFont(SettingsManager.settings.getFont());
 
@@ -111,13 +123,37 @@ public class IconTimer {
 
         Date date = new Date(elapsedTime);
 
-        if (date.getTime() == 0) {
-            timeLabel.setForeground(properties.getStartColor());
-        } else if (date.getTime() == 30000) {   //change implementation of text colour change
-            timeLabel.setForeground(Color.red);
+        ArrayList<TimerBlink> timerBlinks = properties.getTimerBlinks();
+        if(timerBlinks != null) {
+            for (TimerBlink timerBlink : timerBlinks) {
+                if ((date.getTime() / 1000) == timerBlink.time) {
+                    if (timerBlink.blinkFrequency != 0) {
+                        this.blinkColour = timerBlink.colour;
+                        restartTimer(timerBlink.blinkFrequency);
+                    }
+                }
+            }
         }
         timeLabel.setText(dateFormat.format(date));
     });
+
+    /**
+     * Restart blink timer with new delay
+     * @param delay millis to wait between ticks
+     */
+    private void restartTimer(int delay) {
+        blinkTimer.stop();
+        blinkTimer.setDelay(delay);
+        blinkTimer.start();
+    }
+
+    /**
+     * Stop blink timer (used for main timer resets)
+     */
+    private void stopTimer() {
+        blinkTimer.stop();
+        timeLabel.setForeground(properties.getStartColor());
+    }
 
     /**
      * Get current time formatted as 'mm:ss'
@@ -134,7 +170,7 @@ public class IconTimer {
      */
     private void getTime(final boolean run) {
         if (run) {
-            timeLabel.setForeground(Color.red);
+            //timeLabel.setForeground(Color.red);
             elapsedTime = (long) properties.getStartTime() * milliseconds;
         }
         notRunning = false;
@@ -157,6 +193,7 @@ public class IconTimer {
         notRunning = true;
         getTime(true);
         timeLabel.setText(getCurrentTime());
+        stopTimer();
         timer.start();
     }
 
@@ -168,5 +205,6 @@ public class IconTimer {
         this.elapsedTime = properties.getStartTime();
         getOriginalTime();
         timeLabel.setText(getCurrentTime());
+        stopTimer();
     }
 }
