@@ -38,6 +38,9 @@ public class EditTimer {
     private JLabel txtPath;
     /** the label which shows the color selected by the user. */
     private JLabel txtColor;
+    private JPanel coloursPanel;
+    private JScrollPane coloursScrollPane;
+    private JPanel coloursList;
     private Color timerStartColor;
 
     public EditTimer(TimerProperties timer, String title) {
@@ -54,6 +57,7 @@ public class EditTimer {
         frame.setVisible(true);
 
         populateComboBoxes();
+        populateColoursPanel();
         if (timer != null) {
             setTimerProperties();
         }
@@ -113,6 +117,54 @@ public class EditTimer {
                 JOptionPane.showMessageDialog(null, "cant update timer.");
             }
         });
+    }
+
+    private void populateColoursPanel() {
+        coloursList.setLayout(new GridLayout(0, 3, 0, 5));
+        addStartColor();
+        addBlinkColours();
+    }
+
+    private void addStartColor() {
+        JPanel infoPanel = new JPanel();
+        infoPanel.setSize(20, 20);
+        infoPanel.setLayout(new GridLayout(3, 0));
+        infoPanel.add(new JLabel("RGB: " + timer.getStartColor().getRed() + ", " +
+                timer.getStartColor().getGreen() + ", " +
+                timer.getStartColor().getBlue()));
+        infoPanel.add(new JLabel("Blink time: " + timer.getStartTime() + "s"));
+        infoPanel.add(new JLabel("0ms"));
+
+        coloursList.add(new JLabel("Start Colour"));
+        coloursList.add(infoPanel);
+        coloursList.add(getSettingsCog());
+    }
+
+    private void addBlinkColours() {
+        if (timer.getTimerBlinks().size() != 0) {
+            for (int i = 0; i < timer.getTimerBlinks().size(); i++) {
+                JPanel infoPanel = new JPanel();
+                infoPanel.setLayout(new GridLayout(3, 0));
+                infoPanel.add(new JLabel("RGB: " + timer.getTimerBlinks().get(i).colour.getRed() + ", " +
+                        timer.getTimerBlinks().get(i).colour.getGreen() + ", " +
+                        timer.getTimerBlinks().get(i).colour.getBlue()));
+                infoPanel.add(new JLabel("Blink time: " + timer.getTimerBlinks().get(i).time + "s"));
+                infoPanel.add(new JLabel("Frequency: " + timer.getTimerBlinks().get(i).blinkFrequency + "ms"));
+
+                coloursList.add(new JLabel("Blink Colour " + (i + 1)));
+                coloursList.add(infoPanel);
+                coloursList.add(getSettingsCog());
+            }
+        }
+    }
+
+    public JLabel getSettingsCog() {
+        ImageIcon settings = new ImageIcon("images\\settings_cog.png");
+        Image settingsCog = settings.getImage();
+        Image newSettingsCog = settingsCog.getScaledInstance(16, 16,
+                java.awt.Image.SCALE_SMOOTH);
+        settings = new ImageIcon(newSettingsCog);
+        return new JLabel(settings);
     }
 
     private void setTimerProperties() {
