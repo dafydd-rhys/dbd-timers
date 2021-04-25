@@ -30,7 +30,7 @@ public class IconTimer {
     /** Time formatter for the current time */
     private SimpleDateFormat dateFormat;
 
-    private Timer blinkTimer;
+    private final Timer blinkTimer;
     private Color blinkColour;
 
     /** the enums to separate different timer types. */

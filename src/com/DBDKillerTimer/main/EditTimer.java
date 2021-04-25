@@ -1,9 +1,11 @@
 package com.DBDKillerTimer.main;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -41,7 +43,9 @@ public class EditTimer {
     private JPanel coloursPanel;
     private JScrollPane coloursScrollPane;
     private JPanel coloursList;
+    private JButton addBlinkerTimer;
     private Color timerStartColor;
+    private ArrayList<TimerBlink> timerBlinks;
 
     public EditTimer(TimerProperties timer, String title) {
         this.timer = timer;
@@ -84,17 +88,22 @@ public class EditTimer {
             }
         });
 
+        addBlinkerTimer.addActionListener(e -> {
+            new AddBlinker(timerBlinks);
+        });
+
         //appends/creates new timer
         saveTimer.addActionListener(e -> {
             if (!iconPath.equals("") && timerStartColor != null) {
                 try {
                     FileWriter fw = new FileWriter("timers\\"
                             + timerName.getText() + ".json");
-                    Gson g = new Gson();
-
+                    Gson g = new GsonBuilder().setPrettyPrinting().create();
                     TimerProperties newTimer = new TimerProperties();
+
                     newTimer.setName(timerName.getText());
                     newTimer.setStartColor(timerStartColor);
+                    newTimer.setTimerBlinks(timerBlinks);
                     newTimer.setTimerType((TimerProperties.TimerType) timerTypeBox.getSelectedItem());
                     if (newTimer.getTimerType() == TimerProperties.TimerType.CountUp) {
                         newTimer.setStartTime(0);
@@ -172,6 +181,7 @@ public class EditTimer {
         iconPath = timer.getIcon();
         timerTypeBox.setSelectedItem(timer.getTimerType());
         timerStartColor = timer.getStartColor();
+        timerBlinks = timer.getTimerBlinks();
         startTime.setSelectedItem(timer.getStartTime());
         startBind.setSelectedItem(timer.getStartBind().charAt(0));
         timerModeBox.setSelectedItem(timer.getTimerMode());
