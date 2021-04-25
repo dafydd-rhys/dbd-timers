@@ -190,6 +190,8 @@ public class SettingsManager {
         populateFontTypeBox();
         populateBindBox(restartBindBox);
         populateBindBox(hideBindBox);
+        restartBindBox.setSelectedItem(settings.restartBind.charAt(0));
+        hideBindBox.setSelectedItem(settings.hideBind.charAt(0));
         iconSlider.setValue(settings.iconSize);
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }

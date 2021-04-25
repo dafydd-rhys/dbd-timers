@@ -1,5 +1,6 @@
 package com.DBDKillerTimer.main;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * TimerProperties.java.
@@ -30,6 +31,8 @@ public final class TimerProperties {
     private int startTime;
     /** represents the timers start colour.*/
     private Color startColor;
+    /** represents the timer text colour changes */
+    private ArrayList<TimerBlink> timerBlinks;
     /** represents the timers type.*/
     private TimerType timerType;
     /** represents the timers icon path.*/
@@ -87,6 +90,22 @@ public final class TimerProperties {
      */
     public Color getStartColor() {
         return startColor;
+    }
+
+    /**
+     * sets the timers blinks.
+     * @param timerBlinks the blink colours of the timer
+     */
+    public void setTimerBlinks(final ArrayList<TimerBlink> timerBlinks) {
+        this.timerBlinks = timerBlinks;
+    }
+
+    /**
+     * gets the timer's colour changes (blinks).
+     * @return returns the timer blinks
+     */
+    public ArrayList<TimerBlink> getTimerBlinks() {
+        return timerBlinks;
     }
 
     /**
