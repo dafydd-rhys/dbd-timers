@@ -1,4 +1,12 @@
 package com.DBDKillerTimer.main;
+
+import com.google.gson.Gson;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyAdapter;
+import org.jnativehook.keyboard.NativeKeyEvent;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,15 +18,8 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
-import com.google.gson.Gson;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyAdapter;
-import org.jnativehook.keyboard.NativeKeyEvent;
 
 /**
  * Main.java.
@@ -54,10 +55,9 @@ public final class Main extends Canvas {
     /**
      * This method creates the UI and implements all of its features,
      * this includes key listener, icons, timers etc.
-     * @throws FileNotFoundException if the properties file doesn't exist
      * @throws NativeHookException there's an issue reading global key presses
      */
-    private Main() throws FileNotFoundException, NativeHookException {
+    private Main() throws NativeHookException {
         //the logger: "https://github.com/kwhat/jnativehook".
         Logger logger = Logger.getLogger(GlobalScreen.class.
                 getPackage().getName());
@@ -107,7 +107,7 @@ public final class Main extends Canvas {
             @Override
             public void nativeKeyPressed(NativeKeyEvent e)
             {
-                if(NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase().equals(SettingsManager.settings.hideBind.toLowerCase())) {
+                if(NativeKeyEvent.getKeyText(e.getKeyCode()).equalsIgnoreCase(SettingsManager.settings.hideBind)) {
                     dialog.setVisible(!dialog.isVisible());
                 }
             }
@@ -251,6 +251,6 @@ public final class Main extends Canvas {
             }
         });
         return popupMenu;
-    };
+    }
 
 }
