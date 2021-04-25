@@ -33,10 +33,10 @@ public class KeyInput extends NativeKeyAdapter {
     public final void nativeKeyPressed(final NativeKeyEvent e) {
         String key = NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase();
         for (IconTimer clock : clocks) {
-            if (key.equals(clock.getStartBind().toLowerCase())) {
+            if (key.equalsIgnoreCase(clock.getStartBind())) {
                 clock.restart();
             }
-            if (key.equals(clock.getRestartBind().toLowerCase())) {
+            if (key.equalsIgnoreCase(SettingsManager.settings.restartBind)) {
                 clock.fullReset();
             }
         }

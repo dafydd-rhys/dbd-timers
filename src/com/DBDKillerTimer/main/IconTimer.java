@@ -36,8 +36,6 @@ public class IconTimer {
         /** represents decreasing timers. */
         CountDown
     }
-    /** the binds that restarts the timers. */
-    private final String restartBind;
     /** the timer type, up or down. */
     private TimerType timerType;
     /** the panel that hosts all the timers. */
@@ -49,7 +47,6 @@ public class IconTimer {
      */
     public IconTimer(final TimerProperties properties) {
         this.properties = properties;
-        this.restartBind = SettingsManager.settings.restartBind;
 
         dateFormat = new SimpleDateFormat("mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -88,13 +85,6 @@ public class IconTimer {
      */
     public final String getStartBind() {
         return this.properties.getStartBind();
-    }
-
-    /** this method simply retrieves the restart timer bind.
-     @return returns the restart bind
-     */
-    public final String getRestartBind() {
-        return this.restartBind;
     }
 
     /** this method simply retrieves host panel of all the items.
