@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -106,7 +107,7 @@ public final class Main extends Canvas {
             @Override
             public void nativeKeyPressed(NativeKeyEvent e)
             {
-                if(NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase().equals("h")) {
+                if(NativeKeyEvent.getKeyText(e.getKeyCode()).toLowerCase().equals(SettingsManager.settings.hideBind.toLowerCase())) {
                     dialog.setVisible(!dialog.isVisible());
                 }
             }
