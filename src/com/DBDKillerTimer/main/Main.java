@@ -141,25 +141,8 @@ public final class Main extends Canvas {
      */
     public void loadTimers() {
         timers = new ArrayList<>();
-        final File folder = new File("timers\\");
-        File[] listOfTimers = folder.listFiles();
-        assert listOfTimers != null;
+        loadTimersFromJSON(getTimerJSONFiles());
 
-        for (File file : listOfTimers) {
-            try {
-                String jsonString = Files.readString(Path.of(file.getPath()));
-                Gson g = new Gson();
-                TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
-
-                if (properties.getTimerMode() == this.timerMode && properties.isEnabled()) {
-                    IconTimer timer = new IconTimer(properties);
-                    timers.add(timer);
-                    dialog.add(timer.getUIElement());
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
         dialog.pack();
         GlobalScreen.addNativeKeyListener(new KeyInput(timers));
     }
@@ -169,16 +152,25 @@ public final class Main extends Canvas {
      * if the timer is disabled it isn't added to the dialog.
      */
     public void reloadTimers() {
-        final File folder = new File("timers\\");
-        File[] listOfTimers = folder.listFiles();
-        assert listOfTimers != null;
-
         for (IconTimer timer : this.timers) {
             dialog.remove(timer.getUIElement());
         }
         timers = new ArrayList<>();
 
-        for (File file : listOfTimers) {
+        loadTimersFromJSON(getTimerJSONFiles());
+
+        dialog.pack();
+        dialog.revalidate();
+        dialog.repaint();
+        GlobalScreen.addNativeKeyListener(new KeyInput(timers));
+    }
+
+    /**
+     * Load timers from JSON files
+     * @param jsonFiles array of JSON files
+     */
+    private void loadTimersFromJSON(File[] jsonFiles) {
+        for (File file : jsonFiles) {
             try {
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
@@ -193,10 +185,15 @@ public final class Main extends Canvas {
                 ex.printStackTrace();
             }
         }
-        dialog.pack();
-        dialog.revalidate();
-        dialog.repaint();
-        GlobalScreen.addNativeKeyListener(new KeyInput(timers));
+    }
+
+    /**
+     * get list of JSON files from timer folder
+     * @return File array of JSON files
+     */
+    private File[] getTimerJSONFiles() {
+        final File folder = new File("timers\\");
+        return folder.listFiles();
     }
 
     /**
