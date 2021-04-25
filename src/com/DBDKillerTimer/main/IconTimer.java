@@ -50,8 +50,8 @@ public class IconTimer {
      * @param properties the properties of the timer.
      */
     public IconTimer(final TimerProperties properties) {
-        this.restartBind = "R";
         this.properties = properties;
+        this.restartBind = SettingsManager.settings.restartBind;
 
         dateFormat = new SimpleDateFormat("mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
