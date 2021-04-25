@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+
+import com.DBDKillerTimer.main.TimerProperties;
 import com.google.gson.Gson;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -27,17 +30,14 @@ import org.jnativehook.NativeHookException;
  */
 public final class Main extends Canvas {
 
-    /** this is where the JDialog properties are stored.*/
-    private final int[] dialogProperties = new int[3];
-    /** gets current X location of mouse. */
-    private int pointerX;
-    /** gets current Y location of mouse. */
-    private int pointerY;
-    /** the window in which the icons and timers are outputted. */
+    /** x&y position for click/drag tracking */
+    int pointerX,pointerY;
+    int[] windowPosition = new int[2];
+
+    private final Settings settings;
+
     private final JDialog dialog;
-    /** the size of the icon being displayed. */
-    private static int iconSize = 0;
-    /** the mode in which the user is playing, be default is survivor. */
+    /** the mode in which the user is playing, the default is survivor. */
     private TimerProperties.TimerMode timerMode = TimerProperties.TimerMode.Survivor;
     /** where all the timers are stored. */
     private ArrayList<IconTimer> timers;
@@ -67,6 +67,8 @@ public final class Main extends Canvas {
         GlobalScreen.registerNativeHook();
         logger.setUseParentHandlers(false);
 
+        this.settings = loadSettings();
+
         //Generate dialog for UI and sets the applications logo in taskbar
         ImageIcon logo = new ImageIcon("images\\icon.png");
         dialog = new JDialog((java.awt.Dialog) null);
@@ -76,12 +78,22 @@ public final class Main extends Canvas {
         //Catch window close event and shutdown process
         dialog.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(final WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
+                settings.windowPosition = windowPosition;
+                try {
+                    FileWriter fw = new FileWriter("customization\\config.json");
+                    Gson g = new Gson();
+                    assert settings != null;
+
+                    fw.write(g.toJson(settings));
+                    fw.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 System.exit(0);
             }
         });
 
-        getProperties();
         dialog.setUndecorated(true);
         dialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
         dialog.setAlwaysOnTop(true);
@@ -91,12 +103,28 @@ public final class Main extends Canvas {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        dialog.setLocation(this.settings.windowPosition[0], this.settings.windowPosition[1]);
 
         //creates menu for if user right clicks on program
         JPopupMenu popupMenu = generateRightClickMenu(dialog);
         dialog.add(popupMenu);
         loadTimers();
         dialog.setBackground(new Color(0, 0, 0, 0));
+    }
+
+    private Settings loadSettings() {
+        try {
+            String jsonString = Files.readString(Path.of("customization\\config.json"));
+            Gson g = new Gson();
+            return g.fromJson(jsonString, Settings.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setTimerMode(TimerProperties.TimerMode mode) {
+        this.timerMode = mode;
     }
 
     /**
@@ -116,7 +144,7 @@ public final class Main extends Canvas {
                 TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
 
                 if (properties.getTimerMode() == this.timerMode) {
-                    IconTimer timer = new IconTimer(iconSize, new ImageIcon(properties.getIcon()),
+                    IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(properties.getIcon()),
                             properties.getStartTime(), properties.getStartBind(), "R", "H");
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
@@ -150,7 +178,7 @@ public final class Main extends Canvas {
                 TimerProperties timerProperties = g.fromJson(jsonString, TimerProperties.class);
 
                 if (timerProperties.getTimerMode() == this.timerMode) {
-                    IconTimer timer = new IconTimer(iconSize, new ImageIcon(timerProperties.getIcon()),
+                    IconTimer timer = new IconTimer(this.settings.iconSize, new ImageIcon(timerProperties.getIcon()),
                             timerProperties.getStartTime(), timerProperties.getStartBind(), "R", "H");
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
@@ -189,21 +217,27 @@ public final class Main extends Canvas {
 
         //exit
         JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(e -> System.exit(0));
+        exitMenuItem.addActionListener(e -> dialog.dispose());
+
         popupMenu.add(settingsMenuItem);
         popupMenu.add(toggleModeMenuItem);
         popupMenu.add(exitMenuItem);
 
         Container contentPane = currDialog.getContentPane();
         contentPane.addMouseListener(new MouseAdapter() {
-            public void mousePressed(final MouseEvent me) {
+            public void mousePressed(final MouseEvent me)
+            {
                 pointerX = me.getX();
                 pointerY = me.getY();
             }
+
             public void mouseReleased(final MouseEvent me) {
-                if (me.isPopupTrigger()) {
+                if (me.isPopupTrigger())
+                {
                     popupMenu.show(me.getComponent(), me.getX(), me.getY());
                 }
+                windowPosition[0] = dialog.getLocation().x;
+                windowPosition[1] = dialog.getLocation().y;
             }
         });
         contentPane.addMouseMotionListener(new MouseAdapter() {
@@ -214,38 +248,6 @@ public final class Main extends Canvas {
             }
         });
         return popupMenu;
-    }
+    };
 
-    /**
-     * This method gets the properties that are found within a .txt, then
-     * implements these into the program. It optimizes the location of time
-     * labels to the resolution to insure they are placed correctly.
-     * @throws FileNotFoundException if the properties file doesn't exist
-     */
-    private void getProperties() throws FileNotFoundException {
-        Scanner file = new Scanner(new File("customization\\properties.txt"));
-        int count = 0;
-        while (file.hasNextLine()) {
-            file.next();
-            dialogProperties[count] = file.nextInt();
-            count++;
-        }
-
-        int width = dialogProperties[0];
-        int height = dialogProperties[1];
-        iconSize = dialogProperties[2];
-        if (width < 800 || width > 1920
-                || height > 1080 || height < 600) {
-            System.exit(0);
-        }
-    }
-
-    /**
-     * this method simply sets the mode in which the user
-     * is playing, this will be killer or survivor.
-     * @param mode the mode which the user is playing.
-     */
-    public void setTimerMode(final TimerProperties.TimerMode mode) {
-        this.timerMode = mode;
-    }
 }

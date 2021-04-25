@@ -112,15 +112,6 @@
                   <text value="Name"/>
                 </properties>
               </component>
-              <component id="3316a" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties>
-                  <text value="Start Time"/>
-                </properties>
-              </component>
               <component id="3e3ee" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -128,15 +119,6 @@
                 </constraints>
                 <properties>
                   <text value="Start Colour"/>
-                </properties>
-              </component>
-              <component id="77c67" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties>
-                  <text value="Timer Type"/>
                 </properties>
               </component>
               <component id="a4d6" class="javax.swing.JLabel">
@@ -166,7 +148,7 @@
                   <maximumSize width="130" height="30"/>
                   <minimumSize width="130" height="30"/>
                   <preferredSize width="130" height="30"/>
-                  <text value="browse"/>
+                  <text value="Browse"/>
                 </properties>
               </component>
               <component id="d094c" class="javax.swing.JTextField" binding="timerName">
@@ -213,13 +195,6 @@
                   <text value="Icon Path"/>
                 </properties>
               </component>
-              <component id="e81db" class="javax.swing.JComboBox" binding="timerTypeBox">
-                <constraints>
-                  <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties/>
-              </component>
               <component id="12d61" class="javax.swing.JComboBox" binding="timerModeBox">
                 <constraints>
                   <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -233,7 +208,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <selected value="false"/>
+                  <selected value="true"/>
                   <text value=""/>
                   <visible value="true"/>
                 </properties>
@@ -254,7 +229,7 @@
                   <forms/>
                 </constraints>
                 <properties>
-                  <text value="choose colour"/>
+                  <text value="Choose Colour"/>
                 </properties>
               </component>
               <component id="1da4f" class="javax.swing.JLabel" binding="txtColor">
@@ -274,9 +249,34 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="db685" class="javax.swing.JComboBox" binding="startTime">
+              <component id="77c67" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Timer Type"/>
+                </properties>
+              </component>
+              <component id="3316a" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Start Time (s)"/>
+                </properties>
+              </component>
+              <component id="e81db" class="javax.swing.JComboBox" binding="timerTypeBox">
                 <constraints>
                   <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="db685" class="javax.swing.JComboBox" binding="startTime">
+                <constraints>
+                  <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                   <forms/>
                 </constraints>
                 <properties/>

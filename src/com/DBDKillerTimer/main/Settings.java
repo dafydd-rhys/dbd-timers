@@ -15,6 +15,8 @@ public class Settings {
      * represents the font of the timers.
      */
     private Font font;
+    public int iconSize;
+    public int[] windowPosition;
 
     /**
      * this method simply sets the font settings.

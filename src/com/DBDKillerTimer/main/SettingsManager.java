@@ -1,5 +1,7 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -128,17 +130,17 @@ public class SettingsManager {
 
                     TimerProperties newTimer = new TimerProperties();
                     newTimer.setName(timerName.getText());
-                    newTimer.setStartTime(((int) Objects.requireNonNull(
-                            startTime.getSelectedItem())));
                     newTimer.setStartColor(timerStartColor);
-                    newTimer.setTimerType((TimerProperties.TimerType)
-                            timerTypeBox.getSelectedItem());
+                    newTimer.setTimerType((TimerProperties.TimerType) timerTypeBox.getSelectedItem());
+                    if (newTimer.getTimerType() == TimerProperties.TimerType.CountUp) {
+                        newTimer.setStartTime(0);
+                    } else {
+                        newTimer.setStartTime((int) startTime.getSelectedItem());
+                    }
                     newTimer.setIcon(iconPath);
-                    newTimer.setTimerMode((TimerProperties.TimerMode)
-                            timerModeBox.getSelectedItem());
+                    newTimer.setTimerMode((TimerProperties.TimerMode) timerModeBox.getSelectedItem());
                     newTimer.setEnabled(timerEnabled.isSelected());
-                    newTimer.setStartBind(Objects.requireNonNull(
-                            startBind.getSelectedItem()).toString());
+                    newTimer.setStartBind(startBind.getSelectedItem().toString());
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
@@ -280,6 +282,16 @@ public class SettingsManager {
     private void populateTimerTypeBox() {
         timerTypeBox.addItem(TimerProperties.TimerType.CountUp);
         timerTypeBox.addItem(TimerProperties.TimerType.CountDown);
+        startTime.setEnabled(false);
+        timerTypeBox.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //disable start time if timer type is countup
+                startTime.setEnabled(timerTypeBox.getSelectedItem().toString() == "CountDown");
+            }
+        });
     }
 
     /** populates the combo box including timer modes. */
