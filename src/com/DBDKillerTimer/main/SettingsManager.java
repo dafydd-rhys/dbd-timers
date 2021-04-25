@@ -1,7 +1,5 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -146,6 +144,7 @@ public class SettingsManager {
 
                     fw.write(g.toJson(newTimer));
                     fw.close();
+                    JOptionPane.showMessageDialog(null, "Timer created.");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
