@@ -1,13 +1,10 @@
 package com.DBDKillerTimer.main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.awt.*;
-import java.io.FileWriter;
 import java.util.Objects;
 import javax.swing.*;
 
-public class AddBlinker {
+public class EditBlinker {
 
     private JPanel addColour;
     private JTabbedPane blinkerPane;
@@ -20,7 +17,7 @@ public class AddBlinker {
     private JLabel sliderValue;
     private JLabel txtColour;
 
-    public AddBlinker(TimerProperties timer) {
+    public EditBlinker(TimerProperties timer) {
         JFrame frame = new JFrame("Add Blinker");
         frame.setPreferredSize(new Dimension(390, 450));
         frame.setMaximumSize(new Dimension(390, 450));

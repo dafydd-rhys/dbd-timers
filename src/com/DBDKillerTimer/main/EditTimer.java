@@ -3,6 +3,8 @@ package com.DBDKillerTimer.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public class EditTimer {
         });
 
         addBlinkerTimer.addActionListener(e -> {
-            new AddBlinker(timer);
+            new EditBlinker(timer);
         });
 
         //appends/creates new timer
@@ -149,6 +151,13 @@ public class EditTimer {
         coloursList.add(new JLabel("Blink Colour " + index));
         coloursList.add(infoPanel);
         coloursList.add(getSettingsCog());
+
+        getSettingsCog().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new EditBlinker(timer);
+            }
+        });
     }
 
     public JLabel getSettingsCog() {
