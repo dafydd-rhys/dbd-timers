@@ -1,5 +1,8 @@
 package com.DBDKillerTimer.main;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -17,20 +20,14 @@ public class IconTimer {
     private boolean notRunning = true;
     /** representation of the full time. */
     private JLabel timeLabel;
-    /** representation of the seconds on the timer. */
-    private String seconds;
-    /** representation of the minutes on the timer. */
-    private String minutes;
-    /** the starting time of this timer. */
-    private final int startingTime;
+    /** Timer properties object */
+    private TimerProperties properties = null;
     /** the elapsed time of this timer. */
-    private int elapsedTime = 0;
+    private long elapsedTime;
     /** amount of millis in a second. */
     private final int milliseconds = 1000;
-    /** second time variable, +1 or -1 every 1000 millis. */
-    private int second = 0;
-    /** minutes time variable, +1 or -1 every 60000 millis. */
-    private int minute = 0;
+    /** Time formatter for the current time */
+    private SimpleDateFormat dateFormat;
 
     /** the enums to separate different timer types. */
     private enum TimerType {
@@ -39,9 +36,6 @@ public class IconTimer {
         /** represents decreasing timers. */
         CountDown
     }
-
-    /** the binds that starts the timer. */
-    private final String startBind;
     /** the binds that restarts the timers. */
     private final String restartBind;
     /** the icon representing the timer. */
@@ -53,42 +47,39 @@ public class IconTimer {
 
     /**
      * This simply sets the properties of the timers and adds them to the panel.
-     * @param iconSize the size of the timers image.
-     * @param icon the image representing the timer.
-     * @param startTime the starting time of the timer.
-     * @param start the bind to start the timer.
-     * @param restart the bind to restart timers.
+     * @param properties the properties of the timer.
      */
-    public IconTimer(final int iconSize, ImageIcon icon, final int startTime,
-                     final String start, final String restart) {
-        this.startingTime = startTime;
-        this.startBind = start;
-        this.restartBind = restart;
+    public IconTimer(final TimerProperties properties) {
+        this.restartBind = "R";
+        this.properties = properties;
 
-        if (startingTime == 0) {
+        dateFormat = new SimpleDateFormat("mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        this.elapsedTime = properties.getStartTime() * 1000;
+
+        if (properties.getStartTime() == 0) {
             this.timerType = TimerType.CountUp;
         } else {
             this.timerType = TimerType.CountDown;
         }
 
-        Image image = icon.getImage();
-        Image newImg = image.getScaledInstance(iconSize, iconSize,
+        Image image = new ImageIcon(properties.getIcon()).getImage();
+        Image newImg = image.getScaledInstance(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize,
                 java.awt.Image.SCALE_SMOOTH);
-        icon = new ImageIcon(newImg);
+        ImageIcon icon = new ImageIcon(newImg);
         timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hostPanel = new JPanel();
         hostPanel.setLayout(new BoxLayout(hostPanel, BoxLayout.Y_AXIS));
-        hostPanel.setPreferredSize(new Dimension(iconSize, iconSize + 30));
+        hostPanel.setPreferredSize(new Dimension(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize + 30));
         hostPanel.setOpaque(false);
 
-        setString();
-        timeLabel = new JLabel(minutes + ":" + seconds);
+        timeLabel = new JLabel(getCurrentTime());
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         timeLabel.setForeground(Color.WHITE);
-        timeLabel.setBounds(0, 0, iconSize, 30);
-        timeLabel.setFont(new Font("Arial", Font.PLAIN, iconSize / 4));
+        timeLabel.setBounds(0, 0, SettingsManager.settings.iconSize, 30);
+        timeLabel.setFont(SettingsManager.settings.getFont());
 
         hostPanel.add(timerIcon);
         hostPanel.add(timeLabel);
@@ -98,7 +89,7 @@ public class IconTimer {
      @return returns the start bind
      */
     public final String getStartBind() {
-        return this.startBind;
+        return this.properties.getStartBind();
     }
 
     /** this method simply retrieves the restart timer bind.
@@ -123,41 +114,32 @@ public class IconTimer {
     private final Timer timer = new Timer(1000, e -> {
         getTime(notRunning);
         if (timerType == TimerType.CountDown) {
-            if (!(elapsedTime == 0)) {
-                elapsedTime = elapsedTime - milliseconds;
+            if (elapsedTime != 0) {
+                elapsedTime -= milliseconds;
             }
         } else {
-            elapsedTime = elapsedTime + milliseconds;
+            elapsedTime += milliseconds;
         }
 
-        minute = (elapsedTime / 60000) % 60;
-        second = (elapsedTime / 1000) % 60;
-        seconds = String.format("%02d", second);
-        minutes = String.format("%02d", minute);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date date = new Date(elapsedTime);
 
-        if (second == 0 && minute == 0) {
-            timeLabel.setForeground(Color.GREEN);
-        } else if (second >= 60 / 2 || minute > 0) {
+        if (date.getTime() == 0) {
+            timeLabel.setForeground(properties.getStartColor());
+        } else if (date.getTime() == 30000) {   //change implementation of text colour change
             timeLabel.setForeground(Color.red);
         }
-        timeLabel.setText(minutes + ":" + seconds);
+        timeLabel.setText(dateFormat.format(date));
     });
 
     /**
-     * this method simply sets the string for the timer.
+     * Get current time formatted as 'mm:ss'
+     * @return Current timer time
      */
-    private void setString() {
-        getStartTime();
-        seconds = String.format("%02d", second);
-        minutes = String.format("%02d", minute);
-    }
-
-    /**
-     * gets the starting times for each clock.
-     */
-    private void getStartTime() {
-        minute = 0;
-        second = startingTime;
+    private String getCurrentTime() {
+        Date date = new Date(elapsedTime);
+        return dateFormat.format(date);
     }
 
     /**
@@ -167,7 +149,7 @@ public class IconTimer {
     private void getTime(final boolean run) {
         if (run) {
             timeLabel.setForeground(Color.red);
-            elapsedTime = startingTime * milliseconds;
+            elapsedTime = properties.getStartTime() * milliseconds;
         }
         notRunning = false;
     }
@@ -177,7 +159,7 @@ public class IconTimer {
      */
     private void getOriginalTime() {
         timeLabel.setForeground(Color.white);
-        elapsedTime = startingTime * milliseconds;
+        elapsedTime = properties.getStartTime() * milliseconds;
     }
 
     /**
@@ -185,10 +167,10 @@ public class IconTimer {
      */
     public final void restart() {
         timer.stop();
-        setString();
+        this.elapsedTime = properties.getStartTime();
         notRunning = true;
         getTime(true);
-        timeLabel.setText(minutes + ":" + seconds);
+        timeLabel.setText(getCurrentTime());
         timer.start();
     }
 
@@ -197,8 +179,8 @@ public class IconTimer {
      */
     public final void fullReset() {
         timer.stop();
-        setString();
+        this.elapsedTime = properties.getStartTime();
         getOriginalTime();
-        timeLabel.setText(minutes + ":" + seconds);
+        timeLabel.setText(getCurrentTime());
     }
 }

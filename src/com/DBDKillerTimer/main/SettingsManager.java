@@ -62,7 +62,7 @@ public class SettingsManager {
     /** the label which shows the color selected by the user. */
     private JLabel txtColor;
     /** the settings the user has/wants to overwrite. */
-    private final Settings settings;
+    public static Settings settings;
     /** the combo box holding all the possible fonts. */
     private JComboBox<String> fontBox;
     /** the combo box holding all the possible font types. */
@@ -303,10 +303,10 @@ public class SettingsManager {
 
     /** populates the combo box including start timer binds. */
     private void populateStartBind() {
-        for (char c = 'A'; c <= 'Z'; ++c) {
+        for (char c = 'A'; c <= 'Z'; c++) {
             startBind.addItem(c);
         }
-        for (char num = 48; num <= 57; ++num) {
+        for (char num = 48; num <= 57; num++) {
             startBind.addItem(num);
         }
     }
