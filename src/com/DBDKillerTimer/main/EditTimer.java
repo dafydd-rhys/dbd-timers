@@ -89,7 +89,7 @@ public class EditTimer {
         });
 
         addBlinkerTimer.addActionListener(e -> {
-            new AddBlinker(timerBlinks);
+            new AddBlinker();
         });
 
         //appends/creates new timer
