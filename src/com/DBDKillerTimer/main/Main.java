@@ -150,7 +150,7 @@ public final class Main extends Canvas {
                 Gson g = new Gson();
                 TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
 
-                if (properties.getTimerMode() == this.timerMode) {
+                if (properties.getTimerMode() == this.timerMode && properties.isEnabled()) {
                     IconTimer timer = new IconTimer(properties);
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
@@ -181,10 +181,10 @@ public final class Main extends Canvas {
             try {
                 String jsonString = Files.readString(Path.of(file.getPath()));
                 Gson g = new Gson();
-                TimerProperties timerProperties = g.fromJson(jsonString, TimerProperties.class);
+                TimerProperties properties = g.fromJson(jsonString, TimerProperties.class);
 
-                if (timerProperties.getTimerMode() == this.timerMode) {
-                    IconTimer timer = new IconTimer(timerProperties);
+                if (properties.getTimerMode() == this.timerMode && properties.isEnabled()) {
+                    IconTimer timer = new IconTimer(properties);
                     timers.add(timer);
                     dialog.add(timer.getUIElement());
                 }

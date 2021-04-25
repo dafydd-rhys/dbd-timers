@@ -162,6 +162,7 @@ public class SettingsManager {
 
         panel.add(new JLabel(icon));
         panel.add(new JLabel(timer.getName()));
+
         panel.add(openSettings);
 
         openSettings.addMouseListener(new MouseAdapter() {
