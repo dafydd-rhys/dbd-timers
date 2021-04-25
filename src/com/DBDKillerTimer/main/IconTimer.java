@@ -27,7 +27,7 @@ public class IconTimer {
     /** amount of millis in a second. */
     private final int milliseconds = 1000;
     /** Time formatter for the current time */
-    private final SimpleDateFormat dateFormat;
+    private SimpleDateFormat dateFormat;
 
     /** the enums to separate different timer types. */
     private enum TimerType {
@@ -65,7 +65,6 @@ public class IconTimer {
         Image newImg = image.getScaledInstance(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize,
                 java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
-        
         JLabel timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -120,8 +119,6 @@ public class IconTimer {
             elapsedTime += milliseconds;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date date = new Date(elapsedTime);
 
         if (date.getTime() == 0) {
