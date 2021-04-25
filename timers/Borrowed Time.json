@@ -1,30 +1,31 @@
 {
-   "name":"Borrowed Time",
-   "startTime":20,
-   "startColor":{
-      "value":-13487566,
-      "falpha":0.0
-   },
-   "timerBlinks": [{
-      "colour":{
-      "value":-65536,
-      "falpha":0.0
-     },
-    "time":5,
-    "blinkFrequency":500
+  "name": "Borrowed Time",
+  "startTime": 20,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 5,
+      "blinkFrequency": 500
     },
     {
-      "colour":{
-      "value":-65536,
-      "falpha":0.0
-     },
-    "time":2,
-    "blinkFrequency":200
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 2,
+      "blinkFrequency": 200
     }
-],
-   "timerType":"CountDown",
-   "icon":"images\\borrowed_time.png",
-   "timerMode":"Killer",
-   "enabled":true,
-   "startBind":"3"
+  ],
+  "timerType": "CountDown",
+  "icon": "images\\borrowed_time.png",
+  "timerMode": "Killer",
+  "enabled": true,
+  "startBind": "3"
 }

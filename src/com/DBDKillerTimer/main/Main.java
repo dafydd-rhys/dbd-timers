@@ -132,7 +132,7 @@ public final class Main extends Canvas {
             PopupMenu popupMenu = new PopupMenu();
             //settings
             MenuItem settingsMenuItem = new MenuItem("Settings");
-            settingsMenuItem.addActionListener(e -> new SettingsManager());
+            settingsMenuItem.addActionListener(e -> new SettingsManager(this));
             //toggle
             MenuItem toggleModeMenuItem = new MenuItem("Toggle Mode");
             toggleModeMenuItem.addActionListener(e -> {
@@ -260,7 +260,7 @@ public final class Main extends Canvas {
     private JPopupMenu generateRightClickMenu(final JDialog currDialog) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem settingsMenuItem = new JMenuItem("Settings");
-        settingsMenuItem.addActionListener(e -> new SettingsManager());
+        settingsMenuItem.addActionListener(e -> new SettingsManager(this));
 
         //toggle
         JMenuItem toggleModeMenuItem = new JMenuItem("Toggle Mode");
