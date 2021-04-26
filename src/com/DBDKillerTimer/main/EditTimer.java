@@ -12,12 +12,14 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class EditTimer {
+    
+    private JPanel mainPanel;
+    private JPanel timerPanel;
+    private JPanel coloursPanel;
+    private JScrollPane coloursScrollPane;
 
     private final TimerProperties timer;
     private JTabbedPane timerProperties;
-    private JPanel mainPanel;
-    private JPanel timerPanel;
-
     /** the path of the icons image. */
     private String iconPath = "";
     /** the TextField where the timers name is entered. */
@@ -42,14 +44,13 @@ public class EditTimer {
     private JLabel txtPath;
     /** the label which shows the color selected by the user. */
     private JLabel txtColor;
-    private JPanel coloursPanel;
-    private JScrollPane coloursScrollPane;
     private JPanel coloursList;
     private JButton addBlinkerTimer;
     private Color timerStartColor;
     private ArrayList<TimerBlink> timerBlinks;
+    boolean adding = false;
 
-    public EditTimer(TimerProperties timer, String title) {
+    public EditTimer(File file, TimerProperties timer, String title) {
         this.timer = timer;
         JFrame frame = new JFrame(title);
         frame.setPreferredSize(new Dimension(390, 450));
@@ -66,6 +67,9 @@ public class EditTimer {
         populateColoursPanel();
         if (timer != null) {
             setTimerProperties();
+        } else {
+            timer = new TimerProperties();
+            adding = true;
         }
 
         //allows you to browse for image
@@ -90,9 +94,8 @@ public class EditTimer {
             }
         });
 
-        addBlinkerTimer.addActionListener(e -> {
-            new EditBlinker(timer, null);
-        });
+        TimerProperties finalTimer = timer;
+        addBlinkerTimer.addActionListener(e -> new EditBlinker(finalTimer, null));
 
         //appends/creates new timer
         saveTimer.addActionListener(e -> {
@@ -101,8 +104,8 @@ public class EditTimer {
                     FileWriter fw = new FileWriter("timers\\"
                             + timerName.getText() + ".json");
                     Gson g = new GsonBuilder().setPrettyPrinting().create();
-                    TimerProperties newTimer = new TimerProperties();
 
+                    TimerProperties newTimer = new TimerProperties();
                     newTimer.setName(timerName.getText());
                     newTimer.setStartColor(timerStartColor);
                     newTimer.setTimerBlinks(timerBlinks);
@@ -117,9 +120,19 @@ public class EditTimer {
                     newTimer.setEnabled(timerEnabled.isSelected());
                     newTimer.setStartBind(Objects.requireNonNull(startBind.getSelectedItem()).toString());
 
-                    fw.write(g.toJson(newTimer));
+                    if (!adding) {
+                        if (file.delete()) {
+                            fw.write(g.toJson(newTimer));
+                            JOptionPane.showMessageDialog(null, "timer updated.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "error updating timer.");
+                        }
+                    } else {
+                        fw.write(g.toJson(newTimer));
+                        JOptionPane.showMessageDialog(null, "timer added.");
+                    }
+
                     fw.close();
-                    JOptionPane.showMessageDialog(null, "timer update.");
                     frame.dispose();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -131,7 +144,7 @@ public class EditTimer {
     }
 
     private void populateColoursPanel() {
-        coloursList.setLayout(new GridLayout(0, 3, 0, 5));
+        coloursList.setLayout(new BoxLayout(coloursList, BoxLayout.Y_AXIS));
         int counter = 1;
         for (TimerBlink blinkColour : timer.getTimerBlinks()) {
             addColour(blinkColour, counter, blinkColour.colour, blinkColour.time, blinkColour.blinkFrequency);
@@ -148,10 +161,18 @@ public class EditTimer {
         infoPanel.add(new JLabel("Blink time: " + time + "s"));
         infoPanel.add(new JLabel("Frequency: " + frequency + "ms"));
 
-        coloursList.add(new JLabel("Blink Colour " + index));
-        coloursList.add(infoPanel);
-        JLabel openSettings = getSettingsCog();
-        coloursList.add(openSettings);
+        ImageIcon settings = new ImageIcon("images\\settings_cog.png");
+        JLabel openSettings = new JLabel(convertImageSize(settings, 16));
+        ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
+        JLabel removeTimer = new JLabel(convertImageSize(removeIcon, 12));
+
+        JPanel blinkerPanel = new JPanel();
+        blinkerPanel.setLayout(new GridLayout(0, 4));
+        blinkerPanel.add(new JLabel("Blink: " + index));
+        blinkerPanel.add(infoPanel);
+        blinkerPanel.add(openSettings);
+        blinkerPanel.add(removeTimer);
+        coloursList.add(blinkerPanel);
 
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
@@ -159,15 +180,30 @@ public class EditTimer {
                 new EditBlinker(timer, timerBlink);
             }
         });
+
+        removeTimer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int answer = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want " + "to delete this timer?",
+                        "Warning", JOptionPane.YES_NO_OPTION);
+
+                if (answer == JOptionPane.YES_OPTION) {
+                    timer.getTimerBlinks().remove(timerBlink);
+                    coloursList.remove(blinkerPanel);
+                    coloursList.updateUI();
+                    JOptionPane.showMessageDialog(null,
+                                "Blinker deleted successfully.");
+                }
+            }
+        });
     }
 
-    public JLabel getSettingsCog() {
-        ImageIcon settings = new ImageIcon("images\\settings_cog.png");
-        Image settingsCog = settings.getImage();
-        Image newSettingsCog = settingsCog.getScaledInstance(16, 16,
+    private ImageIcon convertImageSize(ImageIcon image, int size) {
+        Image imageOfIcon = image.getImage();
+        Image newImage = imageOfIcon.getScaledInstance(size, size,
                 java.awt.Image.SCALE_SMOOTH);
-        settings = new ImageIcon(newSettingsCog);
-        return new JLabel(settings);
+        return new ImageIcon(newImage);
     }
 
     private void setTimerProperties() {

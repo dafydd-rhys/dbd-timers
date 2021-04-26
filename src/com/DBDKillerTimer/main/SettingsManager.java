@@ -133,8 +133,8 @@ public class SettingsManager {
      * @throws Exception if the folder doesn't exist
      */
     private void populateLists(final File[] folder) throws Exception {
-        killerPanel.setLayout(new GridLayout(0, 3, 0, 5));
-        survivorPanel.setLayout(new GridLayout(0, 3, 0, 5));
+        killerPanel.setLayout(new BoxLayout(killerPanel, BoxLayout.Y_AXIS));
+        survivorPanel.setLayout(new BoxLayout(survivorPanel, BoxLayout.Y_AXIS));
 
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
@@ -142,13 +142,13 @@ public class SettingsManager {
             TimerProperties timer = g.fromJson(jsonString, TimerProperties.class);
 
             if (timer.getTimerMode() == TimerProperties.TimerMode.Killer) {
-                createGraphic(killerPanel, timer);
+                createGraphic(file, killerPanel, timer);
             } else {
-                createGraphic(survivorPanel, timer);
+                createGraphic(file, survivorPanel, timer);
             }
         }
-        killerAddTimer.addActionListener(e -> new EditTimer(null, "Add Timer"));
-        survAddTimer.addActionListener(e -> new EditTimer(null, "Add Timer"));
+        killerAddTimer.addActionListener(e -> new EditTimer(null,null, "Add Timer"));
+        survAddTimer.addActionListener(e -> new EditTimer(null,null, "Add Timer"));
     }
 
     /**
@@ -156,30 +156,53 @@ public class SettingsManager {
      * @param panel the panel in which the graphic is added to
      * @param timer the timer being added to the list
      */
-    private void createGraphic(final JPanel panel, TimerProperties timer) {
+    private void createGraphic(final File file, final JPanel panel, TimerProperties timer) {
         ImageIcon icon = new ImageIcon(timer.getIcon());
-        Image image = icon.getImage();
-        Image newImg = image.getScaledInstance(64, 64,
-                java.awt.Image.SCALE_SMOOTH);
-        icon = new ImageIcon(newImg);
-
+        icon = convertImageSize(icon, 64);
         ImageIcon settings = new ImageIcon("images\\settings_cog.png");
-        Image settingsCog = settings.getImage();
-        Image newSettingsCog = settingsCog.getScaledInstance(16, 16,
-                java.awt.Image.SCALE_SMOOTH);
-        settings = new ImageIcon(newSettingsCog);
-        JLabel openSettings = new JLabel(settings);
+        JLabel openSettings = new JLabel(convertImageSize(settings, 16));
+        ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
+        JLabel removeTimer = new JLabel(convertImageSize(removeIcon, 12));
 
-        panel.add(new JLabel(icon));
-        panel.add(new JLabel(timer.getName()));
-        panel.add(openSettings);
+        JPanel timerPanel = new JPanel();
+        timerPanel.setLayout(new GridLayout(0, 4, 10, 10));
+        timerPanel.add(new JLabel(icon));
+        timerPanel.add(new JLabel(timer.getName()));
+        timerPanel.add(openSettings);
+        timerPanel.add(removeTimer);
+        panel.add(timerPanel);
 
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                new EditTimer(timer, "Edit Timer");
+                new EditTimer(file, timer, "Edit Timer");
             }
         });
+
+        removeTimer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int answer = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want " + "to delete this timer?",
+                        "Warning", JOptionPane.YES_NO_OPTION);
+
+                if (answer == JOptionPane.YES_OPTION) {
+                    if (file.delete()) {
+                        panel.remove(timerPanel);
+                        panel.updateUI();
+                        JOptionPane.showMessageDialog(null,
+                                "Timer deleted successfully.");
+                    }
+                }
+            }
+        });
+    }
+
+    private ImageIcon convertImageSize(ImageIcon image, int size) {
+        Image imageOfIcon = image.getImage();
+        Image newImage = imageOfIcon.getScaledInstance(size, size,
+                java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(newImage);
     }
 
     /** populates all of the combo boxes used on the form. */

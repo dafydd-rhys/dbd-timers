@@ -211,7 +211,6 @@ public final class Main extends Canvas {
             dialog.remove(timer.getUIElement());
         }
         timers = new ArrayList<>();
-
         loadTimersFromJSON(getTimerJSONFiles());
 
         dialog.pack();

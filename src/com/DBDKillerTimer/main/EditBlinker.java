@@ -35,21 +35,12 @@ public class EditBlinker {
         if (blinker != null) {
             frame.setTitle("Edit Blinker");
             newBlinker = blinker;
-            freqSlider.setValue(blinker.blinkFrequency);
-            if (freqSlider.getValue() > 0) {
-                blinkEnabled.setSelected(true);
-                freqSlider.setEnabled(true);
-            }
-            startBlink.setSelectedItem(blinker.time);
-            txtColour.setText(newBlinker.colour.getRed() + ", " +
-                    newBlinker.colour.getGreen() + ", " +
-                    newBlinker.colour.getBlue());
+            setProperties();
         } else {
             frame.setTitle("Add Blinker");
             newBlinker = new TimerBlink();
             adding = true;
         }
-
         sliderValue.setText(String.valueOf(freqSlider.getValue()));
         freqSlider.addChangeListener(e -> sliderValue.setText(String.valueOf(freqSlider.getValue())));
 
@@ -86,6 +77,18 @@ public class EditBlinker {
                 JOptionPane.showMessageDialog(null, "cant create blinker.");
             }
         });
+    }
+
+    private void setProperties() {
+        freqSlider.setValue(newBlinker.blinkFrequency);
+        if (freqSlider.getValue() > 0) {
+            blinkEnabled.setSelected(true);
+            freqSlider.setEnabled(true);
+        }
+        startBlink.setSelectedItem(newBlinker.time);
+        txtColour.setText(newBlinker.colour.getRed() + ", " +
+                newBlinker.colour.getGreen() + ", " +
+                newBlinker.colour.getBlue());
     }
 
     private void populateBlinkTime() {
