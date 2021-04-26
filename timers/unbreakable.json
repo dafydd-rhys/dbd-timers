@@ -35,5 +35,5 @@
   "icon": "images/unbreakable.png",
   "timerMode": "Survivor",
   "enabled": true,
-  "startBind": "A"
+  "startBind": "E"
 }

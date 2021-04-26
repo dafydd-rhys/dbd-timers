@@ -1,14 +1,39 @@
 {
-  "name": "Chase",
-  "startTime":0,
-     "startColor":{
-      "value":-1,
-      "falpha":0.0
-   },
-   "timerBlinks": [],
-  "timerType":"CountUp",
+  "name": "Survivor Chase",
+  "startTime": 0,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 1,
+      "blinkFrequency": 500
+    },
+    {
+      "colour": {
+        "value": -26368,
+        "falpha": 0.0
+      },
+      "time": 20,
+      "blinkFrequency": 500
+    },
+    {
+      "colour": {
+        "value": -13369600,
+        "falpha": 0.0
+      },
+      "time": 30,
+      "blinkFrequency": 500
+    }
+  ],
+  "timerType": "CountUp",
   "icon": "images/chase.png",
-  "timerMode":"Survivor",
-  "enabled":true,
-  "startBind":"3"
+  "timerMode": "Survivor",
+  "enabled": true,
+  "startBind": "3"
 }

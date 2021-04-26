@@ -35,5 +35,5 @@
   "icon": "images/generator.png",
   "timerMode": "Survivor",
   "enabled": true,
-  "startBind": "3"
+  "startBind": "4"
 }
