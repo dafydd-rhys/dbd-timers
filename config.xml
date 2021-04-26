@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\out\artifacts\DBDKillerTimer_jar\DBDKillerTimer.jar</jar>
-  <outfile>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\DBDTimer.exe</outfile>
+  <jar>C:\Users\gmaun\Documents\GitHub\DBDTimer\out\artifacts\DBDKillerTimer_jar\DBDKillerTimer.jar</jar>
+  <outfile>C:\Users\gmaun\Documents\GitHub\DBDTimer\DBDTimer.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,7 +13,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\images\icon.ico</icon>
+  <icon>C:\Users\gmaun\Documents\GitHub\DBDTimer\images\icon.ico</icon>
   <singleInstance>
     <mutexName>singleXR3Player</mutexName>
     <windowTitle></windowTitle>
