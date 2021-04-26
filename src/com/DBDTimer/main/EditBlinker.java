@@ -100,13 +100,17 @@ public class EditBlinker {
         initUI(width, height, "Add Blinker");
         this.newBlinker = new TimerBlink();
         chooseColour.addActionListener(e -> {
-            newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
+            if (newBlinker != null) {
+                newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
                         Color.BLACK));
 
-            txtColor.setText("RGB: " + newBlinker.getColour().getRed()
-                     + ", " + newBlinker.getColour().getGreen() + ", "
-                     + newBlinker.getColour().getBlue());
-            rgbVisual.setBackground(newBlinker.getColour());
+                if (newBlinker.getColour() != null) {
+                    txtColor.setText("RGB: " + newBlinker.getColour().getRed()
+                            + ", " + newBlinker.getColour().getGreen() + ", "
+                            + newBlinker.getColour().getBlue());
+                    rgbVisual.setBackground(newBlinker.getColour());
+                }
+            }
         });
 
         saveBlinkerButton.addActionListener(e -> {
