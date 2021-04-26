@@ -1,6 +1,7 @@
 package com.DBDTimer.main;
 
 import java.awt.Font;
+import java.awt.Color;
 
 /**
  * Settings.java.
@@ -22,6 +23,8 @@ public class Settings {
     private String hideBind;
     /** represents the position of the timers. */
     private int[] windowPosition;
+    /** represents the inactive color of the timers. */
+    private Color inactiveColor;
 
     /**
      * this method simply sets the font settings.
@@ -101,5 +104,13 @@ public class Settings {
      */
     public int[] getWindowPosition() {
         return windowPosition;
+    }
+
+    public void setInactiveColor(Color inactiveColor) {
+        this.inactiveColor = inactiveColor;
+    }
+
+    public Color getInactiveColor() {
+        return inactiveColor;
     }
 }

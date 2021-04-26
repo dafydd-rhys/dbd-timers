@@ -12,17 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JComboBox;
-import javax.swing.JTabbedPane;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JSlider;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -83,10 +73,13 @@ public class SettingsManager {
     private JComboBox<Character> restartBindBox;
     /** combo box showing all possible hide bind buttons. */
     private JComboBox<Character> hideBindBox;
+    private JButton chooseInactiveColour;
+    private JLabel txtColor;
     /** the width of the frame. */
     private final int width = 450;
     /** the height of the frame. */
     private final int height = 550;
+    private Color inactiveColor;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -121,6 +114,14 @@ public class SettingsManager {
         }
         populateComboBoxes();
 
+        chooseInactiveColour.addActionListener(e -> {
+            inactiveColor = JColorChooser.showDialog(null, "Pick a Color",
+                    Color.BLACK);
+            txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
+                    + inactiveColor.getGreen() + ", "
+                    + inactiveColor.getBlue());
+        });
+
         saveCustomSettings.addActionListener(e -> {
             try {
                 FileWriter fw = new FileWriter("customization\\config.json");
@@ -138,6 +139,7 @@ public class SettingsManager {
                         getSelectedItem()).toString());
                 settings.setHideBind(Objects.requireNonNull(hideBindBox.
                         getSelectedItem()).toString());
+                settings.setInactiveColor(inactiveColor);
                 fw.write(g.toJson(settings));
                 fw.close();
                 JOptionPane.showMessageDialog(null,
@@ -269,6 +271,10 @@ public class SettingsManager {
         hideBindBox.setSelectedItem(settings.getHideBind().charAt(0));
         iconSlider.setValue(settings.getIconSize());
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
+        inactiveColor = settings.getInactiveColor();
+        txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
+                + inactiveColor.getGreen() + ", "
+                + inactiveColor.getBlue());
     }
 
     /** populates the combo box including fonts. */

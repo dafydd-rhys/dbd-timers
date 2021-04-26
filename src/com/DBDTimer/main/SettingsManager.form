@@ -115,6 +115,10 @@
             <rowspec value="center:max(d;4px):noGrow"/>
             <rowspec value="top:6dlu:noGrow"/>
             <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
             <rowspec value="top:125dlu:noGrow"/>
             <colspec value="fill:41px:noGrow"/>
             <colspec value="left:4dlu:noGrow"/>
@@ -218,7 +222,7 @@
                   <forms defaultalign-horz="false"/>
                 </constraints>
                 <properties>
-                  <text value="112"/>
+                  <text value=""/>
                 </properties>
               </component>
               <component id="84f01" class="javax.swing.JLabel" binding="restartBind">
@@ -271,7 +275,7 @@
               </vspacer>
               <component id="8101" class="javax.swing.JButton" binding="saveCustomSettings">
                 <constraints>
-                  <grid row="14" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="18" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
                   <forms top="0" left="0" bottom="130" right="70" defaultalign-vert="false"/>
                 </constraints>
                 <properties>
@@ -281,6 +285,37 @@
                   <minimumSize width="50" height="30"/>
                   <preferredSize width="120" height="30"/>
                   <text value="Save"/>
+                </properties>
+              </component>
+              <component id="2d45" class="javax.swing.JButton" binding="chooseInactiveColour">
+                <constraints>
+                  <grid row="16" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <text value="Choose Colour"/>
+                </properties>
+              </component>
+              <component id="71cdf" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Inactive Colour"/>
+                </properties>
+              </component>
+              <component id="9e6c7" class="javax.swing.JLabel" binding="txtColor">
+                <constraints>
+                  <grid row="15" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>
