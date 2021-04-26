@@ -106,10 +106,18 @@ public class Settings {
         return windowPosition;
     }
 
-    public void setInactiveColour(Color inactiveColour) {
-        this.inactiveColour = inactiveColour;
+    /**
+     * sets the inactive colour.
+     * @param newInactiveColour the new inactive colour
+     */
+    public void setInactiveColour(final Color newInactiveColour) {
+        this.inactiveColour = newInactiveColour;
     }
 
+    /**
+     * gets the inactive colour.
+     * @return returns the inactive colour
+     */
     public Color getInactiveColour() {
         return inactiveColour;
     }

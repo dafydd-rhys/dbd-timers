@@ -13,7 +13,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.JTabbedPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JSlider;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -74,12 +85,15 @@ public class SettingsManager {
     private JComboBox<Character> restartBindBox;
     /** combo box showing all possible hide bind buttons. */
     private JComboBox<Character> hideBindBox;
+    /** button which allows the user to choose inactive colour. */
     private JButton chooseInactiveColour;
+    /** the inactive colour of the timer visualised. */
     private JLabel txtColor;
     /** the width of the frame. */
     private final int width = 450;
     /** the height of the frame. */
     private final int height = 550;
+    /** the inactive colour of the timer. */
     private Color inactiveColor;
 
     /** this method creates a new settings manager form
