@@ -133,12 +133,14 @@ public class EditTimer {
         });
 
         chooseColour.addActionListener(e -> {
-            timerStartColor = JColorChooser.showDialog(null, "Pick a Colour",
-                    Color.BLACK);
-            txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
-                    + timerStartColor.getGreen() + ", "
-                    + timerStartColor.getBlue());
-            rgbVisual.setBackground(timerStartColor);
+            timerStartColor = JColorChooser.showDialog(null,
+                    "Pick a Colour", Color.BLACK);
+            if (timerStartColor != null) {
+                txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
+                        + timerStartColor.getGreen() + ", "
+                        + timerStartColor.getBlue());
+                rgbVisual.setBackground(timerStartColor);
+            }
         });
 
         addBlinkerTimer.addActionListener(e -> new EditBlinker().addBlinker(

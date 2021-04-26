@@ -1,14 +1,39 @@
 {
   "name": "Unbreakable",
-  "startTime":20,
-     "startColor":{
-      "value":-1,
-      "falpha":0.0
-   },
-   "timerBlinks": [],
-  "timerType":"CountDown",
+  "startTime": 20,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 20,
+      "blinkFrequency": 500
+    },
+    {
+      "colour": {
+        "value": -13312,
+        "falpha": 0.0
+      },
+      "time": 10,
+      "blinkFrequency": 500
+    },
+    {
+      "colour": {
+        "value": -13369600,
+        "falpha": 0.0
+      },
+      "time": 5,
+      "blinkFrequency": 500
+    }
+  ],
+  "timerType": "CountDown",
   "icon": "images/unbreakable.png",
-  "timerMode":"Survivor",
-  "enabled":true,
-  "startBind":"e"
+  "timerMode": "Survivor",
+  "enabled": true,
+  "startBind": "E"
 }
