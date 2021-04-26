@@ -1,6 +1,6 @@
 {
-  "name": "Unbreakable",
-  "startTime": 20,
+  "name": "Chase",
+  "startTime": 0,
   "startColor": {
     "value": -1,
     "falpha": 0.0
@@ -11,15 +11,15 @@
         "value": -65536,
         "falpha": 0.0
       },
-      "time": 20,
+      "time": 1,
       "blinkFrequency": 500
     },
     {
       "colour": {
-        "value": -13312,
+        "value": -26368,
         "falpha": 0.0
       },
-      "time": 10,
+      "time": 20,
       "blinkFrequency": 500
     },
     {
@@ -27,13 +27,13 @@
         "value": -13369600,
         "falpha": 0.0
       },
-      "time": 5,
+      "time": 30,
       "blinkFrequency": 500
     }
   ],
-  "timerType": "CountDown",
-  "icon": "images/unbreakable.png",
+  "timerType": "CountUp",
+  "icon": "images/chase.png",
   "timerMode": "Survivor",
   "enabled": true,
-  "startBind": "A"
+  "startBind": "3"
 }
