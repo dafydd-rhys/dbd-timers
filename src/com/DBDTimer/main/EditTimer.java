@@ -1,6 +1,8 @@
 package com.DBDTimer.main;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -12,69 +14,117 @@ import javax.swing.*;
 
 /**
  * EditTimer.java.
+ *
+ * @author Dafydd-Rhys Maund
+ * @author Morgan Gardner.
  * @version 1.0.0
  * This class simply allows the user to edit the timers,
  * they can change any property of a timer, the timer will
  * then be created/appended to the folder.
- * @author Dafydd-Rhys Maund
- * @author Morgan Gardner.
  */
-public class EditTimer {
+public class EditTimer
+{
 
-    /** unused GUI elements. */
+    /**
+     * unused GUI elements.
+     */
     private JPanel mainPanel;
-    /** unused GUI elements. */
+    /**
+     * unused GUI elements.
+     */
     private JPanel timerPanel;
-    /** unused GUI elements. */
+    /**
+     * unused GUI elements.
+     */
     private JPanel coloursPanel;
-    /** unused GUI elements. */
+    /**
+     * unused GUI elements.
+     */
     private JScrollPane coloursScrollPane;
-    /** the properties of the current timer. */
-    private TimerProperties timer;
-    /** the tabbed pane displaying the properties of this timer. */
+    /**
+     * the properties of the current timer.
+     */
+    private final TimerProperties timer;
+    /**
+     * the tabbed pane displaying the properties of this timer.
+     */
     private JTabbedPane timerProperties;
-    /** the path of the icons image. */
+    /**
+     * the path of the icons image.
+     */
     private String iconPath = "";
-    /** the TextField where the timers name is entered. */
+    /**
+     * the TextField where the timers name is entered.
+     */
     private JTextField timerName;
-    /** the combo box including all timer types. */
+    /**
+     * the combo box including all timer types.
+     */
     private JComboBox<TimerProperties.TimerType> timerTypeBox;
-    /** the combo box including all timers modes. */
+    /**
+     * the combo box including all timers modes.
+     */
     private JComboBox<TimerProperties.TimerMode> timerModeBox;
-    /** the combo box including all possible starting times. */
+    /**
+     * the combo box including all possible starting times.
+     */
     private JComboBox<Integer> startTime;
-    /** the combo box including all the possible binds. */
+    /**
+     * the combo box including all the possible binds.
+     */
     private JComboBox<Character> startBind;
-    /** the button used to point to image. */
+    /**
+     * the button used to point to image.
+     */
     private JButton browseButton;
-    /** the button used to open a colour chooser. */
+    /**
+     * the button used to open a colour chooser.
+     */
     private JButton chooseColour;
-    /** the button to save the timer. */
+    /**
+     * the button to save the timer.
+     */
     private JButton saveTimer;
-    /** the path of the icons image. */
+    /**
+     * the path of the icons image.
+     */
     private JCheckBox timerEnabled;
-    /** the label which shows the path of the selected image. */
+    /**
+     * the label which shows the path of the selected image.
+     */
     private JLabel txtPath;
-    /** the label which shows the color selected by the user. */
+    /**
+     * the label which shows the color selected by the user.
+     */
     private JLabel txtColor;
-    /** the panels displaying all colour blinkers. */
+    /**
+     * the panels displaying all colour blinkers.
+     */
     private JPanel coloursList;
-    /** button to initiate adding a blinker. */
+    /**
+     * button to initiate adding a blinker.
+     */
     private JButton addBlinkerTimer;
-    /** colour representing the starting colour of this clock. */
+    /**
+     * colour representing the starting colour of this clock.
+     */
     private Color timerStartColor;
-    /** ArrayList containing all blinkers for this timer. */
+    /**
+     * ArrayList containing all blinkers for this timer.
+     */
     private ArrayList<TimerBlink> timerBlinks;
 
     /**
      * this method is a host for all functionality allowing users to edit
      * this timer, they can add, remove blinkers etc.
-     * @param file the file containing the timers properties
+     *
+     * @param file       the file containing the timers properties
      * @param properties the properties of the timer
-     * @param title the title for the frame
+     * @param title      the title for the frame
      */
     public EditTimer(final File file, TimerProperties properties,
-                     final String title) {
+                     final String title)
+    {
         this.timer = properties;
         JFrame frame = new JFrame(title);
         frame.setPreferredSize(new Dimension(390, 450));
@@ -88,34 +138,36 @@ public class EditTimer {
         frame.setVisible(true);
 
         populateComboBoxes();
-        if (properties != null) {
+        if (properties != null)
+        {
             populateColoursPanel();
             setTimerProperties();
         }
 
-        browseButton.addActionListener(e -> {
+        browseButton.addActionListener(e ->
+        {
             FileDialog fd = new FileDialog(new JFrame());
             fd.setVisible(true);
             File[] f = fd.getFiles();
-            if (f.length > 0) {
+            if (f.length > 0)
+            {
                 iconPath = fd.getFiles()[0].getAbsolutePath();
                 txtPath.setText(fd.getFiles()[0].getName());
             }
         });
 
-        chooseColour.addActionListener(e -> {
+        chooseColour.addActionListener(e ->
+        {
             timerStartColor = JColorChooser.showDialog(null, "Pick a Color",
                     Color.BLACK);
-            if (timerStartColor != null) {
-                txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
-                        + timerStartColor.getGreen() + ", "
-                        + timerStartColor.getBlue());
-            }
+            txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
+                    + timerStartColor.getGreen() + ", "
+                    + timerStartColor.getBlue());
         });
 
         TimerProperties finalProperties = properties;
-        addBlinkerTimer.addActionListener(e -> new EditBlinker(
-                finalProperties, null));
+        addBlinkerTimer.addActionListener(e -> new EditBlinker().addBlinker(
+                finalProperties));
 
         saveTimer.addActionListener(e -> {
             if (!iconPath.equals("") && timerStartColor != null) {
@@ -144,7 +196,7 @@ public class EditTimer {
                     newTimer.setStartBind(Objects.requireNonNull(
                             startBind.getSelectedItem()).toString());
 
-                    fw.write(g.toJson(timer));
+                    fw.write(g.toJson(newTimer));
                     //create new timer
                     if (timer == null) {
                         JOptionPane.showMessageDialog(null, "Added timer");
@@ -154,7 +206,8 @@ public class EditTimer {
 
                     fw.close();
                     frame.dispose();
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else {
@@ -163,12 +216,17 @@ public class EditTimer {
         });
     }
 
-    /** this method simply populates the panel with all blinkers. */
-    private void populateColoursPanel() {
+    /**
+     * this method simply populates the panel with all blinkers.
+     */
+    private void populateColoursPanel()
+    {
         coloursList.setLayout(new BoxLayout(coloursList, BoxLayout.Y_AXIS));
-        if (timer.getTimerBlinks() != null) {
+        if (timer.getTimerBlinks() != null)
+        {
             int counter = 1;
-            for (TimerBlink blinkColour : timer.getTimerBlinks()) {
+            for (TimerBlink blinkColour : timer.getTimerBlinks())
+            {
                 addColour(blinkColour, counter, blinkColour.getColour(),
                         blinkColour.getTime(), blinkColour.getBlinkFrequency());
                 counter++;
@@ -178,17 +236,19 @@ public class EditTimer {
 
     /**
      * This method simply adds all blinkers for this timer.
+     *
      * @param timerBlink the blinker being referred to
-     * @param index the current blinker
+     * @param index      the current blinker
      * @param timerColor the current colour of the timer
-     * @param time the time the blinker instantiates
-     * @param frequency the speed at which the blinker blinks
+     * @param time       the time the blinker instantiates
+     * @param frequency  the speed at which the blinker blinks
      */
     private void addColour(final TimerBlink timerBlink,
                            final int index,
                            final Color timerColor,
                            final int time,
-                           final int frequency) {
+                           final int frequency)
+    {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(3, 0));
         infoPanel.add(new JLabel("RGB: " + timerColor.getRed() + ", "
@@ -209,26 +269,31 @@ public class EditTimer {
         blinkerPanel.add(removeTimer);
         coloursList.add(blinkerPanel);
 
-        openSettings.addMouseListener(new MouseAdapter() {
+        openSettings.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mousePressed(final MouseEvent e) {
-                new EditBlinker(timer, timerBlink);
+            public void mousePressed(final MouseEvent e)
+            {
+                TimerBlink editedTimerBlink = new EditBlinker().editBlinker(timer, timerBlink);
             }
         });
 
-        removeTimer.addMouseListener(new MouseAdapter() {
+        removeTimer.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mousePressed(final MouseEvent e) {
+            public void mousePressed(final MouseEvent e)
+            {
                 int answer = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want " + "to delete this timer?",
                         "Warning", JOptionPane.YES_NO_OPTION);
 
-                if (answer == JOptionPane.YES_OPTION) {
+                if (answer == JOptionPane.YES_OPTION)
+                {
                     timer.getTimerBlinks().remove(timerBlink);
                     coloursList.remove(blinkerPanel);
                     coloursList.updateUI();
                     JOptionPane.showMessageDialog(null,
-                                "Blinker deleted successfully.");
+                            "Blinker deleted successfully.");
                 }
             }
         });
@@ -236,19 +301,24 @@ public class EditTimer {
 
     /**
      * this method converts images to different sizes.
+     *
      * @param image the image that wants to be converted
-     * @param size the size in which the images wants to be resized to.
+     * @param size  the size in which the images wants to be resized to.
      * @return returns the resized image.
      */
-    private ImageIcon convertImageSize(final ImageIcon image, final int size) {
+    private ImageIcon convertImageSize(final ImageIcon image, final int size)
+    {
         Image imageOfIcon = image.getImage();
         Image newImage = imageOfIcon.getScaledInstance(size, size,
                 java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(newImage);
     }
 
-    /** sets all properties for this timer. */
-    private void setTimerProperties() {
+    /**
+     * sets all properties for this timer.
+     */
+    private void setTimerProperties()
+    {
         timerName.setText(timer.getName());
         iconPath = timer.getIcon();
         timerTypeBox.setSelectedItem(timer.getTimerType());
@@ -265,43 +335,61 @@ public class EditTimer {
                 + ", " + timer.getStartColor().getBlue());
     }
 
-    /** populates all combo boxes in this GUI. */
-    private void populateComboBoxes() {
+    /**
+     * populates all combo boxes in this GUI.
+     */
+    private void populateComboBoxes()
+    {
         populateTimerTypeBox();
         populateTimerModeBox();
         populateStartBind();
         populateStartTime();
     }
 
-    /** populates the combo box including timer types. */
-    private void populateTimerTypeBox() {
+    /**
+     * populates the combo box including timer types.
+     */
+    private void populateTimerTypeBox()
+    {
         timerTypeBox.addItem(TimerProperties.TimerType.CountUp);
         timerTypeBox.addItem(TimerProperties.TimerType.CountDown);
         startTime.setEnabled(false);
         timerTypeBox.addActionListener(e -> startTime.setEnabled(
                 Objects.requireNonNull(timerTypeBox.
-                getSelectedItem()).toString().equals("CountDown")));
+                        getSelectedItem()).toString().equals("CountDown")));
     }
 
-    /** populates the combo box including timer modes. */
-    private void populateTimerModeBox() {
+    /**
+     * populates the combo box including timer modes.
+     */
+    private void populateTimerModeBox()
+    {
         timerModeBox.addItem(TimerProperties.TimerMode.Killer);
         timerModeBox.addItem(TimerProperties.TimerMode.Survivor);
     }
 
-    /** populates the combo box including start timer binds. */
-    private void populateStartBind() {
-        for (char c = 'A'; c <= 'Z'; ++c) {
+    /**
+     * populates the combo box including start timer binds.
+     */
+    private void populateStartBind()
+    {
+        for (char c = 'A'; c <= 'Z'; ++c)
+        {
             startBind.addItem(c);
         }
-        for (char num = 48; num <= 57; ++num) {
+        for (char num = 48; num <= 57; ++num)
+        {
             startBind.addItem(num);
         }
     }
 
-    /** populates the combo box including timer start times. */
-    private void populateStartTime() {
-        for (int num = 1; num <= 180; ++num) {
+    /**
+     * populates the combo box including timer start times.
+     */
+    private void populateStartTime()
+    {
+        for (int num = 1; num <= 180; ++num)
+        {
             startTime.addItem(num);
         }
     }
