@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.DBDKillerTimer.main.Main
+Main-Class: com.DBDTimer.main.Main
 

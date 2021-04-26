@@ -19,7 +19,7 @@
     <windowTitle></windowTitle>
   </singleInstance>
   <classPath>
-    <mainClass>com.DBDKillerTimer.main.Main</mainClass>
+    <mainClass>com.DBDTimer.main.Main</mainClass>
     <cp>lib/gson-2.8.6.jar</cp>
     <cp>lib/jgoodies.jar</cp>
     <cp>lib/jnativehook-2.1.0.jar</cp>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DBDKillerTimer.iml" filepath="$PROJECT_DIR$/DBDKillerTimer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBDTimer.iml" filepath="$PROJECT_DIR$/DBDTimer.iml" />
     </modules>
   </component>
 </project>
