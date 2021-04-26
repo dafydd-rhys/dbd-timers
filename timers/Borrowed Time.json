@@ -13,6 +13,14 @@
       },
       "time": 15,
       "blinkFrequency": 500
+    },
+    {
+      "colour": {
+        "value": -13369549,
+        "falpha": 0.0
+      },
+      "time": 10,
+      "blinkFrequency": 100
     }
   ],
   "timerType": "CountDown",

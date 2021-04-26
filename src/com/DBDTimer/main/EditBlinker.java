@@ -35,9 +35,9 @@ public class EditBlinker {
     /** the label representing the currently chosen colour. */
     private JLabel txtColour;
     /** the new blinker created by the user. */
-    private final TimerBlink newBlinker;
-    /** whether the user is adding or editing. */
-    private boolean adding = false;
+    private TimerBlink newBlinker;
+
+    private TimerProperties timer;
 
     /**
      * hub for all the main functionality, adding, editing blinkers etc.
@@ -45,6 +45,7 @@ public class EditBlinker {
      * @param blinker the blinker that could possibly getting edited
      */
     public EditBlinker(final TimerProperties timer, final TimerBlink blinker) {
+        this.timer = timer;
         JFrame frame = new JFrame("Add Blinker");
         frame.setPreferredSize(new Dimension(390, 450));
         frame.setMaximumSize(new Dimension(390, 450));
@@ -57,14 +58,14 @@ public class EditBlinker {
         frame.setVisible(true);
         populateBlinkTime();
 
+        //editing existing blinker
         if (blinker != null) {
             frame.setTitle("Edit Blinker");
             newBlinker = blinker;
             setProperties();
         } else {
+            //create new blinker
             frame.setTitle("Add Blinker");
-            newBlinker = new TimerBlink();
-            adding = true;
         }
         sliderValue.setText(String.valueOf(freqSlider.getValue()));
 
@@ -84,21 +85,21 @@ public class EditBlinker {
         });
 
         saveBlinkerButton.addActionListener(e -> {
-            if (newBlinker.getColour() != null) {
-                try {
-                    newBlinker.setBlinkFrequency(freqSlider.getValue());
-                    newBlinker.setTime((int) (Objects.requireNonNull(
-                            startBlink.getSelectedItem())));
-                    if (adding) {
-                        timer.getTimerBlinks().add(newBlinker);
+                if (newBlinker.getColour() != null) {
+                    if (newBlinker == null) {
+                    try {
+                        newBlinker.setBlinkFrequency(freqSlider.getValue());
+                        newBlinker.setTime((int) (Objects.requireNonNull(startBlink.getSelectedItem())));
+
+                        JOptionPane.showMessageDialog(null, "Blinker Created");
+                        frame.dispose();
                     }
-                    JOptionPane.showMessageDialog(null, "blinker created.");
-                    frame.dispose();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please fill in all required properties");
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "cant create blinker.");
             }
         });
     }

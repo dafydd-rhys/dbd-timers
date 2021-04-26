@@ -30,7 +30,7 @@ public class EditTimer {
     /** unused GUI elements. */
     private JScrollPane coloursScrollPane;
     /** the properties of the current timer. */
-    private final TimerProperties timer;
+    private TimerProperties timer;
     /** the tabbed pane displaying the properties of this timer. */
     private JTabbedPane timerProperties;
     /** the path of the icons image. */
@@ -65,8 +65,6 @@ public class EditTimer {
     private Color timerStartColor;
     /** ArrayList containing all blinkers for this timer. */
     private ArrayList<TimerBlink> timerBlinks;
-    /** whether the user is adding or editing a timer. */
-    private boolean adding = false;
 
     /**
      * this method is a host for all functionality allowing users to edit
@@ -90,12 +88,9 @@ public class EditTimer {
         frame.setVisible(true);
 
         populateComboBoxes();
-        populateColoursPanel();
         if (properties != null) {
+            populateColoursPanel();
             setTimerProperties();
-        } else {
-            properties = new TimerProperties();
-            adding = true;
         }
 
         browseButton.addActionListener(e -> {
@@ -149,24 +144,21 @@ public class EditTimer {
                     newTimer.setStartBind(Objects.requireNonNull(
                             startBind.getSelectedItem()).toString());
 
-                    if (!adding) {
-                        if (file.delete()) {
-                            fw.write(g.toJson(newTimer));
-                            JOptionPane.showMessageDialog(null, "Updated.");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error.");
-                        }
+                    fw.write(g.toJson(timer));
+                    //create new timer
+                    if (timer == null) {
+                        JOptionPane.showMessageDialog(null, "Added timer");
                     } else {
-                        fw.write(g.toJson(newTimer));
-                        JOptionPane.showMessageDialog(null, "Added.");
+                        JOptionPane.showMessageDialog(null, "Updated timer");
                     }
+
                     fw.close();
                     frame.dispose();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Error.");
+                JOptionPane.showMessageDialog(null, "Please fill in all required properties");
             }
         });
     }
@@ -174,11 +166,13 @@ public class EditTimer {
     /** this method simply populates the panel with all blinkers. */
     private void populateColoursPanel() {
         coloursList.setLayout(new BoxLayout(coloursList, BoxLayout.Y_AXIS));
-        int counter = 1;
-        for (TimerBlink blinkColour : timer.getTimerBlinks()) {
-            addColour(blinkColour, counter, blinkColour.getColour(),
-                    blinkColour.getTime(), blinkColour.getBlinkFrequency());
-            counter++;
+        if (timer.getTimerBlinks() != null) {
+            int counter = 1;
+            for (TimerBlink blinkColour : timer.getTimerBlinks()) {
+                addColour(blinkColour, counter, blinkColour.getColour(),
+                        blinkColour.getTime(), blinkColour.getBlinkFrequency());
+                counter++;
+            }
         }
     }
 
@@ -190,8 +184,10 @@ public class EditTimer {
      * @param time the time the blinker instantiates
      * @param frequency the speed at which the blinker blinks
      */
-    private void addColour(final TimerBlink timerBlink, final int index,
-                           final Color timerColor, final int time,
+    private void addColour(final TimerBlink timerBlink,
+                           final int index,
+                           final Color timerColor,
+                           final int time,
                            final int frequency) {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(3, 0));
@@ -262,7 +258,8 @@ public class EditTimer {
         startBind.setSelectedItem(timer.getStartBind().charAt(0));
         timerModeBox.setSelectedItem(timer.getTimerMode());
         timerEnabled.setSelected(timer.isEnabled());
-        txtPath.setText(timer.getIcon());
+        String[] pathFolders = timer.getIcon().split("\\\\");
+        txtPath.setText(pathFolders[pathFolders.length - 1]);
         txtColor.setText(timer.getStartColor().getRed() + ", "
                 + timer.getStartColor().getGreen()
                 + ", " + timer.getStartColor().getBlue());

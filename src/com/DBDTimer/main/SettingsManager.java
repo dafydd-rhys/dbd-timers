@@ -73,9 +73,9 @@ public class SettingsManager {
      */
     public SettingsManager(final Main main) {
         JFrame frame = new JFrame("Settings Manager");
-        frame.setPreferredSize(new Dimension(390, 450));
-        frame.setMaximumSize(new Dimension(390, 450));
-        frame.setMinimumSize(new Dimension(390, 450));
+        frame.setPreferredSize(new Dimension(450, 550));
+        frame.setMaximumSize(new Dimension(450, 550));
+        frame.setMinimumSize(new Dimension(450, 550));
         frame.setContentPane(mainTabPain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
@@ -150,7 +150,9 @@ public class SettingsManager {
      */
     private void populateLists(final File[] folder) throws Exception {
         killerPanel.setLayout(new BoxLayout(killerPanel, BoxLayout.Y_AXIS));
+        killerPanel.setBackground(new Color(225,225,225));
         survivorPanel.setLayout(new BoxLayout(survivorPanel, BoxLayout.Y_AXIS));
+        survivorPanel.setBackground(new Color(225,225,225));
 
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
@@ -176,17 +178,24 @@ public class SettingsManager {
      * @param timer the timer being added to the list
      * @param file the file the data was retrieved from
      */
-    private void createGraphic(final File file, final JPanel panel,
+    private void createGraphic(final File file,
+                               final JPanel panel,
                                final TimerProperties timer) {
         ImageIcon icon = new ImageIcon(timer.getIcon());
         icon = convertImageSize(icon, 64);
         ImageIcon settingsIcon = new ImageIcon("images\\settings_cog.png");
-        JLabel openSettings = new JLabel(convertImageSize(settingsIcon, 16));
+        JButton openSettings = new JButton(convertImageSize(settingsIcon, 16));
+        openSettings.setMaximumSize(new Dimension(16, 16));
         ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
-        JLabel removeTimer = new JLabel(convertImageSize(removeIcon, 12));
+        JButton removeTimer = new JButton(convertImageSize(removeIcon, 12));
+        removeTimer.setMaximumSize(new Dimension(16, 16));
 
         JPanel timerPanel = new JPanel();
-        timerPanel.setLayout(new GridLayout(0, 4, 10, 10));
+        timerPanel.setLayout(new GridLayout(0, 4));
+        timerPanel.setPreferredSize(new Dimension(panel.getWidth() - 17, 80));
+        timerPanel.setMinimumSize(new Dimension(panel.getWidth() - 17, 80));
+        timerPanel.setMaximumSize(new Dimension(panel.getWidth() - 17, 80));
+        timerPanel.setBackground(new Color(225,225,225));
         timerPanel.add(new JLabel(icon));
         timerPanel.add(new JLabel(timer.getName()));
         timerPanel.add(openSettings);
@@ -204,7 +213,7 @@ public class SettingsManager {
             @Override
             public void mousePressed(final MouseEvent e) {
                 int answer = JOptionPane.showConfirmDialog(null,
-                        "Are you sure you want " + "to delete this timer?",
+                        "Are you sure you want to delete this timer?",
                         "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (answer == JOptionPane.YES_OPTION) {
