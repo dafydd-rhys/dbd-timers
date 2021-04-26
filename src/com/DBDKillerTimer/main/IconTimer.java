@@ -21,16 +21,17 @@ public class IconTimer {
     private boolean notRunning = true;
     /** representation of the full time. */
     private JLabel timeLabel;
-    /** Timer properties object */
+    /** Timer properties object. */
     private TimerProperties properties;
     /** the elapsed time of this timer. */
     private long elapsedTime;
     /** amount of millis in a second. */
     private final int milliseconds = 1000;
-    /** Time formatter for the current time */
+    /** Time formatter for the current time. */
     private SimpleDateFormat dateFormat;
-
+    /** the blinker timer. */
     private final Timer blinkTimer;
+    /** the colour the blinker will flash. */
     private Color blinkColour;
 
     /** the enums to separate different timer types. */
@@ -47,16 +48,16 @@ public class IconTimer {
 
     /**
      * This simply sets the properties of the timers and adds them to the panel.
-     * @param properties the properties of the timer.
+     * @param timerProperties the properties of the timer.
      */
-    public IconTimer(final TimerProperties properties) {
-        this.properties = properties;
+    public IconTimer(final TimerProperties timerProperties) {
+        this.properties = timerProperties;
 
         dateFormat = new SimpleDateFormat("mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         this.elapsedTime = properties.getStartTime() * 1000L;
 
-        blinkTimer = new Timer(1000, f -> {
+        blinkTimer = new Timer(milliseconds, f -> {
             if (timeLabel.getForeground() == properties.getStartColor()) {
                 timeLabel.setForeground(blinkColour);
             } else {
@@ -71,23 +72,26 @@ public class IconTimer {
         }
 
         Image image = new ImageIcon(properties.getIcon()).getImage();
-        Image newImg = image.getScaledInstance(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize,
-                java.awt.Image.SCALE_SMOOTH);
+        Image newImg = image.getScaledInstance(SettingsManager.getSettings().
+                        getIconSize(), SettingsManager.getSettings()
+                .getIconSize(), java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
         JLabel timerIcon = new JLabel(icon);
         timerIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         hostPanel = new JPanel();
         hostPanel.setLayout(new BoxLayout(hostPanel, BoxLayout.Y_AXIS));
-        hostPanel.setPreferredSize(new Dimension(SettingsManager.settings.iconSize, SettingsManager.settings.iconSize + 30));
+        hostPanel.setPreferredSize(new Dimension(SettingsManager.
+                getSettings().getIconSize(), SettingsManager.
+                getSettings().getIconSize() + 30));
         hostPanel.setOpaque(false);
 
         timeLabel = new JLabel(getCurrentTime());
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         timeLabel.setForeground(properties.getStartColor());
-        timeLabel.setBounds(0, 0, SettingsManager.settings.iconSize, 30);
-        timeLabel.setFont(SettingsManager.settings.getFont());
-
+        timeLabel.setBounds(0, 0, SettingsManager.getSettings().
+                getIconSize(), 30);
+        timeLabel.setFont(SettingsManager.getSettings().getFont());
         hostPanel.add(timerIcon);
         hostPanel.add(timeLabel);
     }
@@ -120,16 +124,15 @@ public class IconTimer {
         } else {
             elapsedTime += milliseconds;
         }
-
         Date date = new Date(elapsedTime);
 
         ArrayList<TimerBlink> timerBlinks = properties.getTimerBlinks();
-        if(timerBlinks != null) {
+        if (timerBlinks != null) {
             for (TimerBlink timerBlink : timerBlinks) {
-                if ((date.getTime() / 1000) == timerBlink.time) {
-                    if (timerBlink.blinkFrequency != 0) {
-                        this.blinkColour = timerBlink.colour;
-                        restartTimer(timerBlink.blinkFrequency);
+                if ((date.getTime() / 1000) == timerBlink.getTime()) {
+                    if (timerBlink.getBlinkFrequency() != 0) {
+                        this.blinkColour = timerBlink.getColour();
+                        restartTimer(timerBlink.getBlinkFrequency());
                     }
                 }
             }
@@ -138,17 +141,17 @@ public class IconTimer {
     });
 
     /**
-     * Restart blink timer with new delay
+     * Restart blink timer with new delay.
      * @param delay millis to wait between ticks
      */
-    private void restartTimer(int delay) {
+    private void restartTimer(final int delay) {
         blinkTimer.stop();
         blinkTimer.setDelay(delay);
         blinkTimer.start();
     }
 
     /**
-     * Stop blink timer (used for main timer resets)
+     * Stop blink timer (used for main timer resets).
      */
     private void stopTimer() {
         blinkTimer.stop();
@@ -156,7 +159,7 @@ public class IconTimer {
     }
 
     /**
-     * Get current time formatted as 'mm:ss'
+     * Get current time formatted as 'mm:ss'.
      * @return Current timer time
      */
     private String getCurrentTime() {

@@ -31,7 +31,7 @@ public final class TimerProperties {
     private int startTime;
     /** represents the timers start colour.*/
     private Color startColor;
-    /** represents the timer text colour changes */
+    /** represents the timer text colour changes. */
     private ArrayList<TimerBlink> timerBlinks;
     /** represents the timers type.*/
     private TimerType timerType;
@@ -94,10 +94,10 @@ public final class TimerProperties {
 
     /**
      * sets the timers blinks.
-     * @param timerBlinks the blink colours of the timer
+     * @param blinks the blink colours of the timer
      */
-    public void setTimerBlinks(final ArrayList<TimerBlink> timerBlinks) {
-        this.timerBlinks = timerBlinks;
+    public void setTimerBlinks(final ArrayList<TimerBlink> blinks) {
+        this.timerBlinks = blinks;
     }
 
     /**

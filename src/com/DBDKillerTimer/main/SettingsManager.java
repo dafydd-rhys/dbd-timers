@@ -26,11 +26,18 @@ public class SettingsManager {
 
     /** unused elements of the form. */
     private JPanel mainPanel;
+    /** unused elements of the form. */
     private JScrollPane survivorPane;
+    /** unused elements of the form. */
     private JScrollPane killerPane;
+    /** unused elements of the form. */
     private JPanel killerTimerList;
+    /** unused elements of the form. */
     private JPanel survivorTimerList;
-
+    /** unused elements of the form. */
+    private JLabel restartBind;
+    /** unused elements of the form. */
+    private JLabel hideBind;
     /** the tab pain including all panels. */
     private JTabbedPane mainTabPain;
     /** the panel which shows all killer timers. */
@@ -40,37 +47,40 @@ public class SettingsManager {
     /** the button to save the users custom settings. */
     private JButton saveCustomSettings;
     /** the settings the user has/wants to overwrite. */
-    public static Settings settings;
+    private static Settings settings;
     /** the combo box holding all the possible fonts. */
     private JComboBox<String> fontBox;
     /** the combo box holding all the possible font types. */
     private JComboBox<String> fontTypeBox;
     /** the combo box holding all the possible font sizes. */
     private JComboBox<Integer> fontSizeBox;
+    /** the slider setting the icon size. */
     private JSlider iconSlider;
+    /** the value of the icon size on the slider. */
     private JLabel sliderValue;
+    /** add button on the killers timer list. */
     private JButton killerAddTimer;
+    /** add button on the survivor timer list. */
     private JButton survAddTimer;
-    private JLabel restartBind;
-    private JLabel hideBind;
+    /** combo box showing all possible restart bind buttons. */
     private JComboBox<Character> restartBindBox;
+    /** combo box showing all possible hide bind buttons. */
     private JComboBox<Character> hideBindBox;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
+     * @param main the instance of the main window
      */
-    public SettingsManager(Main main) {
+    public SettingsManager(final Main main) {
         JFrame frame = new JFrame("Settings Manager");
         frame.setPreferredSize(new Dimension(390, 450));
         frame.setMaximumSize(new Dimension(390, 450));
         frame.setMinimumSize(new Dimension(390, 450));
         frame.setContentPane(mainTabPain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter()
-        {
+        frame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e)
-            {
+            public void windowClosed(final WindowEvent e) {
                 main.reloadTimers();
             }
         });
@@ -90,35 +100,41 @@ public class SettingsManager {
         }
         populateComboBoxes();
 
-        //appends config
         saveCustomSettings.addActionListener(e -> {
             try {
                 FileWriter fw = new FileWriter("customization\\config.json");
                 Gson g = new Gson();
                 //this.settings = new Settings();
                 assert settings != null;
-                settings.setFont(Font.decode(Objects.requireNonNull(fontBox.getSelectedItem()).toString()
-                                + " " + Objects.requireNonNull(fontTypeBox.getSelectedItem()).toString()
-                                + " " + Objects.requireNonNull(fontSizeBox.getSelectedItem()).toString()));
-                settings.iconSize = iconSlider.getValue();
-                settings.restartBind = Objects.requireNonNull(restartBindBox.getSelectedItem()).toString();
-                settings.hideBind = Objects.requireNonNull(hideBindBox.getSelectedItem()).toString();
+                settings.setFont(Font.decode(Objects.requireNonNull(fontBox.
+                        getSelectedItem()).toString()
+                                + " " + Objects.requireNonNull(fontTypeBox.
+                        getSelectedItem()).toString()
+                                + " " + Objects.requireNonNull(fontSizeBox.
+                        getSelectedItem()).toString()));
+                settings.setIconSize(iconSlider.getValue());
+                settings.setRestartBind(Objects.requireNonNull(restartBindBox.
+                        getSelectedItem()).toString());
+                settings.setHideBind(Objects.requireNonNull(hideBindBox.
+                        getSelectedItem()).toString());
                 fw.write(g.toJson(settings));
                 fw.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
-        iconSlider.addChangeListener(e -> sliderValue.setText(String.valueOf(iconSlider.getValue())));
+        iconSlider.addChangeListener(e -> sliderValue.setText(
+                String.valueOf(iconSlider.getValue())));
     }
 
     /**
-     * loads user settings from config.json
+     * loads user settings from config.json.
      * @return returns the user settings
      */
     private Settings loadSettings() {
         try {
-            String jsonString = Files.readString(Path.of("customization\\config.json"));
+            String jsonString = Files.readString(Path.of(
+                    "customization\\config.json"));
             Gson g = new Gson();
             return g.fromJson(jsonString, Settings.class);
         } catch (Exception ex) {
@@ -139,7 +155,8 @@ public class SettingsManager {
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
             Gson g = new Gson();
-            TimerProperties timer = g.fromJson(jsonString, TimerProperties.class);
+            TimerProperties timer = g.fromJson(
+                    jsonString, TimerProperties.class);
 
             if (timer.getTimerMode() == TimerProperties.TimerMode.Killer) {
                 createGraphic(file, killerPanel, timer);
@@ -147,20 +164,24 @@ public class SettingsManager {
                 createGraphic(file, survivorPanel, timer);
             }
         }
-        killerAddTimer.addActionListener(e -> new EditTimer(null,null, "Add Timer"));
-        survAddTimer.addActionListener(e -> new EditTimer(null,null, "Add Timer"));
+        killerAddTimer.addActionListener(e -> new EditTimer(null,
+                null, "Add Timer"));
+        survAddTimer.addActionListener(e -> new EditTimer(null,
+                null, "Add Timer"));
     }
 
     /**
      * creates a graphic for each item in the list.
      * @param panel the panel in which the graphic is added to
      * @param timer the timer being added to the list
+     * @param file the file the data was retrieved from
      */
-    private void createGraphic(final File file, final JPanel panel, TimerProperties timer) {
+    private void createGraphic(final File file, final JPanel panel,
+                               final TimerProperties timer) {
         ImageIcon icon = new ImageIcon(timer.getIcon());
         icon = convertImageSize(icon, 64);
-        ImageIcon settings = new ImageIcon("images\\settings_cog.png");
-        JLabel openSettings = new JLabel(convertImageSize(settings, 16));
+        ImageIcon settingsIcon = new ImageIcon("images\\settings_cog.png");
+        JLabel openSettings = new JLabel(convertImageSize(settingsIcon, 16));
         ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
         JLabel removeTimer = new JLabel(convertImageSize(removeIcon, 12));
 
@@ -174,14 +195,14 @@ public class SettingsManager {
 
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(final MouseEvent e) {
                 new EditTimer(file, timer, "Edit Timer");
             }
         });
 
         removeTimer.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(final MouseEvent e) {
                 int answer = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want " + "to delete this timer?",
                         "Warning", JOptionPane.YES_NO_OPTION);
@@ -198,7 +219,7 @@ public class SettingsManager {
         });
     }
 
-    private ImageIcon convertImageSize(ImageIcon image, int size) {
+    private ImageIcon convertImageSize(final ImageIcon image, final int size) {
         Image imageOfIcon = image.getImage();
         Image newImage = imageOfIcon.getScaledInstance(size, size,
                 java.awt.Image.SCALE_SMOOTH);
@@ -212,9 +233,9 @@ public class SettingsManager {
         populateFontTypeBox();
         populateBindBox(restartBindBox);
         populateBindBox(hideBindBox);
-        restartBindBox.setSelectedItem(settings.restartBind.charAt(0));
-        hideBindBox.setSelectedItem(settings.hideBind.charAt(0));
-        iconSlider.setValue(settings.iconSize);
+        restartBindBox.setSelectedItem(settings.getRestartBind().charAt(0));
+        hideBindBox.setSelectedItem(settings.getHideBind().charAt(0));
+        iconSlider.setValue(settings.getIconSize());
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
     }
 
@@ -248,7 +269,7 @@ public class SettingsManager {
         fontTypeBox.setSelectedIndex(settings.getFont().getStyle());
     }
 
-    private void populateBindBox(JComboBox<Character> box) {
+    private void populateBindBox(final JComboBox<Character> box) {
         for (char c = 'A'; c <= 'Z'; ++c) {
             box.addItem(c);
         }
@@ -257,4 +278,19 @@ public class SettingsManager {
         }
     }
 
+    /**
+     * retrieves the settings of the user.
+     * @return returns the settings of the user
+     */
+    public static Settings getSettings() {
+        return settings;
+    }
+
+    /**
+     * sets the settings of the user.
+     * @param newSettings replaces current settings with new settings
+     */
+    public static void setSettings(final Settings newSettings) {
+        SettingsManager.settings = newSettings;
+    }
 }

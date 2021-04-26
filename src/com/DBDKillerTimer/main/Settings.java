@@ -11,14 +11,16 @@ import java.awt.Font;
  */
 public class Settings {
 
-    /**
-     * represents the font of the timers.
-     */
+    /** represents the font of the timers. */
     private Font font;
-    public int iconSize;
-    public String restartBind;
-    public String hideBind;
-    public int[] windowPosition;
+    /** represents the icon size of the timers. */
+    private int iconSize;
+    /** represents the restart bind of the timers. */
+    private String restartBind;
+    /** represents the hide bind of the timers. */
+    private String hideBind;
+    /** represents the position of the timers. */
+    private int[] windowPosition;
 
     /**
      * this method simply sets the font settings.
@@ -34,5 +36,69 @@ public class Settings {
      */
     public Font getFont() {
         return font;
+    }
+
+    /**
+     * simply sets icon size.
+     * @param newIconSize the new icon size
+     */
+    public void setIconSize(final int newIconSize) {
+        this.iconSize = newIconSize;
+    }
+
+    /**
+     * gets the icon size.
+     * @return returns the icon size
+     */
+    public int getIconSize() {
+        return iconSize;
+    }
+
+    /**
+     * sets the restart bind for this timer.
+     * @param newRestartBind the new restart bind
+     */
+    public void setRestartBind(final String newRestartBind) {
+        this.restartBind = newRestartBind;
+    }
+
+    /**
+     * gets the restart bind for this timer.
+     * @return returns the restart bind
+     */
+    public String getRestartBind() {
+        return restartBind;
+    }
+
+    /**
+     * sets the hide bind for this timer.
+     * @param newHideBind the new hind bind
+     */
+    public void setHideBind(final String newHideBind) {
+        this.hideBind = newHideBind;
+    }
+
+    /**
+     * gets the hide bind for this timer.
+     * @return returns the hide bind
+     */
+    public String getHideBind() {
+        return hideBind;
+    }
+
+    /**
+     * sets the new window position.
+     * @param newWindowPosition the new window location
+     */
+    public void setWindowPosition(final int[] newWindowPosition) {
+        this.windowPosition = newWindowPosition;
+    }
+
+    /**
+     * gets the new window position.
+     * @return returns the window position
+     */
+    public int[] getWindowPosition() {
+        return windowPosition;
     }
 }

@@ -36,7 +36,8 @@ public class KeyInput extends NativeKeyAdapter {
             if (key.equalsIgnoreCase(clock.getStartBind())) {
                 clock.restart();
             }
-            if (key.equalsIgnoreCase(SettingsManager.settings.restartBind)) {
+            if (key.equalsIgnoreCase(SettingsManager.getSettings().
+                    getRestartBind())) {
                 clock.fullReset();
             }
         }
