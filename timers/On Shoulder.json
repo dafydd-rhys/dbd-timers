@@ -5,6 +5,7 @@
       "value":-1,
       "falpha":0.0
    },
+   "timerBlinks": [],
   "timerType":"CountDown",
   "icon": "images/on_shoulder.png",
   "timerMode":"Killer",
