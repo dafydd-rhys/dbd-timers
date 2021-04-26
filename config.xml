@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\gmaun\Documents\Important\JavaProjects\Projects\DBDKillerTimer\out\artifacts\DBDKillerTimer_jar2\DBDKillerTimer.jar</jar>
-  <outfile>C:\Users\gmaun\Documents\Important\JavaProjects\Projects\DBDKillerTimer\DBDKillerTimer.exe</outfile>
+  <jar>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\out\artifacts\DBDKillerTimer_jar\DBDKillerTimer.jar</jar>
+  <outfile>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\DBDTimer.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,16 +13,23 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\gmaun\Documents\Important\JavaProjects\Projects\DBDKillerTimer\images\icon.ico</icon>
+  <icon>C:\Users\gmaun\Documents\GitHub\DBDKillerTimer\images\icon.ico</icon>
+  <singleInstance>
+    <mutexName>singleXR3Player</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
   <classPath>
     <mainClass>com.DBDKillerTimer.main.Main</mainClass>
+    <cp>lib/gson-2.8.6.jar</cp>
+    <cp>lib/jgoodies.jar</cp>
     <cp>lib/jnativehook-2.1.0.jar</cp>
+    <cp>lib/json-simple-1.1.1.jar</cp>
   </classPath>
   <jre>
     <path>jre</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>1.8.0</minVersion>
+    <minVersion>1.0.8</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
