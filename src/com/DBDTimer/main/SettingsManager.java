@@ -1,21 +1,38 @@
 package com.DBDTimer.main;
-import java.awt.*;
+
+import com.google.gson.Gson;
+
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.JTabbedPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JSlider;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
-import javax.swing.*;
-import com.google.gson.Gson;
 
 /**
  * SettingsManager.java.
- * @version 1.0.1
+ * @version 1.0.2
  * This class simply creates a settings manager and opens it, the
  * user can make many changes here including changing his config, adding
  * timer and disabling timers etc.
@@ -66,6 +83,10 @@ public class SettingsManager {
     private JComboBox<Character> restartBindBox;
     /** combo box showing all possible hide bind buttons. */
     private JComboBox<Character> hideBindBox;
+    /** the width of the frame. */
+    private final int width = 450;
+    /** the height of the frame. */
+    private final int height = 550;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -73,9 +94,9 @@ public class SettingsManager {
      */
     public SettingsManager(final Main main) {
         JFrame frame = new JFrame("Settings Manager");
-        frame.setPreferredSize(new Dimension(450, 550));
-        frame.setMaximumSize(new Dimension(450, 550));
-        frame.setMinimumSize(new Dimension(450, 550));
+        frame.setPreferredSize(new Dimension(width, height));
+        frame.setMaximumSize(new Dimension(width, height));
+        frame.setMinimumSize(new Dimension(width, height));
         frame.setContentPane(mainTabPain);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
@@ -150,9 +171,9 @@ public class SettingsManager {
      */
     private void populateLists(final File[] folder) throws Exception {
         killerPanel.setLayout(new BoxLayout(killerPanel, BoxLayout.Y_AXIS));
-        killerPanel.setBackground(new Color(225,225,225));
+        killerPanel.setBackground(new Color(255, 255, 255));
         survivorPanel.setLayout(new BoxLayout(survivorPanel, BoxLayout.Y_AXIS));
-        survivorPanel.setBackground(new Color(225,225,225));
+        survivorPanel.setBackground(new Color(255, 255, 255));
 
         for (File file : folder) {
             String jsonString = Files.readString(Path.of(file.getPath()));
@@ -167,9 +188,9 @@ public class SettingsManager {
             }
         }
         killerAddTimer.addActionListener(e -> new EditTimer(null,
-                null, "Add Timer"));
+                "Add Timer", width, height));
         survAddTimer.addActionListener(e -> new EditTimer(null,
-                null, "Add Timer"));
+                "Add Timer", width, height));
     }
 
     /**
@@ -195,7 +216,7 @@ public class SettingsManager {
         timerPanel.setPreferredSize(new Dimension(panel.getWidth() - 17, 80));
         timerPanel.setMinimumSize(new Dimension(panel.getWidth() - 17, 80));
         timerPanel.setMaximumSize(new Dimension(panel.getWidth() - 17, 80));
-        timerPanel.setBackground(new Color(225,225,225));
+        timerPanel.setBackground(new Color(255, 255, 255));
         timerPanel.add(new JLabel(icon));
         timerPanel.add(new JLabel(timer.getName()));
         timerPanel.add(openSettings);
@@ -205,7 +226,7 @@ public class SettingsManager {
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(final MouseEvent e) {
-                new EditTimer(file, timer, "Edit Timer");
+                new EditTimer(timer, "Edit Timer", width, height);
             }
         });
 

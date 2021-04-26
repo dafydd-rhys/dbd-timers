@@ -1,15 +1,17 @@
 package com.DBDTimer.main;
-import java.awt.*;
+
+import java.awt.Color;
 
 /**
  * TimerBlink.java.
- * @version 1.0.0
+ * @version 1.0.2
  * This class simply allows the properties of the blinkers to be
  * retrieved or passed as new objects.
  * @author Dafydd-Rhys Maund
  * @author Morgan Gardner.
  */
 public class TimerBlink {
+
     /** Colour to set text to .*/
     private Color colour;
     /** Time to set colour at. */

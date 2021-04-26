@@ -1,15 +1,22 @@
 package com.DBDTimer.main;
-import java.awt.*;
-import java.text.SimpleDateFormat;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import javax.swing.*;
-import javax.swing.Timer;
+import java.text.SimpleDateFormat;
 
 /**
  * IconTimer.java.
- * @version 1.0.1
+ * @version 1.0.2
  * This class simply creates the timers and their properties, and they
  * will change depending on their type, status etc
  * @author Dafydd-Rhys Maund
@@ -173,7 +180,6 @@ public class IconTimer {
      */
     private void getTime(final boolean run) {
         if (run) {
-            //timeLabel.setForeground(Color.red);
             elapsedTime = (long) properties.getStartTime() * milliseconds;
         }
         notRunning = false;

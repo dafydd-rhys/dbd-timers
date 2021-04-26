@@ -1,10 +1,11 @@
 package com.DBDTimer.main;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
 /**
  * TimerProperties.java.
- * @version 1.0.0
+ * @version 1.0.2
  * This class simply is used to store and retrieve the properties
  * of the current icon timer.
  * @author Dafydd-Rhys Maund

@@ -1,11 +1,22 @@
 package com.DBDTimer.main;
-import java.awt.*;
+
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JSlider;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Objects;
-import javax.swing.*;
 
 /**
  * EditBlinker.java.
- * @version 1.0.0
+ * @version 1.0.2
  * This class simply allows the user to edit the blinkers,
  * they can change any property of a blinkers, the blinkers will
  * then be created/appended to their file.
@@ -34,14 +45,20 @@ public class EditBlinker {
     private JLabel sliderValue;
     /** the label representing the currently chosen colour. */
     private JLabel txtColour;
-
-    private TimerProperties timer;
+    /** represents the newBlinker being created. */
     private TimerBlink newBlinker;
-    private Color selectedColor;
+    /** the frame which represents the UI. */
     private JFrame frame;
 
-    public TimerBlink editBlinker(final TimerProperties timer, TimerBlink blinker) {
-        initUI("Edit Blinker");
+    /**
+     * This method simply replaces the blinker with the newBlinkers properties.
+     * @param blinker the blinker being edited
+     * @param width the width of frame
+     * @param height the height of frame
+     */
+    public void editBlinker(final int width, final int height,
+                            final TimerBlink blinker) {
+        initUI(width, height, "Edit Blinker");
         setProperties(blinker);
 
         chooseColour.addActionListener(e -> {
@@ -55,29 +72,31 @@ public class EditBlinker {
 
         saveBlinkerButton.addActionListener(e -> {
             if (blinker.getColour() != null) {
-
                 blinker.setBlinkFrequency(freqSlider.getValue());
-                blinker.setTime((int) (Objects.requireNonNull(startBlink.getSelectedItem())));
-                JOptionPane.showMessageDialog(null, "Blinker added");
+                blinker.setTime((int) (Objects.requireNonNull(
+                        startBlink.getSelectedItem())));
+
+                JOptionPane.showMessageDialog(
+                        null, "Blinker added");
                 frame.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Please fill in all required properties");
+                JOptionPane.showMessageDialog(null,
+                        "Please fill in all required properties");
             }
         });
-
-        return blinker;
     }
 
     /**
      * hub for all the main functionality, adding, editing blinkers etc.
      * @param timer the timer being referred to
+     * @param width the width of frame
+     * @param height the height of frame
      */
-    public void addBlinker(final TimerProperties timer) {
-        this.timer = timer;
-        initUI("Add Blinker");
+    public void addBlinker(final int width, final int height,
+                           final TimerProperties timer) {
+        initUI(width, height, "Add Blinker");
 
         this.newBlinker = new TimerBlink();
-
         chooseColour.addActionListener(e -> {
             newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
                         Color.BLACK));
@@ -91,22 +110,25 @@ public class EditBlinker {
             if (newBlinker.getColour() != null) {
 
                 newBlinker.setBlinkFrequency(freqSlider.getValue());
-                newBlinker.setTime((int) (Objects.requireNonNull(startBlink.getSelectedItem())));
+                newBlinker.setTime((int) (Objects.requireNonNull(
+                        startBlink.getSelectedItem())));
 
                 timer.getTimerBlinks().add(newBlinker);
                 JOptionPane.showMessageDialog(null, "Blinker added");
                 frame.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Please fill in all required properties");
+                JOptionPane.showMessageDialog(null,
+                        "Please fill in all required properties");
             }
         });
     }
 
-    private void initUI(String windowTitle) {
+    private void initUI(final int width, final int height,
+                        final String windowTitle) {
         frame = new JFrame(windowTitle);
-        frame.setPreferredSize(new Dimension(390, 450));
-        frame.setMaximumSize(new Dimension(390, 450));
-        frame.setMinimumSize(new Dimension(390, 450));
+        frame.setPreferredSize(new Dimension(width, height));
+        frame.setMaximumSize(new Dimension(width, height));
+        frame.setMinimumSize(new Dimension(width, height));
         frame.setContentPane(addColour);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setResizable(false);
@@ -125,14 +147,14 @@ public class EditBlinker {
 
     /**
      * this method sets all properties of the current blinker.
+     * @param blinker sets the properties for the existing blinker
      */
-    private void setProperties(TimerBlink blinker) {
+    private void setProperties(final TimerBlink blinker) {
         freqSlider.setValue(blinker.getBlinkFrequency());
         if (freqSlider.getValue() > 0) {
             blinkEnabled.setSelected(true);
             freqSlider.setEnabled(true);
         }
-
         startBlink.setSelectedItem(blinker.getTime());
         txtColour.setText(blinker.getColour().getRed() + ", "
                 + blinker.getColour().getGreen() + ", "

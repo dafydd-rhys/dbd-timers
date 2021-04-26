@@ -1,9 +1,10 @@
 package com.DBDTimer.main;
+
 import java.awt.Font;
 
 /**
  * Settings.java.
- * @version 1.0.0
+ * @version 1.0.2
  * This class simply stores the settings the user wants implemented
  * every time they run the program.
  * @author Dafydd-Rhys Maund

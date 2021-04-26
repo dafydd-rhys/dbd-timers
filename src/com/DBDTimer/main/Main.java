@@ -7,12 +7,26 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.FlowLayout;
+import java.awt.Canvas;
+import java.awt.SystemTray;
+import java.awt.PopupMenu;
+import java.awt.MenuItem;
+import java.awt.Image;
+import java.awt.TrayIcon;
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JDialog;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.JPopupMenu;
+import javax.swing.JMenuItem;
+import javax.swing.UnsupportedLookAndFeelException;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -23,7 +37,7 @@ import java.util.logging.Logger;
 
 /**
  * Main.java.
- * @version 1.0.1
+ * @version 1.0.2
  * This class simply implements and manipulates a JDialog, implementing
  * its features which includes timers, icons and other features.
  * @author Dafydd-Rhys Maund

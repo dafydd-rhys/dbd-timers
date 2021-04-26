@@ -1,11 +1,13 @@
 package com.DBDTimer.main;
-import java.util.ArrayList;
+
 import org.jnativehook.keyboard.NativeKeyAdapter;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
+import java.util.ArrayList;
+
 /**
  * KeyInput.java.
- * @version 1.0.1
+ * @version 1.0.2
  * This class reads the inputs of the users and completes actions
  * based on the bound key.
  * @author Dafydd-Rhys Maund
