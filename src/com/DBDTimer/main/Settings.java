@@ -24,7 +24,7 @@ public class Settings {
     /** represents the position of the timers. */
     private int[] windowPosition;
     /** represents the inactive color of the timers. */
-    private Color inactiveColor;
+    private Color inactiveColour;
 
     /**
      * this method simply sets the font settings.
@@ -106,11 +106,11 @@ public class Settings {
         return windowPosition;
     }
 
-    public void setInactiveColor(Color inactiveColor) {
-        this.inactiveColor = inactiveColor;
+    public void setInactiveColour(Color inactiveColour) {
+        this.inactiveColour = inactiveColour;
     }
 
-    public Color getInactiveColor() {
-        return inactiveColor;
+    public Color getInactiveColour() {
+        return inactiveColour;
     }
 }

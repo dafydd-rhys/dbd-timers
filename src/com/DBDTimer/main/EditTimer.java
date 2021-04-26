@@ -3,6 +3,7 @@ package com.DBDTimer.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FileDialog;
@@ -27,6 +28,8 @@ import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.Box;
+import javax.swing.SwingConstants;
 
 /**
  * EditTimer.java.
@@ -129,7 +132,7 @@ public class EditTimer {
         });
 
         chooseColour.addActionListener(e -> {
-            timerStartColor = JColorChooser.showDialog(null, "Pick a Color",
+            timerStartColor = JColorChooser.showDialog(null, "Pick a Colour",
                     Color.BLACK);
             txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
                     + timerStartColor.getGreen() + ", "
@@ -216,9 +219,33 @@ public class EditTimer {
                            final int time,
                            final int frequency) {
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(3, 0));
-        infoPanel.add(new JLabel("RGB: " + timerColor.getRed() + ", "
-                + timerColor.getGreen() + ", " + timerColor.getBlue()));
+        infoPanel.setLayout(new GridLayout(3, 0, 0, 10));
+
+        JPanel rgbPanel = new JPanel();
+        rgbPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JLabel rgbLabel = new JLabel("RGB: " + timerColor.getRed() + ", "
+                + timerColor.getGreen() + ", " + timerColor.getBlue());
+        rgbPanel.add(rgbLabel);
+
+        JPanel hGap = new JPanel();
+        hGap.setVisible(true);
+
+        hGap.setMaximumSize(new Dimension(5, 10));
+        hGap.setMinimumSize(new Dimension(5, 10));
+        hGap.setPreferredSize(new Dimension(5, 10));
+
+        rgbPanel.add(hGap);
+
+        JPanel rgbVisual = new JPanel();
+        rgbVisual.setBackground(timerColor);
+
+        rgbVisual.setMaximumSize(new Dimension(10, 10));
+        rgbVisual.setMinimumSize(new Dimension(10, 10));
+        rgbVisual.setPreferredSize(new Dimension(10, 10));
+
+        rgbPanel.add(rgbVisual);
+        infoPanel.add(rgbPanel);
+
         infoPanel.add(new JLabel("Blink time: " + time + "s"));
         infoPanel.add(new JLabel("Frequency: " + frequency + "ms"));
 
@@ -229,10 +256,16 @@ public class EditTimer {
 
         JPanel blinkerPanel = new JPanel();
         blinkerPanel.setLayout(new GridLayout(0, 4));
-        blinkerPanel.add(new JLabel("Blink: " + index));
+        blinkerPanel.setMaximumSize(new Dimension(coloursList.getWidth(), 60));
+        blinkerPanel.setPreferredSize(new Dimension(coloursList.getWidth(), 60));
+        blinkerPanel.setMinimumSize(new Dimension(coloursList.getWidth(), 60));
+        JLabel blinkerName = new JLabel("Colour: " + index);
+        blinkerName.setHorizontalAlignment(SwingConstants.CENTER);
+        blinkerPanel.add(blinkerName);
         blinkerPanel.add(infoPanel);
         blinkerPanel.add(openSettings);
         blinkerPanel.add(removeTimer);
+        coloursList.add(Box.createRigidArea(new Dimension(0, 20)));
         coloursList.add(blinkerPanel);
 
         openSettings.addMouseListener(new MouseAdapter() {

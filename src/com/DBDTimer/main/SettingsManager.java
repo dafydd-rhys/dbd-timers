@@ -140,7 +140,7 @@ public class SettingsManager {
                         getSelectedItem()).toString());
                 settings.setHideBind(Objects.requireNonNull(hideBindBox.
                         getSelectedItem()).toString());
-                settings.setInactiveColor(inactiveColor);
+                settings.setInactiveColour(inactiveColor);
                 fw.write(g.toJson(settings));
                 fw.close();
                 JOptionPane.showMessageDialog(null,
@@ -272,7 +272,7 @@ public class SettingsManager {
         hideBindBox.setSelectedItem(settings.getHideBind().charAt(0));
         iconSlider.setValue(settings.getIconSize());
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
-        inactiveColor = settings.getInactiveColor();
+        inactiveColor = settings.getInactiveColour();
         txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
                 + inactiveColor.getGreen() + ", "
                 + inactiveColor.getBlue());

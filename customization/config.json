@@ -1,1 +1,20 @@
-{"font":{"name":"Bahnschrift","style":0,"size":24,"pointSize":24.0,"fontSerializedDataVersion":1},"iconSize":96,"restartBind":"R","hideBind":"H","windowPosition":[26,46],"inactiveColor":{"value":-6710887,"falpha":0.0}}
+{
+  "font": {
+    "name": "Bahnschrift",
+    "style": 0,
+    "size": 24,
+    "pointSize": 24.0,
+    "fontSerializedDataVersion": 1
+  },
+  "iconSize": 96,
+  "restartBind": "R",
+  "hideBind": "H",
+  "windowPosition": [
+    -10,
+    10
+  ],
+  "inactiveColour": {
+    "value": -6710887,
+    "falpha": 0.0
+  }
+}

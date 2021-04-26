@@ -95,7 +95,7 @@ public class IconTimer {
 
         timeLabel = new JLabel(getCurrentTime());
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        timeLabel.setForeground(properties.getStartColor());
+        timeLabel.setForeground(SettingsManager.getSettings().getInactiveColour());
         timeLabel.setBounds(0, 0, SettingsManager.getSettings().
                 getIconSize(), 30);
         timeLabel.setFont(SettingsManager.getSettings().getFont());
@@ -162,7 +162,7 @@ public class IconTimer {
      */
     private void stopTimer() {
         blinkTimer.stop();
-        timeLabel.setForeground(properties.getStartColor());
+        timeLabel.setForeground(SettingsManager.getSettings().getInactiveColour());
     }
 
     /**
@@ -189,7 +189,7 @@ public class IconTimer {
      * This method simply fully resets the colour and time of the timer.
      */
     private void getOriginalTime() {
-        timeLabel.setForeground(Color.white);
+        timeLabel.setForeground(SettingsManager.getSettings().getInactiveColour());
         elapsedTime = (long) properties.getStartTime() * milliseconds;
     }
 
@@ -198,11 +198,12 @@ public class IconTimer {
      */
     public final void restart() {
         timer.stop();
-        this.elapsedTime = properties.getStartTime();
+        this.elapsedTime = properties.getStartTime() * milliseconds;
         notRunning = true;
         getTime(true);
         timeLabel.setText(getCurrentTime());
         stopTimer();
+        timeLabel.setForeground(properties.getStartColor());
         timer.start();
     }
 
