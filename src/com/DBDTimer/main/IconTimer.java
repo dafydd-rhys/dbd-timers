@@ -52,6 +52,7 @@ public class IconTimer {
     private TimerType timerType;
     /** the panel that hosts all the timers. */
     private final JPanel hostPanel;
+    boolean tick;
 
     /**
      * This simply sets the properties of the timers and adds them to the panel.
@@ -65,12 +66,14 @@ public class IconTimer {
         this.elapsedTime = properties.getStartTime() * 1000L;
 
         blinkTimer = new Timer(milliseconds, f -> {
-            if (timeLabel.getForeground() == properties.getStartColor()) {
+            tick = !tick;
+            if (tick) {
                 timeLabel.setForeground(blinkColour);
             } else {
                 timeLabel.setForeground(properties.getStartColor());
             }
         });
+        blinkTimer.setInitialDelay(0);
 
         if (properties.getStartTime() == 0) {
             this.timerType = TimerType.CountUp;
@@ -154,6 +157,7 @@ public class IconTimer {
     private void restartTimer(final int delay) {
         blinkTimer.stop();
         blinkTimer.setDelay(delay);
+        tick = false;
         blinkTimer.start();
     }
 
