@@ -91,7 +91,7 @@ public class EditTimer {
         });
 
         addBlinkerTimer.addActionListener(e -> {
-            new EditBlinker(timer);
+            new EditBlinker(timer, null);
         });
 
         //appends/creates new timer
@@ -134,12 +134,12 @@ public class EditTimer {
         coloursList.setLayout(new GridLayout(0, 3, 0, 5));
         int counter = 1;
         for (TimerBlink blinkColour : timer.getTimerBlinks()) {
-            addColour(counter, blinkColour.colour, blinkColour.time, blinkColour.blinkFrequency);
+            addColour(blinkColour, counter, blinkColour.colour, blinkColour.time, blinkColour.blinkFrequency);
             counter++;
         }
     }
 
-    private void addColour(int index, Color timerColor, int time, int frequency) {
+    private void addColour(TimerBlink timerBlink, int index, Color timerColor, int time, int frequency) {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(3, 0));
         infoPanel.add(new JLabel("RGB: " + timerColor.getRed() + ", " +
@@ -150,12 +150,13 @@ public class EditTimer {
 
         coloursList.add(new JLabel("Blink Colour " + index));
         coloursList.add(infoPanel);
-        coloursList.add(getSettingsCog());
+        JLabel openSettings = getSettingsCog();
+        coloursList.add(openSettings);
 
-        getSettingsCog().addMouseListener(new MouseAdapter() {
+        openSettings.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                new EditBlinker(timer);
+                new EditBlinker(timer, timerBlink);
             }
         });
     }
