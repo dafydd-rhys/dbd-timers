@@ -91,6 +91,9 @@ public class EditTimer {
     private final int width;
     /** the height of the frame. */
     private final int height;
+    /** instance of GUI */
+    private JFrame frame;
+    private EditTimer host;
 
     /**
      * this method is a host for all functionality allowing users to edit
@@ -101,11 +104,12 @@ public class EditTimer {
      * @param height the height of frame
      */
     public EditTimer(final TimerProperties properties, final String title,
-                     final int width, final int height) {
+                     final int width, final int height, SettingsManager manager) {
+        this.host = this;
         this.timer = properties;
         this.width = width;
         this.height = height;
-        JFrame frame = new JFrame(title);
+        frame = new JFrame(title);
         frame.setPreferredSize(new Dimension(width, height));
         frame.setMaximumSize(new Dimension(width, height));
         frame.setMinimumSize(new Dimension(width, height));
@@ -136,7 +140,7 @@ public class EditTimer {
             timerStartColor = JColorChooser.showDialog(null,
                     "Pick a Colour", Color.BLACK);
             if (timerStartColor != null) {
-                txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
+                txtColor.setText(timerStartColor.getRed() + ", "
                         + timerStartColor.getGreen() + ", "
                         + timerStartColor.getBlue());
                 rgbVisual.setBackground(timerStartColor);
@@ -144,7 +148,7 @@ public class EditTimer {
         });
 
         addBlinkerTimer.addActionListener(e -> new EditBlinker().addBlinker(
-                width, height, properties));
+                width, height, properties, host));
 
         saveTimer.addActionListener(e -> {
             if (!iconPath.equals("") && timerStartColor != null) {
@@ -174,14 +178,14 @@ public class EditTimer {
                             startBind.getSelectedItem()).toString());
 
                     fw.write(g.toJson(newTimer));
+                    fw.close();
+                    manager.populateLists();
                     //create new timer
                     if (timer == null) {
                         JOptionPane.showMessageDialog(null, "Added timer");
                     } else {
                         JOptionPane.showMessageDialog(null, "Updated timer");
                     }
-
-                    fw.close();
                     frame.dispose();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -196,7 +200,8 @@ public class EditTimer {
     /**
      * this method simply populates the panel with all blinkers.
      */
-    private void populateColoursPanel() {
+    public void populateColoursPanel() {
+        coloursList.removeAll();
         coloursList.setLayout(new BoxLayout(coloursList, BoxLayout.Y_AXIS));
         if (timer.getTimerBlinks() != null) {
             int counter = 1;
@@ -206,6 +211,10 @@ public class EditTimer {
                 counter++;
             }
         }
+        coloursList.revalidate();
+        coloursList.repaint();
+        frame.revalidate();
+        frame.repaint();
     }
 
     /**
@@ -226,7 +235,7 @@ public class EditTimer {
         infoPanel.setLayout(new GridLayout(3, 0, 0, 10));
         JPanel rgbPanel = new JPanel();
         rgbPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        JLabel rgbLabel = new JLabel("RGB: " + timerColor.getRed() + ", "
+        JLabel rgbLabel = new JLabel(timerColor.getRed() + ", "
                 + timerColor.getGreen() + ", " + timerColor.getBlue());
 
         JPanel hGap = new JPanel();
@@ -270,7 +279,7 @@ public class EditTimer {
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(final MouseEvent e) {
-                new EditBlinker().editBlinker(width, height, timerBlink);
+                new EditBlinker().editBlinker(width, height, timerBlink, host);
             }
         });
 
@@ -320,7 +329,7 @@ public class EditTimer {
         timerEnabled.setSelected(timer.isEnabled());
         String[] pathFolders = timer.getIcon().split("\\\\");
         txtPath.setText(pathFolders[pathFolders.length - 1]);
-        txtColor.setText("RGB: " + timer.getStartColor().getRed() + ", "
+        txtColor.setText(timer.getStartColor().getRed() + ", "
                 + timer.getStartColor().getGreen()
                 + ", " + timer.getStartColor().getBlue());
         rgbVisual.setBackground(timer.getStartColor());

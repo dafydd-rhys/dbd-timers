@@ -59,7 +59,7 @@ public class EditBlinker {
      * @param height the height of frame
      */
     public void editBlinker(final int width, final int height,
-                            final TimerBlink blinker) {
+                            final TimerBlink blinker, EditTimer host) {
         initUI(width, height, "Edit Blinker");
         setProperties(blinker);
 
@@ -67,7 +67,7 @@ public class EditBlinker {
             blinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
                 blinker.getColour()));
 
-            txtColor.setText("RGB: " + blinker.getColour().getRed()
+            txtColor.setText(blinker.getColour().getRed()
                     + ", " + blinker.getColour().getGreen() + ", "
                     + blinker.getColour().getBlue());
             rgbVisual.setBackground(blinker.getColour());
@@ -87,6 +87,7 @@ public class EditBlinker {
                 JOptionPane.showMessageDialog(
                         null, "Blinker edited");
                 frame.dispose();
+                host.populateColoursPanel();
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Please fill in all required properties");
@@ -101,7 +102,7 @@ public class EditBlinker {
      * @param height the height of frame
      */
     public void addBlinker(final int width, final int height,
-                           final TimerProperties timer) {
+                           final TimerProperties timer, EditTimer host) {
         initUI(width, height, "Add Blinker");
         this.newBlinker = new TimerBlink();
         chooseColour.addActionListener(e -> {
@@ -110,7 +111,7 @@ public class EditBlinker {
                         Color.BLACK));
 
                 if (newBlinker.getColour() != null) {
-                    txtColor.setText("RGB: " + newBlinker.getColour().getRed()
+                    txtColor.setText(newBlinker.getColour().getRed()
                             + ", " + newBlinker.getColour().getGreen() + ", "
                             + newBlinker.getColour().getBlue());
                     rgbVisual.setBackground(newBlinker.getColour());
@@ -131,6 +132,7 @@ public class EditBlinker {
                 timer.getTimerBlinks().add(newBlinker);
                 JOptionPane.showMessageDialog(null, "Blinker added");
                 frame.dispose();
+                host.populateColoursPanel();
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Please fill in all required properties");
@@ -172,7 +174,7 @@ public class EditBlinker {
             freqSlider.setEnabled(true);
         }
         startBlink.setSelectedItem(blinker.getTime());
-        txtColor.setText("RGB: " + blinker.getColour().getRed() + ", "
+        txtColor.setText(blinker.getColour().getRed() + ", "
                 + blinker.getColour().getGreen() + ", "
                 + blinker.getColour().getBlue());
         rgbVisual.setBackground(blinker.getColour());

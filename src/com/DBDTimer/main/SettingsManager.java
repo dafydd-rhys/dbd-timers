@@ -96,13 +96,18 @@ public class SettingsManager {
     private final int height = 550;
     /** the inactive colour of the timer. */
     private Color inactiveColor;
+    /** instance of settings manager */
+    private SettingsManager manager;
+    /** instance of GUI */
+    private JFrame frame;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
      * @param main the instance of the main window
      */
     public SettingsManager(final Main main) {
-        JFrame frame = new JFrame("Settings Manager");
+        this.manager = this;
+        frame = new JFrame("Settings Manager");
         frame.setPreferredSize(new Dimension(width, height));
         frame.setMaximumSize(new Dimension(width, height));
         frame.setMinimumSize(new Dimension(width, height));
@@ -120,20 +125,20 @@ public class SettingsManager {
         frame.setVisible(true);
 
         settings = loadSettings();
-        final File folder = new File("timers\\");
-        File[] listOfFiles = folder.listFiles();
-        try {
-            assert listOfFiles != null;
-            populateLists(listOfFiles);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        try
+        {
+            populateLists();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
         populateComboBoxes();
 
         chooseInactiveColour.addActionListener(e -> {
             inactiveColor = JColorChooser.showDialog(null, "Pick a Color",
                     Color.BLACK);
-            txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
+            txtColor.setText(inactiveColor.getRed() + ", "
                     + inactiveColor.getGreen() + ", "
                     + inactiveColor.getBlue());
             rgbVisual.setBackground(inactiveColor);
@@ -189,16 +194,20 @@ public class SettingsManager {
 
     /**
      * this method simply populates the JLists with all the timers the user has.
-     * @param folder the folder containing the timers
      * @throws Exception if the folder doesn't exist
      */
-    private void populateLists(final File[] folder) throws Exception {
+    public void populateLists() throws Exception {
+        killerPanel.removeAll();
+        survivorPanel.removeAll();
+        final File folder = new File("timers\\");
+        File[] listOfFiles = folder.listFiles();
+
         killerPanel.setLayout(new BoxLayout(killerPanel, BoxLayout.Y_AXIS));
         killerPanel.setBackground(new Color(255, 255, 255));
         survivorPanel.setLayout(new BoxLayout(survivorPanel, BoxLayout.Y_AXIS));
         survivorPanel.setBackground(new Color(255, 255, 255));
 
-        for (File file : folder) {
+        for (File file : listOfFiles) {
             String jsonString = Files.readString(Path.of(file.getPath()));
             Gson g = new Gson();
             TimerProperties timer = g.fromJson(
@@ -211,9 +220,16 @@ public class SettingsManager {
             }
         }
         killerAddTimer.addActionListener(e -> new EditTimer(null,
-                "Add Timer", width, height));
+                "Add Timer", width, height, this));
         survAddTimer.addActionListener(e -> new EditTimer(null,
-                "Add Timer", width, height));
+                "Add Timer", width, height, this));
+
+        killerPanel.repaint();
+        killerPanel.revalidate();
+        survivorPanel.repaint();
+        killerPanel.revalidate();
+        frame.repaint();
+        frame.revalidate();
     }
 
     /**
@@ -249,7 +265,7 @@ public class SettingsManager {
         openSettings.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(final MouseEvent e) {
-                new EditTimer(timer, "Edit Timer", width, height);
+                new EditTimer(timer, "Edit Timer", width, height, manager);
             }
         });
 
@@ -291,7 +307,7 @@ public class SettingsManager {
         iconSlider.setValue(settings.getIconSize());
         sliderValue.setText(String.valueOf(iconSlider.getValue()));
         inactiveColor = settings.getInactiveColour();
-        txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
+        txtColor.setText(inactiveColor.getRed() + ", "
                 + inactiveColor.getGreen() + ", "
                 + inactiveColor.getBlue());
         rgbVisual.setBackground(inactiveColor);
