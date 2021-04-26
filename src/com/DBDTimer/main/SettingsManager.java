@@ -140,6 +140,8 @@ public class SettingsManager {
                         getSelectedItem()).toString());
                 fw.write(g.toJson(settings));
                 fw.close();
+                JOptionPane.showMessageDialog(null,
+                        "Custom Settings Updated Successfully.");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
