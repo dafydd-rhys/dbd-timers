@@ -82,6 +82,7 @@ public class EditTimer {
     private JPanel coloursList;
     /** button to initiate adding a blinker. */
     private JButton addBlinkerTimer;
+    /** visual representation of colour. */
     private JPanel rgbVisual;
     /** colour representing the starting colour of this clock. */
     private Color timerStartColor;
@@ -91,9 +92,10 @@ public class EditTimer {
     private final int width;
     /** the height of the frame. */
     private final int height;
-    /** instance of GUI */
-    private JFrame frame;
-    private EditTimer host;
+    /** instance of GUI. */
+    private final JFrame frame;
+    /** represents host GUI. */
+    private final EditTimer host;
 
     /**
      * this method is a host for all functionality allowing users to edit
@@ -102,9 +104,11 @@ public class EditTimer {
      * @param title the title for the frame
      * @param width the width of frame
      * @param height the height of frame
+     * @param manager instance of manager GUI
      */
     public EditTimer(final TimerProperties properties, final String title,
-                     final int width, final int height, SettingsManager manager) {
+                     final int width, final int height,
+                     final SettingsManager manager) {
         this.host = this;
         this.timer = properties;
         this.width = width;

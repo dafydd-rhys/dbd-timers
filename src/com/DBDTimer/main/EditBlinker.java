@@ -43,10 +43,10 @@ public class EditBlinker {
     private JSlider freqSlider;
     /** the value of the frequency slider. */
     private JLabel sliderValue;
-    private JLabel txtColor;
-    private JPanel rgbVisual;
     /** the label representing the currently chosen colour. */
-    private JLabel txtColour;
+    private JLabel txtColor;
+    /** the visual representation the currently chosen colour. */
+    private JPanel rgbVisual;
     /** represents the newBlinker being created. */
     private TimerBlink newBlinker;
     /** the frame which represents the UI. */
@@ -57,9 +57,10 @@ public class EditBlinker {
      * @param blinker the blinker being edited
      * @param width the width of frame
      * @param height the height of frame
+     * @param host the host frame
      */
     public void editBlinker(final int width, final int height,
-                            final TimerBlink blinker, EditTimer host) {
+                            final TimerBlink blinker, final EditTimer host) {
         initUI(width, height, "Edit Blinker");
         setProperties(blinker);
 
@@ -100,15 +101,16 @@ public class EditBlinker {
      * @param timer the timer being referred to
      * @param width the width of frame
      * @param height the height of frame
+     * @param host the host frame
      */
     public void addBlinker(final int width, final int height,
-                           final TimerProperties timer, EditTimer host) {
+                           final TimerProperties timer, final EditTimer host) {
         initUI(width, height, "Add Blinker");
         this.newBlinker = new TimerBlink();
         chooseColour.addActionListener(e -> {
             if (newBlinker != null) {
-                newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
-                        Color.BLACK));
+                newBlinker.setColour(JColorChooser.showDialog(null,
+                        "Pick a Colour", Color.BLACK));
 
                 if (newBlinker.getColour() != null) {
                     txtColor.setText(newBlinker.getColour().getRed()

@@ -89,6 +89,7 @@ public class SettingsManager {
     private JButton chooseInactiveColour;
     /** the inactive colour of the timer visualised. */
     private JLabel txtColor;
+    /** visual representation of colour. */
     private JPanel rgbVisual;
     /** the width of the frame. */
     private final int width = 450;
@@ -96,10 +97,10 @@ public class SettingsManager {
     private final int height = 550;
     /** the inactive colour of the timer. */
     private Color inactiveColor;
-    /** instance of settings manager */
-    private SettingsManager manager;
-    /** instance of GUI */
-    private JFrame frame;
+    /** instance of settings manager. */
+    private final SettingsManager manager;
+    /** instance of GUI. */
+    private final JFrame frame;
 
     /** this method creates a new settings manager form
      * with all the elements added to the panel.
@@ -125,12 +126,9 @@ public class SettingsManager {
         frame.setVisible(true);
 
         settings = loadSettings();
-        try
-        {
+        try {
             populateLists();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         populateComboBoxes();
@@ -203,10 +201,11 @@ public class SettingsManager {
         File[] listOfFiles = folder.listFiles();
 
         killerPanel.setLayout(new BoxLayout(killerPanel, BoxLayout.Y_AXIS));
-        killerPanel.setBackground(new Color(255, 255, 255));
+        killerPanel.setBackground(Color.white);
         survivorPanel.setLayout(new BoxLayout(survivorPanel, BoxLayout.Y_AXIS));
-        survivorPanel.setBackground(new Color(255, 255, 255));
+        survivorPanel.setBackground(Color.white);
 
+        assert listOfFiles != null;
         for (File file : listOfFiles) {
             String jsonString = Files.readString(Path.of(file.getPath()));
             Gson g = new Gson();
@@ -255,7 +254,7 @@ public class SettingsManager {
         timerPanel.setPreferredSize(new Dimension(panel.getWidth() - 17, 80));
         timerPanel.setMinimumSize(new Dimension(panel.getWidth() - 17, 80));
         timerPanel.setMaximumSize(new Dimension(panel.getWidth() - 17, 80));
-        timerPanel.setBackground(new Color(255, 255, 255));
+        timerPanel.setBackground(Color.white);
         timerPanel.add(new JLabel(icon));
         timerPanel.add(new JLabel(timer.getName()));
         timerPanel.add(openSettings);
