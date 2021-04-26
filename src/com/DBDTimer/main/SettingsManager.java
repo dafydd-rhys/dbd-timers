@@ -210,10 +210,10 @@ public class SettingsManager {
         ImageIcon icon = new ImageIcon(timer.getIcon());
         icon = convertImageSize(icon, 64);
         ImageIcon settingsIcon = new ImageIcon("images\\settings_cog.png");
-        JButton openSettings = new JButton(convertImageSize(settingsIcon, 16));
+        JLabel openSettings = new JLabel(convertImageSize(settingsIcon, 16));
         openSettings.setMaximumSize(new Dimension(16, 16));
         ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
-        JButton removeTimer = new JButton(convertImageSize(removeIcon, 12));
+        JLabel removeTimer = new JLabel(convertImageSize(removeIcon, 12));
         removeTimer.setMaximumSize(new Dimension(16, 16));
 
         JPanel timerPanel = new JPanel();
