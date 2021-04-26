@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 
 /**
  * IconTimer.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply creates the timers and their properties, and they
  * will change depending on their type, status etc
  * @author Dafydd-Rhys Maund
@@ -40,6 +40,12 @@ public class IconTimer {
     private final Timer blinkTimer;
     /** the colour the blinker will flash. */
     private Color blinkColour;
+    /** the timer type, up or down. */
+    private TimerType timerType;
+    /** the panel that hosts all the timers. */
+    private final JPanel hostPanel;
+    /** the blinker timer state. */
+    private boolean tick;
 
     /** the enums to separate different timer types. */
     private enum TimerType {
@@ -48,11 +54,6 @@ public class IconTimer {
         /** represents decreasing timers. */
         CountDown
     }
-    /** the timer type, up or down. */
-    private TimerType timerType;
-    /** the panel that hosts all the timers. */
-    private final JPanel hostPanel;
-    boolean tick;
 
     /**
      * This simply sets the properties of the timers and adds them to the panel.
@@ -60,7 +61,6 @@ public class IconTimer {
      */
     public IconTimer(final TimerProperties timerProperties) {
         this.properties = timerProperties;
-
         dateFormat = new SimpleDateFormat("mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         this.elapsedTime = properties.getStartTime() * 1000L;

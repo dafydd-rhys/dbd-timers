@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * KeyInput.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class reads the inputs of the users and completes actions
  * based on the bound key.
  * @author Dafydd-Rhys Maund

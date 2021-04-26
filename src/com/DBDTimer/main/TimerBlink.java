@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * TimerBlink.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply allows the properties of the blinkers to be
  * retrieved or passed as new objects.
  * @author Dafydd-Rhys Maund
