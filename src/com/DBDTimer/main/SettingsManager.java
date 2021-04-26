@@ -2,6 +2,7 @@ package com.DBDTimer.main;
 
 import com.google.gson.Gson;
 
+import com.google.gson.GsonBuilder;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Color;
@@ -125,7 +126,7 @@ public class SettingsManager {
         saveCustomSettings.addActionListener(e -> {
             try {
                 FileWriter fw = new FileWriter("customization\\config.json");
-                Gson g = new Gson();
+                Gson g = new GsonBuilder().setPrettyPrinting().create();
                 //this.settings = new Settings();
                 assert settings != null;
                 settings.setFont(Font.decode(Objects.requireNonNull(fontBox.
