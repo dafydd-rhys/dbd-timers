@@ -144,12 +144,17 @@ public class IconTimer {
                     if (timerBlink.getBlinkFrequency() != 0) {
                         this.blinkColour = timerBlink.getColour();
                         restartTimer(timerBlink.getBlinkFrequency());
+                    } else {
+                        stopTimer();
+                        timeLabel.setForeground(timerBlink.getColour());
                     }
                 }
             }
         }
         timeLabel.setText(dateFormat.format(date));
     });
+
+
 
     /**
      * Restart blink timer with new delay.

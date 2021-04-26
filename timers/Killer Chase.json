@@ -1,14 +1,23 @@
 {
-  "name": "Chase",
-  "startTime":0,
-     "startColor":{
-      "value":-1,
-      "falpha":0.0
-   },
-   "timerBlinks": [],
-  "timerType":"CountUp",
+  "name": "Killer Chase",
+  "startTime": 0,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 30,
+      "blinkFrequency": 500
+    }
+  ],
+  "timerType": "CountUp",
   "icon": "images/chase.png",
-  "timerMode":"Killer",
-  "enabled":true,
-  "startBind":"4"
+  "timerMode": "Killer",
+  "enabled": true,
+  "startBind": "4"
 }

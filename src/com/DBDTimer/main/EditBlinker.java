@@ -75,12 +75,17 @@ public class EditBlinker {
 
         saveBlinkerButton.addActionListener(e -> {
             if (blinker.getColour() != null) {
-                blinker.setBlinkFrequency(freqSlider.getValue());
+                if (blinkEnabled.isSelected()) {
+                    blinker.setBlinkFrequency(freqSlider.getValue());
+                } else {
+                    blinker.setBlinkFrequency(0);
+                }
+
                 blinker.setTime((int) (Objects.requireNonNull(
                         startBlink.getSelectedItem())));
 
                 JOptionPane.showMessageDialog(
-                        null, "Blinker added");
+                        null, "Blinker edited");
                 frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(null,
@@ -111,7 +116,11 @@ public class EditBlinker {
 
         saveBlinkerButton.addActionListener(e -> {
             if (newBlinker.getColour() != null) {
-                newBlinker.setBlinkFrequency(freqSlider.getValue());
+                if (blinkEnabled.isSelected()) {
+                    newBlinker.setBlinkFrequency(freqSlider.getValue());
+                } else {
+                    newBlinker.setBlinkFrequency(0);
+                }
                 newBlinker.setTime((int) (Objects.requireNonNull(
                         startBlink.getSelectedItem())));
 
@@ -169,7 +178,7 @@ public class EditBlinker {
      * this method populates the blink time box with all suitable times.
      */
     private void populateBlinkTime() {
-        for (int num = 1; num <= 180; ++num) {
+        for (int num = 0; num <= 180; ++num) {
             startBlink.addItem(num);
         }
     }

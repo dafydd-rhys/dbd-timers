@@ -1,14 +1,31 @@
 {
   "name": "On Shoulder",
-  "startTime":16,
-     "startColor":{
-      "value":-1,
-      "falpha":0.0
-   },
-   "timerBlinks": [],
-  "timerType":"CountDown",
+  "startTime": 16,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -26368,
+        "falpha": 0.0
+      },
+      "time": 3,
+      "blinkFrequency": 300
+    },
+    {
+      "colour": {
+        "value": -16711936,
+        "falpha": 0.0
+      },
+      "time": 0,
+      "blinkFrequency": 0
+    }
+  ],
+  "timerType": "CountDown",
   "icon": "images/on_shoulder.png",
-  "timerMode":"Killer",
-  "enabled":true,
-  "startBind":"e"
+  "timerMode": "Killer",
+  "enabled": true,
+  "startBind": "E"
 }

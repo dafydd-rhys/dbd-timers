@@ -2,25 +2,25 @@
   "name": "Borrowed Time",
   "startTime": 20,
   "startColor": {
-    "value": -1,
+    "value": -65536,
     "falpha": 0.0
   },
   "timerBlinks": [
     {
       "colour": {
-        "value": -65536,
+        "value": -26368,
         "falpha": 0.0
       },
-      "time": 15,
+      "time": 5,
       "blinkFrequency": 200
     },
     {
       "colour": {
-        "value": -13369549,
+        "value": -16711936,
         "falpha": 0.0
       },
-      "time": 10,
-      "blinkFrequency": 100
+      "time": 0,
+      "blinkFrequency": 0
     }
   ],
   "timerType": "CountDown",
