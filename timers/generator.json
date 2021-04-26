@@ -16,14 +16,6 @@
     },
     {
       "colour": {
-        "value": -65536,
-        "falpha": 0.0
-      },
-      "time": 45,
-      "blinkFrequency": 500
-    },
-    {
-      "colour": {
         "value": -13369549,
         "falpha": 0.0
       },
