@@ -82,6 +82,7 @@ public class EditTimer {
     private JPanel coloursList;
     /** button to initiate adding a blinker. */
     private JButton addBlinkerTimer;
+    private JPanel rgbVisual;
     /** colour representing the starting colour of this clock. */
     private Color timerStartColor;
     /** ArrayList containing all blinkers for this timer. */
@@ -137,6 +138,7 @@ public class EditTimer {
             txtColor.setText("RGB: " + timerStartColor.getRed() + ", "
                     + timerStartColor.getGreen() + ", "
                     + timerStartColor.getBlue());
+            rgbVisual.setBackground(timerStartColor);
         });
 
         addBlinkerTimer.addActionListener(e -> new EditBlinker().addBlinker(
@@ -321,9 +323,10 @@ public class EditTimer {
         timerEnabled.setSelected(timer.isEnabled());
         String[] pathFolders = timer.getIcon().split("\\\\");
         txtPath.setText(pathFolders[pathFolders.length - 1]);
-        txtColor.setText(timer.getStartColor().getRed() + ", "
+        txtColor.setText("RGB: " + timer.getStartColor().getRed() + ", "
                 + timer.getStartColor().getGreen()
                 + ", " + timer.getStartColor().getBlue());
+        rgbVisual.setBackground(timer.getStartColor());
     }
 
     /**

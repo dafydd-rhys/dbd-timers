@@ -43,6 +43,8 @@ public class EditBlinker {
     private JSlider freqSlider;
     /** the value of the frequency slider. */
     private JLabel sliderValue;
+    private JLabel txtColor;
+    private JPanel rgbVisual;
     /** the label representing the currently chosen colour. */
     private JLabel txtColour;
     /** represents the newBlinker being created. */
@@ -65,9 +67,10 @@ public class EditBlinker {
             blinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
                 blinker.getColour()));
 
-            txtColour.setText("RGB: " + blinker.getColour().getRed()
+            txtColor.setText("RGB: " + blinker.getColour().getRed()
                     + ", " + blinker.getColour().getGreen() + ", "
                     + blinker.getColour().getBlue());
+            rgbVisual.setBackground(blinker.getColour());
         });
 
         saveBlinkerButton.addActionListener(e -> {
@@ -101,9 +104,10 @@ public class EditBlinker {
             newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
                         Color.BLACK));
 
-            txtColour.setText("RGB: " + newBlinker.getColour().getRed()
+            txtColor.setText("RGB: " + newBlinker.getColour().getRed()
                      + ", " + newBlinker.getColour().getGreen() + ", "
                      + newBlinker.getColour().getBlue());
+            rgbVisual.setBackground(newBlinker.getColour());
         });
 
         saveBlinkerButton.addActionListener(e -> {
@@ -143,6 +147,8 @@ public class EditBlinker {
                 String.valueOf(freqSlider.getValue())));
         blinkEnabled.addActionListener(e ->
                 freqSlider.setEnabled(blinkEnabled.isSelected()));
+
+
     }
 
     /**
@@ -156,9 +162,10 @@ public class EditBlinker {
             freqSlider.setEnabled(true);
         }
         startBlink.setSelectedItem(blinker.getTime());
-        txtColour.setText(blinker.getColour().getRed() + ", "
+        txtColor.setText("RGB: " + blinker.getColour().getRed() + ", "
                 + blinker.getColour().getGreen() + ", "
                 + blinker.getColour().getBlue());
+        rgbVisual.setBackground(blinker.getColour());
     }
 
     /**

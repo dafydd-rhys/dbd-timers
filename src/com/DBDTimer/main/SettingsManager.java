@@ -89,6 +89,7 @@ public class SettingsManager {
     private JButton chooseInactiveColour;
     /** the inactive colour of the timer visualised. */
     private JLabel txtColor;
+    private JPanel rgbVisual;
     /** the width of the frame. */
     private final int width = 450;
     /** the height of the frame. */
@@ -135,6 +136,8 @@ public class SettingsManager {
             txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
                     + inactiveColor.getGreen() + ", "
                     + inactiveColor.getBlue());
+            rgbVisual.setBackground(inactiveColor);
+
         });
 
         saveCustomSettings.addActionListener(e -> {
@@ -290,6 +293,7 @@ public class SettingsManager {
         txtColor.setText("RGB: " + inactiveColor.getRed() + ", "
                 + inactiveColor.getGreen() + ", "
                 + inactiveColor.getBlue());
+        rgbVisual.setBackground(inactiveColor);
     }
 
     /** populates the combo box including fonts. */
