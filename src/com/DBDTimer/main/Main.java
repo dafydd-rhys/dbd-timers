@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 
 /**
  * Main.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply implements and manipulates a JDialog, implementing
  * its features which includes timers, icons and other features.
  * @author Dafydd-Rhys Maund

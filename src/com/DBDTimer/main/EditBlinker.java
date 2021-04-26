@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * EditBlinker.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply allows the user to edit the blinkers,
  * they can change any property of a blinkers, the blinkers will
  * then be created/appended to their file.
@@ -95,7 +95,6 @@ public class EditBlinker {
     public void addBlinker(final int width, final int height,
                            final TimerProperties timer) {
         initUI(width, height, "Add Blinker");
-
         this.newBlinker = new TimerBlink();
         chooseColour.addActionListener(e -> {
             newBlinker.setColour(JColorChooser.showDialog(null, "Pick a Colour",
@@ -108,7 +107,6 @@ public class EditBlinker {
 
         saveBlinkerButton.addActionListener(e -> {
             if (newBlinker.getColour() != null) {
-
                 newBlinker.setBlinkFrequency(freqSlider.getValue());
                 newBlinker.setTime((int) (Objects.requireNonNull(
                         startBlink.getSelectedItem())));
@@ -136,7 +134,6 @@ public class EditBlinker {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         populateBlinkTime();
-
         sliderValue.setText(String.valueOf(freqSlider.getValue()));
 
         freqSlider.addChangeListener(e -> sliderValue.setText(

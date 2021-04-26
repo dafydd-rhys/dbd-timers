@@ -34,7 +34,7 @@ import java.util.Objects;
 
 /**
  * SettingsManager.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply creates a settings manager and opens it, the
  * user can make many changes here including changing his config, adding
  * timer and disabling timers etc.
@@ -155,6 +155,7 @@ public class SettingsManager {
                 settings.setHideBind(Objects.requireNonNull(hideBindBox.
                         getSelectedItem()).toString());
                 settings.setInactiveColour(inactiveColor);
+
                 fw.write(g.toJson(settings));
                 fw.close();
                 JOptionPane.showMessageDialog(null,

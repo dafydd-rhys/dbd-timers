@@ -5,7 +5,7 @@ import java.awt.Color;
 
 /**
  * Settings.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply stores the settings the user wants implemented
  * every time they run the program.
  * @author Dafydd-Rhys Maund

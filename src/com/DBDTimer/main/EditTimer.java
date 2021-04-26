@@ -33,7 +33,7 @@ import javax.swing.SwingConstants;
 
 /**
  * EditTimer.java.
- * @version 1.0.2
+ * @version 1.0.3
  * This class simply allows the user to edit the timers,
  * they can change any property of a timer, the timer will
  * then be created/appended to the folder.
@@ -220,35 +220,29 @@ public class EditTimer {
                            final int frequency) {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(3, 0, 0, 10));
-
         JPanel rgbPanel = new JPanel();
         rgbPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         JLabel rgbLabel = new JLabel("RGB: " + timerColor.getRed() + ", "
                 + timerColor.getGreen() + ", " + timerColor.getBlue());
-        rgbPanel.add(rgbLabel);
 
         JPanel hGap = new JPanel();
         hGap.setVisible(true);
-
         hGap.setMaximumSize(new Dimension(5, 10));
         hGap.setMinimumSize(new Dimension(5, 10));
         hGap.setPreferredSize(new Dimension(5, 10));
-
-        rgbPanel.add(hGap);
-
         JPanel rgbVisual = new JPanel();
         rgbVisual.setBackground(timerColor);
-
         rgbVisual.setMaximumSize(new Dimension(10, 10));
         rgbVisual.setMinimumSize(new Dimension(10, 10));
         rgbVisual.setPreferredSize(new Dimension(10, 10));
 
+        rgbPanel.add(rgbLabel);
+        rgbPanel.add(hGap);
         rgbPanel.add(rgbVisual);
         infoPanel.add(rgbPanel);
 
         infoPanel.add(new JLabel("Blink time: " + time + "s"));
         infoPanel.add(new JLabel("Frequency: " + frequency + "ms"));
-
         ImageIcon settings = new ImageIcon("images\\settings_cog.png");
         JLabel openSettings = new JLabel(convertImageSize(settings, 16));
         ImageIcon removeIcon = new ImageIcon("images\\remove_icon.png");
@@ -259,6 +253,7 @@ public class EditTimer {
         blinkerPanel.setMaximumSize(new Dimension(coloursList.getWidth(), 60));
         blinkerPanel.setPreferredSize(new Dimension(coloursList.getWidth(), 60));
         blinkerPanel.setMinimumSize(new Dimension(coloursList.getWidth(), 60));
+
         JLabel blinkerName = new JLabel("Colour: " + index);
         blinkerName.setHorizontalAlignment(SwingConstants.CENTER);
         blinkerPanel.add(blinkerName);
