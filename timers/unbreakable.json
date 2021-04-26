@@ -8,14 +8,6 @@
   "timerBlinks": [
     {
       "colour": {
-        "value": -65536,
-        "falpha": 0.0
-      },
-      "time": 20,
-      "blinkFrequency": 500
-    },
-    {
-      "colour": {
         "value": -13312,
         "falpha": 0.0
       },

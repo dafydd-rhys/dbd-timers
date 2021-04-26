@@ -12,7 +12,7 @@
         "falpha": 0.0
       },
       "time": 1,
-      "blinkFrequency": 500
+      "blinkFrequency": 0
     },
     {
       "colour": {
@@ -20,7 +20,7 @@
         "falpha": 0.0
       },
       "time": 20,
-      "blinkFrequency": 500
+      "blinkFrequency": 0
     },
     {
       "colour": {
@@ -28,7 +28,7 @@
         "falpha": 0.0
       },
       "time": 30,
-      "blinkFrequency": 500
+      "blinkFrequency": 0
     }
   ],
   "timerType": "CountUp",
