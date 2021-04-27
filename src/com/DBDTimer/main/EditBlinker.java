@@ -12,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -131,6 +132,9 @@ public class EditBlinker {
                 newBlinker.setTime((int) (Objects.requireNonNull(
                         startBlink.getSelectedItem())));
 
+                if (timer.getTimerBlinks() == null) {
+                    timer.setTimerBlinks(new ArrayList<>());
+                }
                 timer.getTimerBlinks().add(newBlinker);
                 JOptionPane.showMessageDialog(null, "Blinker added");
                 frame.dispose();

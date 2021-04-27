@@ -1,0 +1,23 @@
+{
+  "name": "Hook",
+  "startTime": 60,
+  "startColor": {
+    "value": -1,
+    "falpha": 0.0
+  },
+  "timerBlinks": [
+    {
+      "colour": {
+        "value": -65536,
+        "falpha": 0.0
+      },
+      "time": 10,
+      "blinkFrequency": 500
+    }
+  ],
+  "timerType": "CountDown",
+  "icon": "C:\\Users\\Morgan\\Documents\\GitHub\\DBDKillerTimer\\images\\saboteur.png",
+  "timerMode": "Survivor",
+  "enabled": true,
+  "startBind": "V"
+}

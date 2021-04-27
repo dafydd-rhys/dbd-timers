@@ -164,7 +164,12 @@ public class EditTimer {
                     TimerProperties newTimer = new TimerProperties();
                     newTimer.setName(timerName.getText());
                     newTimer.setStartColor(timerStartColor);
-                    newTimer.setTimerBlinks(timerBlinks);
+                    if (timerBlinks != null) {
+                        newTimer.setTimerBlinks(timerBlinks);
+                    } else {
+                        assert properties != null;
+                        newTimer.setTimerBlinks(properties.getTimerBlinks());
+                    }
                     newTimer.setTimerType((TimerProperties.TimerType)
                             timerTypeBox.getSelectedItem());
                     if (newTimer.getTimerType() == TimerProperties.

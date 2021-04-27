@@ -6,11 +6,11 @@
     "pointSize": 24.0,
     "fontSerializedDataVersion": 1
   },
-  "iconSize": 96,
-  "restartBind": "R",
+  "iconSize": 60,
+  "restartBind": "T",
   "hideBind": "H",
   "windowPosition": [
-    -10,
+    843,
     10
   ],
   "inactiveColour": {
