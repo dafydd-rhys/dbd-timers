@@ -1,34 +1,19 @@
 # DBDTimer
 ## Introduction
-This program simply allows you to know timings so you can slob harder on killer.
-Simply start the appropriate timer after the action has occured.
+This program simply allows you to create timers to allow you to get know timings of perks, add-ons and items.
 
-* Decisive-Strike Timer: How long until decisive strike runs out.
-* Borrowed-Time Timer: How long until borrowed time runs out.
-* Chase Timer: How long you have been chasing a survivor.
-* On-Shoulder Timer: How long they have been on your shoulder.
+## Customization
+There is total customization within the settings manager.
 
-## Binds
+There is total customization as you can create or edit existing timers with:
+* Custom images.
+* Custom times <start at X> <CountUp/CountDown>.
+* Custom blinkers <change colour at X time>.
+* Custom binds <timer 1 = X> <timer 2 = Y>.
 
-Binds can be changed in customization\\binds.txt.
-
-* Bind 1: represents the Decisive-Strike Timer and Borrowed-Time Timer
-* Bind 2: represents the Chase Timer
-* Bind 3: represents the On-Shoulder Timer
-* Bind 4: fully resets all timers.
-
-if you click the bind again it will reset the current timer.
-
-## Timers
-Red Timer represents: 
-* The survivor shouldn't be picked up
-* The survivor shouldn't be hit
-* The Chase has been too long, leave the survivor
-* The survivor can wiggle off your shoulder
- 
-Green Timer represent: 
-* The survivor can be hit and you avoid borrowed time.
-* You can pick up and avoid decisive strike
-* The survivor cannot wiggle off
-
-White Timer represents neutral, you can keep chasing the survivor.
+You can also customize properties of these timers: 
+* Custom Icon Size <64-192>.
+* Custom Icon Inactive Colour.
+* Custom Icon Positioning <Drag & Drop>.
+* Custom Fonts and Font Size.
+* Custom Reset and Hide Icons binds.
