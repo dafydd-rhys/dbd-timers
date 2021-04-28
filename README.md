@@ -1,7 +1,7 @@
 # DBDTimer
 
-If you aren't able to run the program try installing the newest version of java [here](https://java.com/en/download/).
-Otherwise, try fixing the java path by following [this](https://java.com/en/download/help/path.html) tutorial.
+**If you aren't able to run the program try installing the newest version of java [here](https://java.com/en/download/).**
+**Otherwise, try fixing the java path by following [this](https://java.com/en/download/help/path.html) tutorial.**
 
 ## Introduction
 This program simply allows you to create timers to allow you to get know timings of perks, add-ons and items.
@@ -24,7 +24,7 @@ You can also customize properties of these timers:
 
 ## Presets
 Presets come pre-installed with 4 timers for each killer and survivor.
-Custom images created by [Hyrelia](https://www.reddit.com/user/Sharyat/)
+**Custom images created by [Hyrelia](https://www.reddit.com/user/Sharyat/)**
 
 Killer:
 * Decisive Strike timer <how long until survivors DS runs out>.
