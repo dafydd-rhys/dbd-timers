@@ -12,16 +12,16 @@ There is total customization within the settings manager.
 
 You can create or edit existing timers with:
 * Custom images
-* Custom times (start at X, <CountUp/CountDown)
+* Custom times (start at X, CountUp/CountDown)
 * Custom blinkers (change colour at X time)
 * Custom binds (timer 1 = X, timer 2 = Y)
 
 You can change the properties of these timers: 
-* Custom Icon Size (64-192)
-* Custom Icon Inactive Colour
-* Custom Icon Positioning (Drag & Drop)
-* Custom Fonts and Font Size
-* Custom Reset and Hide Icons binds
+* Custom icon size (64 - 192px)
+* Custom icon inactive colour
+* Custom icon positioning (Drag & Drop)
+* Custom fonts and font size
+* Custom Reset and Hide icons binds
 
 ## Presets
 Presets come pre-installed with 4 timers for each killer and survivor.
