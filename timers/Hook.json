@@ -16,7 +16,7 @@
     }
   ],
   "timerType": "CountDown",
-  "icon": "C:\\Users\\Morgan\\Documents\\GitHub\\DBDKillerTimer\\images\\saboteur.png",
+  "icon": "images/saboteur.png",
   "timerMode": "Survivor",
   "enabled": true,
   "startBind": "V"
